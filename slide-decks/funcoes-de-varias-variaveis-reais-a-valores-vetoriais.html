@@ -1,32 +1,154 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-<head>
+  <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cálculo Vetorial: funcoes-de-varias-variaveis-reais-a-valores-vetoriais</title>
+    <title>Cálculo Vetorial: Funções de Várias Variáveis Reais a Valores Vetoriais</title>
     <link rel="stylesheet" href="reveal.js/dist/reveal.css">
     <link rel="stylesheet" href="space-theme.css">
     <script src="reveal.js/dist/reveal.js"></script>
     <script src="reveal.js/plugin/math/math.js"></script>
     <script>
-        window.onload = function() {
-            Reveal.initialize({
-                controls: true,
-                progress: true,
-                center: true,
-                hash: true,
-                plugins: [ RevealMath.MathJax3 ]
-            });
-        };
+      window.onload = function() {
+        Reveal.initialize({
+          controls: true,
+          progress: true,
+          center: true,
+          hash: true,
+          plugins: [ RevealMath.MathJax3 ]
+        });
+      };
     </script>
-</head>
-<body>
+  </head>
+  <body>
     <div class="reveal">
-        <div class="slides">
-            <section>
-                <h1>funcoes-de-varias-variaveis-reais-a-valores-vetoriais</h1>
-            </section>
-        </div>
+      <div class="slides">
+        <!-- Slide de Título -->
+        <section>
+          <section>
+            <h1>Funções de Várias Variáveis Reais a Valores Vetoriais</h1>
+            <h3>Cálculo Vetorial</h3>
+          </section>
+        </section>
+
+        <!-- Introdução -->
+        <section>
+          <section>
+            <h2>O que são Funções Vetoriais?</h2>
+            <p>Uma função vetorial é um mapeamento que associa:</p>
+            <ul>
+              <li>Um ponto do \(\mathbb{R}^n\) (domínio)</li>
+              <li>A um vetor no \(\mathbb{R}^m\) (contradomínio)</li>
+            </ul>
+            <p>Notação: \(\mathbf{F}: \mathbb{R}^n \to \mathbb{R}^m\)</p>
+          </section>
+          <section>
+            <h2>Funções Vetoriais: Uma Linguagem para Descrever o Movimento</h2>
+            <p>Quando descrevemos o movimento de um objeto no espaço, precisamos especificar múltiplas informações simultaneamente. Em cada instante \(t\), precisamos conhecer:</p>
+            <ul>
+              <li>Sua posição em relação a diferentes eixos: \((x(t), y(t), z(t))\)</li>
+              <li>Sua velocidade em cada direção: \((\dot{x}(t), \dot{y}(t), \dot{z}(t))\)</li>
+              <li>As forças que atuam sobre ele: \(\vec{F}(t) = (F_x(t), F_y(t), F_z(t))\)</li>
+            </ul>
+          </section>
+
+          <section>
+            <h2>Do Unidimensional ao Multidimensional</h2>
+            <p>Para compreender funções vetoriais, partamos do familiar:</p>
+            <p><strong>Função Escalar:</strong> \(f(x) = 2x\)</p>
+            <p>Para cada número real \(x\), obtemos um único número real \(y\).</p>
+            <p><strong>Função Vetorial:</strong> \(\vec{F}(t) = (x(t), y(t), z(t))\)</p>
+            <p>Para cada número real \(t\), obtemos um vetor com múltiplas componentes.</p>
+          </section>
+
+          <section>
+            <h2>Exemplos Fundamentais</h2>
+            <p><strong>1. Movimento Circular</strong></p>
+            <p>\[\vec{r}(t) = (R\cos t, R\sin t)\]</p>
+            <p>Esta função descreve uma trajetória circular de raio R no plano.</p>
+          </section>
+
+          <section>
+            <h2>Visualização Geométrica</h2>
+            <p>Uma função vetorial \(\vec{F}: \mathbb{R}^n \to \mathbb{R}^m\) pode ser interpretada de três formas complementares:</p>
+            <ul>
+              <li>Como uma curva paramétrica: \(\vec{r}(t) = (x(t), y(t), z(t))\)</li>
+              <li>Como um campo vetorial: \(\vec{F}(x,y) = (P(x,y), Q(x,y))\)</li>
+              <li>Como uma transformação: \(\vec{T}: \mathbb{R}^2 \to \mathbb{R}^2\)</li>
+            </ul>
+          </section>
+
+          <section>
+            <h2>Aplicações na Física</h2>
+            <p><strong>Campos Gravitacionais:</strong></p>
+            <p>O campo gravitacional é uma função vetorial que associa a cada ponto do espaço um vetor força:</p>
+            <p>\[\vec{g}(x,y,z) = -G\frac{M}{r^3}(x,y,z)\]</p>
+          </section>
+
+          <section>
+            <h2>Formalização Matemática</h2>
+            <p>Uma função vetorial \(\vec{F}: \mathbb{R}^n \to \mathbb{R}^m\) é um mapeamento que:</p>
+            <ul>
+              <li>Recebe \(n\) variáveis independentes: \((x_1, x_2, ..., x_n)\)</li>
+              <li>Produz \(m\) componentes: \((y_1, y_2, ..., y_m)\)</li>
+              <li>De forma que: \(\vec{F}(x_1, ..., x_n) = (f_1(x_1, ..., x_n), ..., f_m(x_1, ..., x_n))\)</li>
+            </ul>
+          </section>
+        </section>
+
+        <!-- Campo Vetorial -->
+        <section>
+          <h2>Campo Vetorial</h2>
+          <p>Um caso especial quando \(m=n\)</p>
+          <div class="fragment">
+            <p>Exemplo em \(\mathbb{R}^2\):</p>
+            <p>\(\mathbf{F}(x,y) = (x^2-y)\mathbf{i} + (x+y^2)\mathbf{j}\)</p>
+          </div>
+        </section>
+
+        <!-- Rotacional -->
+        <section>
+          <h2>Rotacional</h2>
+          <p>O rotacional mede a tendência de rotação do campo vetorial</p>
+          <div class="fragment">
+            <p>Em \(\mathbb{R}^3\):</p>
+            <p>\(\text{rot }\mathbf{F} = \nabla \times \mathbf{F} = \begin{vmatrix} 
+            \mathbf{i} & \mathbf{j} & \mathbf{k} \\
+            \frac{\partial}{\partial x} & \frac{\partial}{\partial y} & \frac{\partial}{\partial z} \\
+            F_1 & F_2 & F_3
+            \end{vmatrix}\)</p>
+          </div>
+        </section>
+
+        <!-- Divergente -->
+        <section>
+          <h2>Divergente</h2>
+          <p>O divergente mede o fluxo do campo vetorial</p>
+          <div class="fragment">
+            <p>\(\text{div }\mathbf{F} = \nabla \cdot \mathbf{F} = \frac{\partial F_1}{\partial x} + \frac{\partial F_2}{\partial y} + \frac{\partial F_3}{\partial z}\)</p>
+          </div>
+        </section>
+
+        <!-- Limite e Continuidade -->
+        <section>
+          <h2>Limite e Continuidade</h2>
+          <p>Uma função vetorial \(\mathbf{F}\) é contínua em \(\mathbf{a}\) se:</p>
+          <div class="fragment">
+            <p>\(\lim_{\mathbf{x} \to \mathbf{a}} \mathbf{F}(\mathbf{x}) = \mathbf{F}(\mathbf{a})\)</p>
+            <p>Isso significa que todas as funções componentes são contínuas</p>
+          </div>
+        </section>
+
+        <!-- Derivadas Parciais -->
+        <section>
+          <h2>Derivadas Parciais</h2>
+          <p>Para uma função \(\mathbf{F}(x,y)\), temos:</p>
+          <div class="fragment">
+            <p>\(\frac{\partial \mathbf{F}}{\partial x} = \lim_{h \to 0} \frac{\mathbf{F}(x+h,y) - \mathbf{F}(x,y)}{h}\)</p>
+            <p>\(\frac{\partial \mathbf{F}}{\partial y} = \lim_{h \to 0} \frac{\mathbf{F}(x,y+h) - \mathbf{F}(x,y)}{h}\)</p>
+          </div>
+        </section>
+      </div>
     </div>
-</body>
+  </body>
 </html>
