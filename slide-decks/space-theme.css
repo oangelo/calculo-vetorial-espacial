@@ -1,0 +1,163 @@
+/* Tema Vintage Space para Reveal.js
+ * Inspirado nos terminais IBM da década de 1970 e na estética da corrida espacial
+ * Para usar, inclua este arquivo CSS após o tema base do Reveal.js
+ */
+
+:root {
+    /* Paleta de cores principal */
+    --ibm-blue: #0C4B93;
+    --terminal-blue: #4889DD;
+    --phosphor-blue: #00B2FF;
+    --aged-paper: #F5F3E7;
+    --steel-blue: #4682B4;
+    --terminal-black: #1C1E22;
+}
+
+/* Configuração base da apresentação */
+.reveal {
+    background-color: var(--terminal-black);
+    background-image: 
+        linear-gradient(rgba(0, 178, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 178, 255, 0.03) 1px, transparent 1px);
+    background-size: 20px 20px;
+    background-position: center center;
+    color: var(--aged-paper);
+    font-family: 'Courier Prime', monospace;
+}
+
+/* Tipografia */
+.reveal h1 {
+    font-family: 'Share Tech Mono', monospace;
+    color: var(--phosphor-blue);
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    font-size: 2.5em;
+    text-shadow: 2px 2px 0px rgba(0, 178, 255, 0.2);
+    margin-bottom: 1em;
+    border-bottom: 2px solid var(--phosphor-blue);
+    padding-bottom: 0.5em;
+}
+
+.reveal h2,
+.reveal h3 {
+    font-family: 'Share Tech Mono', monospace;
+    color: var(--terminal-blue);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+.reveal p {
+    font-family: 'Courier Prime', monospace;
+    line-height: 1.6;
+    color: var(--aged-paper);
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+/* Estrutura dos slides */
+.reveal .slides section {
+    padding: 2em;
+    border: 1px solid var(--steel-blue);
+    background: rgba(28, 30, 34, 0.95);
+    box-shadow: inset 0 0 50px rgba(0, 178, 255, 0.05);
+}
+
+/* Efeito de scanline vintage */
+.reveal .slides section::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    background: linear-gradient(
+        transparent 50%,
+        rgba(0, 178, 255, 0.025) 50%
+    );
+    background-size: 100% 4px;
+    pointer-events: none;
+}
+
+/* Elementos de código */
+.reveal code {
+    font-family: 'Share Tech Mono', monospace;
+    background: var(--ibm-blue);
+    color: var(--phosphor-blue);
+    padding: 0.2em 0.4em;
+    border: 1px solid var(--phosphor-blue);
+}
+
+/* Citações */
+.reveal blockquote {
+    border-left: 4px solid var(--terminal-blue);
+    background: var(--ibm-blue);
+    margin: 1em 0;
+    padding: 1em;
+    font-style: italic;
+    font-family: 'Courier Prime', monospace;
+}
+
+/* Elementos de destaque */
+.reveal .important {
+    border: 1px solid var(--phosphor-blue);
+    background: rgba(0, 178, 255, 0.05);
+    padding: 1em;
+    margin: 1em 0;
+    font-family: 'Share Tech Mono', monospace;
+}
+
+.reveal .important::before {
+    content: ">> ATENÇÃO <<";
+    display: block;
+    color: var(--phosphor-blue);
+    margin-bottom: 0.5em;
+    font-weight: bold;
+}
+
+/* Elementos de navegação */
+.reveal .progress {
+    height: 3px;
+    background: var(--steel-blue);
+}
+
+.reveal .progress span {
+    background: var(--phosphor-blue);
+}
+
+.reveal .controls {
+    color: var(--phosphor-blue);
+}
+
+.reveal .slide-number {
+    background: transparent;
+    color: var(--phosphor-blue);
+    font-family: 'Share Tech Mono', monospace;
+    text-shadow: 0 0 5px var(--phosphor-blue);
+}
+
+/* Imagens */
+.reveal img {
+    border: 1px solid var(--steel-blue);
+    box-shadow: 0 0 15px rgba(0, 178, 255, 0.1);
+}
+
+/* Animação de scanline (opcional) */
+@keyframes scanline {
+    0% {
+        transform: translateY(-100%);
+    }
+    100% {
+        transform: translateY(100%);
+    }
+}
+
+/* Media Queries para responsividade */
+@media screen and (max-width: 768px) {
+    .reveal h1 {
+        font-size: 2em;
+    }
+    
+    .reveal .slides section {
+        padding: 1em;
+    }
+}
