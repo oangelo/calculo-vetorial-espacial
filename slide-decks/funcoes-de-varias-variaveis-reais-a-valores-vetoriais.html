@@ -42,13 +42,26 @@
             </ul>
             <p>Notação: \(\mathbf{F}: \mathbb{R}^n \to \mathbb{R}^m\)</p>
           </section>
-         <section>
+          <section>
             <h2>Do Unidimensional ao Multidimensional</h2>
             <p>Para compreender funções vetoriais, partamos do familiar:</p>
             <p><strong>Função Escalar:</strong> \(f(x) = 2x\)</p>
             <p>Para cada número real \(x\), obtemos um único número real \(y\).</p>
             <p><strong>Função Vetorial:</strong> \(\vec{F}(t) = (x(t), y(t), z(t))\)</p>
             <p>Para cada número real \(t\), obtemos um vetor com múltiplas componentes.</p>
+          </section>
+
+          <section>
+            <h2>Funções Vetoriais</h2>
+            <div class="fragment">
+              <p>Uma função vetorial é qualquer função que produz vetores como saída</p>
+              <p>Podem ter diferentes tipos de domínio, por exemplo:</p>
+              <ul>
+                <li>\(\vec{r}: \mathbb{R} \to \mathbb{R}^n\) (curva no espaço)</li>
+                <li>\(\vec{F}: \mathbb{R}^n \to \mathbb{R}^n\) (campo vetorial)</li>
+                <li>\(\vec{G}: \mathbb{R}^m \to \mathbb{R}^n\) (caso geral)</li>
+              </ul>
+            </div>
           </section>
 
           <section>
@@ -86,40 +99,154 @@
           </section>
 
           <section>
-          <h2>Formalização Matemática</h2>
-          <p>Uma função vetorial \(\vec{F}: \mathbb{R}^n \to \mathbb{R}^m\) é um mapeamento que:</p>
-          <ul>
-            <li>Recebe \(n\) variáveis independentes: \((x_1, x_2, ..., x_n)\)</li>
-            <li>Produz \(m\) componentes: \((y_1, y_2, ..., y_m)\)</li>
-            <li>De forma que: \(\vec{F}(x_1, ..., x_n) = (f_1(x_1, ..., x_n), ..., f_m(x_1, ..., x_n))\)</li>
-          </ul>
-        </section>
+            <h2>Formalização Matemática</h2>
+            <p>Uma função vetorial \(\vec{F}: \mathbb{R}^n \to \mathbb{R}^m\) é um mapeamento que:</p>
+            <ul>
+              <li>Recebe \(n\) variáveis independentes: \((x_1, x_2, ..., x_n)\)</li>
+              <li>Produz \(m\) componentes: \((y_1, y_2, ..., y_m)\)</li>
+              <li>De forma que: \(\vec{F}(x_1, ..., x_n) = (f_1(x_1, ..., x_n), ..., f_m(x_1, ..., x_n))\)</li>
+            </ul>
+          </section>
         </section>
 
         <!-- Campo Vetorial -->
         <section>
-          <h2>Campo Vetorial</h2>
-          <p>Um caso especial quando \(m=n\)</p>
-          <div class="fragment">
-            <p>Exemplo em \(\mathbb{R}^2\):</p>
-            <p>\(\mathbf{F}(x,y) = (x^2-y)\mathbf{i} + (x+y^2)\mathbf{j}\)</p>
-          </div>
-        </section>
+          <section>
+            <h2>Campo Vetorial</h2>
+            <p>Definição: Um campo vetorial \(\vec{F}\) em um conjunto aberto \(U \subseteq \mathbb{R}^n\) é uma função</p>
+            <p>\(\vec{F}: U \to \mathbb{R}^n\)</p>
+            <p>que associa a cada ponto \(\vec{p} \in U\) um vetor \(\vec{F}(\vec{p}) \in \mathbb{R}^n\)</p>
+            <div class="fragment">
+              (⌐⊙_⊙) Entendeu? Não?! Nem eu. Calma! 
+            </div>
+            <div class="fragment">
+              <p>Exemplo em \(\mathbb{R}^2\):</p>
+              <p>\(\vec{F}(x,y) = (x^2-y)\vec{i} + (x+y^2)\vec{j}\)</p>
+            </div>
+          </section>
 
-        <!-- Rotacional -->
-        <section>
-          <h2>Rotacional</h2>
-          <p>O rotacional mede a tendência de rotação do campo vetorial</p>
-          <div class="fragment">
-            <p>Em \(\mathbb{R}^3\):</p>
-            <p>\(\text{rot }\mathbf{F} = \nabla \times \mathbf{F} = \begin{vmatrix} 
-              \mathbf{i} & \mathbf{j} & \mathbf{k} \\
-              \frac{\partial}{\partial x} & \frac{\partial}{\partial y} & \frac{\partial}{\partial z} \\
-              F_1 & F_2 & F_3
-              \end{vmatrix}\)</p>
-          </div>
-        </section>
 
+          <!-- Relação entre os Conceitos -->
+          <section>
+            <h2>Campo Vetorial: Um Caso Especial</h2>
+            <div class="fragment">
+              <p>Todo campo vetorial é uma função vetorial onde:</p>
+              <ul>
+                <li>O domínio é um subconjunto de \(\mathbb{R}^n\)</li>
+                <li>O contradomínio é o mesmo \(\mathbb{R}^n\)</li>
+              </ul>
+            </div>
+            <div class="fragment">
+              <p>Mas nem toda função vetorial é um campo vetorial!</p>
+              <p>Exemplo: A trajetória de uma nave \(\vec{r}(t) = (x(t), y(t), z(t))\)</p>
+              <ul>
+                <li>É uma função vetorial (\(\mathbb{R} \to \mathbb{R}^3\))</li>
+                <li>Não é um campo vetorial (domínio diferente)</li>
+              </ul>
+            </div>
+          </section>
+
+          <!-- Campo Vetorial vs Função Vetorial -->
+          <section>
+            <h2>Campo Vetorial vs Função Vetorial</h2>
+            <div class="fragment">
+              <p>Função Vetorial \(\vec{r}: \mathbb{R} \to \mathbb{R}^n\)</p>
+              <ul>
+                <li>Entrada: um número real \(t\) (geralmente tempo)</li>
+                <li>Saída: um vetor em \(\mathbb{R}^n\)</li>
+                <li>Exemplo: trajetória de uma nave \(\vec{r}(t) = (x(t), y(t), z(t))\)</li>
+              </ul>
+            </div>
+            <div class="fragment">
+              <p>Campo Vetorial \(\vec{F}: \mathbb{R}^n \to \mathbb{R}^n\)</p>
+              <ul>
+                <li>Entrada: um ponto no espaço \((x,y,z)\)</li>
+                <li>Saída: um vetor nesse ponto</li>
+                <li>Exemplo: campo gravitacional \(\vec{F}(x,y,z)\) em cada ponto do espaço</li>
+              </ul>
+            </div>
+          </section>
+
+          <!-- Campo Vetorial - Introdução Intuitiva -->
+          <section>
+            <h2>Campo Vetorial: Uma Visão Intuitiva</h2>
+            <div class="fragment">
+              <p>Imagine o campo gravitacional ao redor de um planeta... 🌍</p>
+              <p>Em cada ponto do espaço, temos:</p>
+              <ul>
+                <li>Uma direção da força gravitacional</li>
+                <li>Uma intensidade que varia com a distância</li>
+              </ul>
+            </div>
+            <div class="fragment">
+              <p>Isso é um campo vetorial!</p>
+              <p>Para cada ponto do espaço, associamos um vetor que representa a força.</p>
+            </div>
+          </section>
+
+          <!-- Exemplos no Espaço -->
+          <section>
+            <h2>Campos Vetoriais no Espaço</h2>
+            <div class="fragment">
+              <p>🌠 Campo gravitacional de sistemas planetários</p>
+              <p>☀️ Vento solar</p>
+              <p>🌍 Campo magnético terrestre</p>
+              <p>🛸 Trajetórias de naves espaciais</p>
+            </div>
+            <div class="fragment">
+              <p>Que outros exemplos de campos vetoriais você consegue identificar na exploração espacial?</p>
+            </div>
+          </section>
+
+          <!-- Para Refletir -->
+          <section>
+            <h2>Para Refletir...</h2>
+            <div class="fragment">
+              <p>Imagine uma sonda espacial:</p>
+              <ul>
+                <li>Como o campo gravitacional afeta sua trajetória?</li>
+                <li>O que acontece quando ela passa pelo ponto de Lagrange?</li>
+              </ul>
+            </div>
+            <div class="fragment">
+              <p>Estas questões nos levam a conceitos importantes:</p>
+              <ul>
+                <li>Órbitas como curvas integrais</li>
+                <li>Pontos de equilíbrio no espaço</li>
+              </ul>
+            </div>
+          </section>
+
+          <!-- Visualização -->
+          <section>
+            <h2>Visualizando um Campo Vetorial</h2>
+            <div class="fragment">
+              <p>Voltando ao nosso exemplo matemático:</p>
+              <p>\(\vec{F}(x,y) = (x^2-y)\vec{i} + (x+y^2)\vec{j}\)</p>
+            </div>
+            <div class="fragment">
+              <p>Pontos especiais neste campo:</p>
+              <ul>
+                <li>Na origem (0,0): \(\vec{F}(0,0) = (0)\vec{i} + (0)\vec{j}\) - similar a um ponto de Lagrange</li>
+                <li>No ponto (1,0): \(\vec{F}(1,0) = (1)\vec{i} + (1)\vec{j}\) - representa um fluxo diagonal</li>
+              </ul>
+            </div>
+          </section>
+
+          <!-- Aplicações -->
+          <section>
+            <h2>Aplicações na Exploração Espacial</h2>
+            <div class="fragment">
+              <p>Campos vetoriais são essenciais para:</p>
+              <ul>
+                <li>Planejamento de trajetórias de naves espaciais</li>
+                <li>Análise do vento solar e seus efeitos</li>
+                <li>Estudo de campos magnéticos planetários</li>
+                <li>Previsão de órbitas de satélites</li>
+              </ul>
+            </div>
+          </section>
+        </section>
         <!-- Divergente -->
         <section>
           <h2>Divergente</h2>
