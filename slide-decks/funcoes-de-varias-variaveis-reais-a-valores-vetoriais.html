@@ -9,15 +9,15 @@
     <script src="reveal.js/dist/reveal.js"></script>
     <script src="reveal.js/plugin/math/math.js"></script>
     <script>
-      window.onload = function() {
-        Reveal.initialize({
-          controls: true,
-          progress: true,
-          center: true,
-          hash: true,
-          plugins: [ RevealMath.MathJax3 ]
-        });
-      };
+    window.onload = function() {
+    Reveal.initialize({
+    controls: true,
+    progress: true,
+    center: true,
+    hash: true,
+    plugins: [ RevealMath.MathJax3 ]
+    });
+    };
     </script>
   </head>
   <body>
@@ -31,7 +31,7 @@
           </section>
         </section>
 
-        <!-- Introdução -->
+        <!-- Funções Vetoriais-->
         <section>
           <section>
             <h2>O que são Funções Vetoriais?</h2>
@@ -42,6 +42,15 @@
             </ul>
             <p>Notação: \(\mathbf{F}: \mathbb{R}^n \to \mathbb{R}^m\)</p>
           </section>
+         <section>
+            <h2>Do Unidimensional ao Multidimensional</h2>
+            <p>Para compreender funções vetoriais, partamos do familiar:</p>
+            <p><strong>Função Escalar:</strong> \(f(x) = 2x\)</p>
+            <p>Para cada número real \(x\), obtemos um único número real \(y\).</p>
+            <p><strong>Função Vetorial:</strong> \(\vec{F}(t) = (x(t), y(t), z(t))\)</p>
+            <p>Para cada número real \(t\), obtemos um vetor com múltiplas componentes.</p>
+          </section>
+
           <section>
             <h2>Funções Vetoriais: Uma Linguagem para Descrever o Movimento</h2>
             <p>Quando descrevemos o movimento de um objeto no espaço, precisamos especificar múltiplas informações simultaneamente. Em cada instante \(t\), precisamos conhecer:</p>
@@ -53,16 +62,7 @@
           </section>
 
           <section>
-            <h2>Do Unidimensional ao Multidimensional</h2>
-            <p>Para compreender funções vetoriais, partamos do familiar:</p>
-            <p><strong>Função Escalar:</strong> \(f(x) = 2x\)</p>
-            <p>Para cada número real \(x\), obtemos um único número real \(y\).</p>
-            <p><strong>Função Vetorial:</strong> \(\vec{F}(t) = (x(t), y(t), z(t))\)</p>
-            <p>Para cada número real \(t\), obtemos um vetor com múltiplas componentes.</p>
-          </section>
-
-          <section>
-            <h2>Exemplos Fundamentais</h2>
+            <h2>Exemplo Fundamental</h2>
             <p><strong>1. Movimento Circular</strong></p>
             <p>\[\vec{r}(t) = (R\cos t, R\sin t)\]</p>
             <p>Esta função descreve uma trajetória circular de raio R no plano.</p>
@@ -86,14 +86,14 @@
           </section>
 
           <section>
-            <h2>Formalização Matemática</h2>
-            <p>Uma função vetorial \(\vec{F}: \mathbb{R}^n \to \mathbb{R}^m\) é um mapeamento que:</p>
-            <ul>
-              <li>Recebe \(n\) variáveis independentes: \((x_1, x_2, ..., x_n)\)</li>
-              <li>Produz \(m\) componentes: \((y_1, y_2, ..., y_m)\)</li>
-              <li>De forma que: \(\vec{F}(x_1, ..., x_n) = (f_1(x_1, ..., x_n), ..., f_m(x_1, ..., x_n))\)</li>
-            </ul>
-          </section>
+          <h2>Formalização Matemática</h2>
+          <p>Uma função vetorial \(\vec{F}: \mathbb{R}^n \to \mathbb{R}^m\) é um mapeamento que:</p>
+          <ul>
+            <li>Recebe \(n\) variáveis independentes: \((x_1, x_2, ..., x_n)\)</li>
+            <li>Produz \(m\) componentes: \((y_1, y_2, ..., y_m)\)</li>
+            <li>De forma que: \(\vec{F}(x_1, ..., x_n) = (f_1(x_1, ..., x_n), ..., f_m(x_1, ..., x_n))\)</li>
+          </ul>
+        </section>
         </section>
 
         <!-- Campo Vetorial -->
@@ -113,10 +113,10 @@
           <div class="fragment">
             <p>Em \(\mathbb{R}^3\):</p>
             <p>\(\text{rot }\mathbf{F} = \nabla \times \mathbf{F} = \begin{vmatrix} 
-            \mathbf{i} & \mathbf{j} & \mathbf{k} \\
-            \frac{\partial}{\partial x} & \frac{\partial}{\partial y} & \frac{\partial}{\partial z} \\
-            F_1 & F_2 & F_3
-            \end{vmatrix}\)</p>
+              \mathbf{i} & \mathbf{j} & \mathbf{k} \\
+              \frac{\partial}{\partial x} & \frac{\partial}{\partial y} & \frac{\partial}{\partial z} \\
+              F_1 & F_2 & F_3
+              \end{vmatrix}\)</p>
           </div>
         </section>
 
