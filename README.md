@@ -7,7 +7,7 @@ Bem-vindo à nossa jornada matemática pelo cosmos. Este curso apresenta os fund
 Cada capítulo do curso possui uma apresentação interativa disponível online. Navegue pelos links abaixo para acessar o material:
 
 1. [Funções de várias variáveis reais a valores vetoriais](https://oangelo.github.io/calculo-vetorial-espacial/slide-decks/funcoes-de-varias-variaveis-reais-a-valores-vetoriais.html)
-  - [Função de várias variáveis reais a valores vetoriais](https://oangelo.github.io/calculo-vetorial-espacial/exercicios/capitulo-1/funcao-vetorial.ht)
+  - [Função de várias variáveis reais a valores vetoriais](https://oangelo.github.io/calculo-vetorial-espacial/exercicios/capitulo-1/funcao-vetorial.html)
   - Campo vetorial
   - Rotacional
   - Divergente
