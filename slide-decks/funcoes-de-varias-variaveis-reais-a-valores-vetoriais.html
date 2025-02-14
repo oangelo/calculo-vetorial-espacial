@@ -247,35 +247,278 @@
             </div>
           </section>
         </section>
+
+        <!-- Rotacional -->
+        <section>
+          <section>
+            <h2>Rotacional</h2>
+            <p>Seja $\vec{F}(x,y,z) = P(x,y,z)\hat{i} + Q(x,y,z)\hat{j} + R(x,y,z)\hat{k}$ um campo vetorial. O rotacional de $\vec{F}$ é dado por:</p>
+            $$\text{rot }\vec{F} = \nabla \times \vec{F} = \begin{vmatrix} 
+            \hat{i} & \hat{j} & \hat{k} \\
+            \frac{\partial}{\partial x} & \frac{\partial}{\partial y} & \frac{\partial}{\partial z} \\
+            P & Q & R
+            \end{vmatrix}$$
+            $$= \left(\frac{\partial R}{\partial y} - \frac{\partial Q}{\partial z}\right)\hat{i} + \left(\frac{\partial P}{\partial z} - \frac{\partial R}{\partial x}\right)\hat{j} + \left(\frac{\partial Q}{\partial x} - \frac{\partial P}{\partial y}\right)\hat{k}$$
+          </section>
+
+          <section>
+            <h3>Derivadas Parciais: Uma Revisão</h3>
+            <p>Imagine um satélite mudando sua posição no espaço:</p>
+            <p>A derivada parcial $\frac{\partial F}{\partial x}$ mede a taxa de variação de $F$ na direção $x$, mantendo $y$ e $z$ constantes</p>
+            <p>Como um radar rastreando movimento em uma única direção</p>
+          </section>
+
+          <section>
+            <h3>Interpretação Intuitiva</h3>
+            <p>O rotacional mede a tendência de rotação do campo em cada ponto</p>
+            <p>Imagine um pequeno satélite de teste em cada ponto do espaço:</p>
+            <ul>
+              <li>Se ele tende a girar ➜ rotacional não nulo</li>
+              <li>Se ele permanece sem rotação ➜ rotacional nulo</li>
+            </ul>
+          </section>
+
+          <section>
+            <h3>Operador Nabla (∇)</h3>
+            <p>O operador vetorial nabla é definido como:</p>
+            $$\nabla = \frac{\partial}{\partial x}\hat{i} + \frac{\partial}{\partial y}\hat{j} + \frac{\partial}{\partial z}\hat{k}$$
+            <p>Como uma "sonda espacial" que mede variações em todas as direções!</p>
+          </section>
+
+          <section>
+            <h3>Exemplos na Corrida Espacial</h3>
+            <p>Campos de rotacional não nulo:</p>
+            <ul>
+              <li>Vórtices atmosféricos afetando reentrada</li>
+              <li>Campo magnético terrestre guiando bússolas</li>
+              <li>Turbulência ao redor de foguetes</li>
+            </ul>
+          </section>
+        </section>
+
         <!-- Divergente -->
         <section>
-          <h2>Divergente</h2>
-          <p>O divergente mede o fluxo do campo vetorial</p>
-          <div class="fragment">
-            <p>\(\text{div }\mathbf{F} = \nabla \cdot \mathbf{F} = \frac{\partial F_1}{\partial x} + \frac{\partial F_2}{\partial y} + \frac{\partial F_3}{\partial z}\)</p>
-          </div>
+          <section>
+            <h2>Divergente</h2>
+            <p>Seja $\vec{F}(x,y,z) = P\hat{i} + Q\hat{j} + R\hat{k}$ um campo vetorial</p>
+            $\text{div }\vec{F} = \nabla \cdot \vec{F} = \frac{\partial P}{\partial x} + \frac{\partial Q}{\partial y} + \frac{\partial R}{\partial z}$
+          </section>
+
+          <section>
+            <h3>Operador Laplaciano</h3>
+            <p>O Laplaciano é um caso especial do divergente do gradiente:</p>
+            <p>$$\nabla^2f = \nabla \cdot (\nabla f) = \frac{\partial^2 f}{\partial x^2} + \frac{\partial^2 f}{\partial y^2} + \frac{\partial^2 f}{\partial z^2}$$</p>
+            <p>Fundamental para:</p>
+            <ul>
+              <li>Equação do calor</li>
+              <li>Equação de Schrödinger</li>
+              <li>Trajetória de objetos espaciais</li>
+            </ul>
+          </section>
+
+          <section>
+            <h3>Interpretação Física do Divergente</h3>
+            <ul>
+              <li>Mede o fluxo líquido do campo por unidade de volume</li>
+              <li>Fonte (divergente > 0): campo "saindo" do ponto</li>
+              <li>Sumidouro (divergente < 0): campo "entrando" no ponto</li>
+            <li>Campo solenoidal (divergente = 0): fluxo conservado</li>
+          </ul>
         </section>
 
-        <!-- Limite e Continuidade -->
+        <section>
+          <h3>Analogia da Guerra Fria</h3>
+          <p>Imagine um radar rastreando mísseis:</p>
+          <ul>
+            <li>Divergente positivo: detecção de lançamento</li>
+            <li>Divergente negativo: ponto de impacto previsto</li>
+            <li>Divergente zero: míssil em trajetória balística</li>
+          </ul>
+        </section>
+      </section>
+
+
+      <!-- Limite e Continuidade -->
+      <section>
         <section>
           <h2>Limite e Continuidade</h2>
-          <p>Uma função vetorial \(\mathbf{F}\) é contínua em \(\mathbf{a}\) se:</p>
+          <p>Definição formal: Uma função vetorial \(\vec{F}: D \subset \mathbb{R}^n \to \mathbb{R}^m\) é contínua em \(\vec{a}\) se:</p>
           <div class="fragment">
-            <p>\(\lim_{\mathbf{x} \to \mathbf{a}} \mathbf{F}(\mathbf{x}) = \mathbf{F}(\mathbf{a})\)</p>
-            <p>Isso significa que todas as funções componentes são contínuas</p>
+            <p>\[\lim_{\vec{x} \to \vec{a}} \vec{F}(\vec{x}) = \vec{F}(\vec{a})\]</p>
+            <p>Ou seja, para todo \(\varepsilon > 0\), existe \(\delta > 0\) tal que:</p>
+            <p>\[\|\vec{x} - \vec{a}\| < \delta \implies \|\vec{F}(\vec{x}) - \vec{F}(\vec{a})\| < \varepsilon\]</p>
           </div>
         </section>
 
-        <!-- Derivadas Parciais -->
+        <!-- Interpretação Geométrica -->
+        <section>
+          <h2>Interpretação Geométrica</h2>
+          <p>Imagine um satélite em órbita:</p>
+          <div class="fragment">
+            <p>Sua trajetória é descrita por uma função vetorial contínua \(\vec{r}(t)\)</p>
+            <p>\[\vec{r}(t) = \begin{pmatrix} x(t) \\ y(t) \\ z(t) \end{pmatrix}\]</p>
+          </div>
+          <div class="fragment">
+            <p>A continuidade garante que não há "saltos" na trajetória</p>
+          </div>
+        </section>
+
+        <!-- Exemplo Prático -->
+        <section>
+          <h2>Exemplo: Trajetória de Lançamento</h2>
+          <p>Considere a trajetória simplificada de um foguete:</p>
+          <div class="fragment">
+            <p>\[\vec{r}(t) = \begin{pmatrix} v_0t \\ h_0 + v_0t - \frac{1}{2}gt^2 \end{pmatrix}\]</p>
+            <p>Onde:</p>
+            <ul>
+              <li>\(v_0\): velocidade inicial</li>
+              <li>\(h_0\): altura inicial</li>
+              <li>\(g\): aceleração da gravidade</li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- Aplicação: Detecção de Descontinuidades -->
+        <section>
+          <h2>Aplicação: Detecção de Falhas</h2>
+          <p>Durante a corrida espacial, detectar descontinuidades era crucial:</p>
+          <div class="fragment">
+            <ul>
+              <li>Falhas em sensores</li>
+              <li>Interferências em sinais de rádio</li>
+              <li>Anomalias em trajetórias</li>
+            </ul>
+          </div>
+          <div class="fragment">
+            <p>Uma descontinuidade pode indicar:</p>
+            <p>\[\lim_{t \to t_0^-} \vec{F}(t) \neq \lim_{t \to t_0^+} \vec{F}(t)\]</p>
+          </div>
+        </section>
+
+        <!-- Critério de Continuidade -->
+        <section>
+          <h2>Critério de Continuidade</h2>
+          <p>Uma função vetorial \(\vec{F}(x,y) = \begin{pmatrix} F_1(x,y) \\ F_2(x,y) \end{pmatrix}\) é contínua se e somente se:</p>
+          <div class="fragment">
+            <p>Cada componente \(F_1(x,y)\) e \(F_2(x,y)\) é contínua</p>
+            <p>Exemplo: Campo gravitacional da Terra</p>
+            <p>\[\vec{g}(x,y,z) = -G\frac{M}{r^3}\begin{pmatrix} x \\ y \\ z \end{pmatrix}\]</p>
+          </div>
+        </section>
+      </section>
+
+      <!-- Derivadas Parciais -->
+      <section>
         <section>
           <h2>Derivadas Parciais</h2>
-          <p>Para uma função \(\mathbf{F}(x,y)\), temos:</p>
+          <p>Para uma função \(\mathbf{F}(x,y)\), definimos:</p>
           <div class="fragment">
             <p>\(\frac{\partial \mathbf{F}}{\partial x} = \lim_{h \to 0} \frac{\mathbf{F}(x+h,y) - \mathbf{F}(x,y)}{h}\)</p>
             <p>\(\frac{\partial \mathbf{F}}{\partial y} = \lim_{h \to 0} \frac{\mathbf{F}(x,y+h) - \mathbf{F}(x,y)}{h}\)</p>
           </div>
+          <div class="fragment">
+            <p class="note">Interpretação: Taxa de variação em uma direção, mantendo as outras variáveis constantes</p>
+          </div>
         </section>
-      </div>
+
+        <!-- Slide 2: Visualização Geométrica -->
+        <section>
+          <h2>Visualização Geométrica</h2>
+          <div class="two-col">
+            <div class="col">
+              <p>Derivada em x: "Fatia" perpendicular ao eixo y</p>
+            </div>
+            <div class="col fragment">
+              <p>Derivada em y: "Fatia" perpendicular ao eixo x</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Slide 3: Aplicação Espacial -->
+        <section>
+          <h2>Aplicação: Trajetória Orbital</h2>
+          <div class="content-box">
+            <p class="historical-note">A missão Vostok 1 (1961) marcou a primeira vez que um ser humano orbitou a Terra. Em meio à Guerra Fria, os soviéticos precisavam garantir não só que Yuri Gagarin chegasse ao espaço, mas que retornasse em segurança - um desafio matemático sem precedentes.</p>
+            <p>Para este feito histórico, as derivadas parciais foram cruciais para:</p>
+            <ul class="fragment">
+              <li>Calcular variações de velocidade em diferentes direções</li>
+              <li>Otimizar consumo de combustível</li>
+              <li>Prever desvios de trajetória</li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- Slide 4: Exemplo Prático -->
+        <section>
+          <h2>Exemplo: Campo Gravitacional</h2>
+          <div class="fragment">
+            <p>Potencial gravitacional: \(\phi(x,y,z) = -\frac{GM}{r}\)</p>
+            <p>onde \(r = \sqrt{x^2 + y^2 + z^2}\)</p>
+          </div>
+          <div class="fragment">
+            <p>Calcule: \(\frac{\partial \phi}{\partial x}\)</p>
+          </div>
+        </section>
+
+        <!-- Slide 5: Exercício Interativo -->
+        <section>
+          <h2>Exercício: Órbita Lunar</h2>
+          <div class="problem-box">
+            <p>Para uma órbita circular de raio R, temos a energia total:</p>
+            <p>\(E(v,r) = \frac{1}{2}mv^2 - \frac{GMm}{r}\)</p>
+            <div class="fragment">
+              <p>Calcule:</p>
+              <ol>
+                <li>\(\frac{\partial E}{\partial v}\) (variação com velocidade)</li>
+                <li>\(\frac{\partial E}{\partial r}\) (variação com raio)</li>
+              </ol>
+            </div>
+          </div>
+        </section>
+
+        <section>
+        <h2>Derivadas Parciais de Campos Vetoriais</h2>
+        <div class="content-box">
+          <p>Para um campo vetorial \(\vec{F}(x,y) = P(x,y)\hat{i} + Q(x,y)\hat{j}\), temos:</p>
+          <div class="fragment">
+            <p>\(\frac{\partial \vec{F}}{\partial x} = \frac{\partial P}{\partial x}\hat{i} + \frac{\partial Q}{\partial x}\hat{j}\)</p>
+            <p>\(\frac{\partial \vec{F}}{\partial y} = \frac{\partial P}{\partial y}\hat{i} + \frac{\partial Q}{\partial y}\hat{j}\)</p>
+          </div>
+        </div>
+      </section>
+
+        <!-- Exemplo Prático de Campo Vetorial -->
+        <section>
+          <h2>Exemplo: Campo de Vento Solar</h2>
+          <div class="content-box">
+            <p>Considere o campo de velocidade do vento solar:</p>
+            <p>\(\vec{v}(x,y) = \frac{kx}{r^3}\hat{i} + \frac{ky}{r^3}\hat{j}\)</p>
+            <p>onde \(r = \sqrt{x^2 + y^2}\) e \(k\) é uma constante.</p>
+          </div>
+          <div class="fragment">
+            <p>A derivada parcial em x é?</p>
+          </div>
+          <div class="fragment">
+            <p class="note">Esta derivada nos dá a taxa de variação do vento solar na direção x, crucial para prever a interação com satélites e escudos magnéticos.</p>
+          </div>
+        </section>
+
+        <section>
+          <h2>Síntese e Conexões</h2>
+          <div class="summary-box">
+            <ul>
+              <li>Derivadas parciais medem variações em direções específicas</li>
+              <li>Fundamentais para análise de movimento orbital</li>
+              <li>Essenciais na análise de campos vetoriais (vento solar, campos magnéticos)</li>
+              <li>Base para otimização de trajetórias</li>
+            </ul>
+          </div>
+          <div class="fragment">
+            <p>Próximo tópico: Gradiente e suas aplicações em otimização de trajetórias</p>
+          </div>
+        </section>
+
     </div>
-  </body>
+  </div>
+</body>
 </html>
