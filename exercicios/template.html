@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercícios Classificados - Cálculo Vetorial</title>
+    <link href="https://fonts.cdnjs.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>CLASSIFICADO - NÍVEL 4</h1>
+            <h2>Cálculo Vetorial - Setor Espacial</h2>
+            <div class="clearance-level">AUTORIZAÇÃO NECESSÁRIA</div>
+        </header>
+
+        <main>
+            <ol class="exercise-list">
+                <!-- Exercício 1 -->
+                <li class="exercise-item">
+                    <div class="exercise-number">EXERCÍCIO 1-A</div>
+                    <div class="context">
+                        ARQUIVO: Programa Espacial Soviético (1957)
+                        [DADOS PARCIALMENTE DESCLASSIFICADOS]
+                    </div>
+                    <p>
+                        Considere o vetor velocidade \(\vec{v}\) do Sputnik 1, primeiro satélite artificial:
+                        \[\vec{v} = \begin{pmatrix} 3 \\ 4 \\ 0 \end{pmatrix}\] km/s.
+                        Calcule o módulo deste vetor para verificar conformidade com parâmetros orbitais.
+                    </p>
+                    <div class="hint">
+                        [DICA OPERACIONAL]: Aplicar teorema de Pitágoras tridimensional
+                    </div>
+                    <details>
+                        <summary>ACESSAR SOLUÇÃO [NÍVEL 4 REQUERIDO]</summary>
+                        <div class="solution">
+                            <p>ANÁLISE VETORIAL:</p>
+                            <p>\[|\vec{v}| = \sqrt{v_x^2 + v_y^2 + v_z^2}\]</p>
+                            <p>CÁLCULO NUMÉRICO:</p>
+                            <p>\[|\vec{v}| = \sqrt{3^2 + 4^2 + 0^2} = \sqrt{25} = 5\]</p>
+                            <p>CONCLUSÃO: Velocidade orbital = 5 km/s [DENTRO DOS PARÂMETROS]</p>
+                        </div>
+                    </details>
+                </li>
+
+                <!-- Exercício 2 -->
+                <li class="exercise-item">
+                    <div class="exercise-number">EXERCÍCIO 1-B</div>
+                    <div class="context">
+                        ARQUIVO: Programa Apollo (1969)
+                        [DADOS PARCIALMENTE DESCLASSIFICADOS]
+                    </div>
+                    <p>
+                        Sistema de propulsão Apollo 11. Vetores de força detectados:
+                        \[\vec{F_1} = \begin{pmatrix} 2 \\ -1 \\ 3 \end{pmatrix}\] 
+                        \[\vec{F_2} = \begin{pmatrix} -1 \\ 2 \\ -1 \end{pmatrix}\]
+                        DETERMINAR: Vetor resultante \(\vec{R} = \vec{F_1} + \vec{F_2}\)
+                    </p>
+                    <details>
+                        <summary>ACESSAR SOLUÇÃO [NÍVEL 4 REQUERIDO]</summary>
+                        <div class="solution">
+                            <p>PROTOCOLO DE SOMA VETORIAL:</p>
+                            <p>\[\vec{R} = \begin{pmatrix} 2 \\ -1 \\ 3 \end{pmatrix} + 
+                            \begin{pmatrix} -1 \\ 2 \\ -1 \end{pmatrix} = 
+                            \begin{pmatrix} 1 \\ 1 \\ 2 \end{pmatrix}\]</p>
+                            <p>RESULTADO FINAL: \(\vec{R} = (1, 1, 2)\) [VERIFICADO]</p>
+                        </div>
+                    </details>
+                </li>
+            </ol>
+        </main>
+    </div>
+
+    <script>
+        MathJax.Hub.Config({
+            tex2jax: {
+                inlineMath: [['\\(','\\)']],
+                displayMath: [['\\[','\\]']],
+                processEscapes: true
+            },
+            "HTML-CSS": {
+                color: "#d4af37"
+            }
+        });
+    </script>
+</body>
+</html>
