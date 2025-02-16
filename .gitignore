@@ -1,0 +1,31 @@
+# Diretório com dependências instaladas
+node_modules/
+
+# Logs de depuração
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Diretórios de build ou distribuição
+dist/
+build/
+
+# Arquivos de cache
+.cache/
+
+# Arquivos de ambiente (se você os usar)
+.env
+.env.*
+
+# Arquivos de lock podem ou não ser ignorados, dependendo do fluxo de trabalho:
+# Normalmente, o package-lock.json é versionado para garantir reprodutibilidade.
+# Se preferir ignorá-lo, adicione:
+# package-lock.json
+
+# Caso use yarn, você também pode ignorar o yarn.lock, mas geralmente também é versionado:
+# yarn.lock
+
+# Configurações do editor (exemplo para VSCode)
+.vscode/
+*.code-workspace
+
