@@ -1,9 +1,10 @@
 {
   "devDependencies": {
+    "husky": "^9.1.7",
     "prettier": "^3.5.1"
   },
   "scripts": {
-    "format": "prettier --write '**/*.{js,css,html,md}'"
+    "format": "prettier --write '**/*.{js,css,html,md}'",
+    "lint:html": "htmlhint '**/*.html'"
   }
 }
-
