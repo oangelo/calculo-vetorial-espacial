@@ -8,9 +8,9 @@ Cada capítulo do curso possui uma apresentação interativa disponível online.
 
 1. [Funções de várias variáveis reais a valores vetoriais](https://oangelo.github.io/calculo-vetorial-espacial/slide-decks/funcoes-de-varias-variaveis-reais-a-valores-vetoriais.html)
 
-- [Função de várias variáveis reais a valores vetoriais](https://oangelo.github.io/calculo-vetorial-espacial/exercicios/capitulo-1/funcao-vetorial.html)
-- Campo vetorial
-- Rotacional
+- [Função vetoriais](https://oangelo.github.io/calculo-vetorial-espacial/exercicios/capitulo-1/funcao-vetorial.html)
+- [Campo vetorial](https://oangelo.github.io/calculo-vetorial-espacial/exercicios/capitulo-1/campo-vetorial.html)
+- [Rotacional](https://oangelo.github.io/calculo-vetorial-espacial/exercicios/capitulo-1/rotacional.html)
 - Divergente
 - Limite e continuidade
 - Derivadas parciais
