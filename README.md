@@ -11,9 +11,9 @@ Cada capítulo do curso possui uma apresentação interativa disponível online.
 - [Função vetoriais](https://oangelo.github.io/calculo-vetorial-espacial/exercicios/capitulo-1/funcao-vetorial.html)
 - [Campo vetorial](https://oangelo.github.io/calculo-vetorial-espacial/exercicios/capitulo-1/campo-vetorial.html)
 - [Rotacional](https://oangelo.github.io/calculo-vetorial-espacial/exercicios/capitulo-1/rotacional.html)
-- Divergente
-- Limite e continuidade
-- Derivadas parciais
+- [Divergente](https://oangelo.github.io/calculo-vetorial-espacial/exercicios/capitulo-1/divergente.html)
+- [Limite e continuidade](https://oangelo.github.io/calculo-vetorial-espacial/exercicios/capitulo-1/limites.html)
+- [Derivadas parciais](https://oangelo.github.io/calculo-vetorial-espacial/exercicios/capitulo-1/derivadas-parciais.html)
 
 2. [Integrais duplas](https://oangelo.github.io/calculo-vetorial-espacial/slide-decks/integrais-duplas.html)
 
