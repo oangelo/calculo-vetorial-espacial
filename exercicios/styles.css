@@ -1,15 +1,15 @@
 :root {
-  --primary: #b87333;          /* Cobre base */
-  --primary-light: #cd7f32;    /* Cobre claro */
-  --primary-dark: #8b4513;     /* Cobre escuro/oxidado */
-  --accent: #ffd700;           /* Dourado envelhecido */
-  --warning: #a52a2a;          /* Vermelho oxidado */
-  --bg-dark: #2a1810;          /* Marrom muito escuro */
-  --bg-darker: #1a0f0a;        /* Quase preto com tom marrom */
-  --text: #d4af37;             /* Dourado suave para texto */
-  --text-faded: #98816b;       /* Texto secundário */
-  --rust: #8b4513;             /* Ferrugem */
-  --metal: #707070;            /* Metal envelhecido */
+  --primary: #b87333; /* Cobre base */
+  --primary-light: #cd7f32; /* Cobre claro */
+  --primary-dark: #8b4513; /* Cobre escuro/oxidado */
+  --accent: #ffd700; /* Dourado envelhecido */
+  --warning: #a52a2a; /* Vermelho oxidado */
+  --bg-dark: #2a1810; /* Marrom muito escuro */
+  --bg-darker: #1a0f0a; /* Quase preto com tom marrom */
+  --text: #d4af37; /* Dourado suave para texto */
+  --text-faded: #98816b; /* Texto secundário */
+  --rust: #8b4513; /* Ferrugem */
+  --metal: #707070; /* Metal envelhecido */
 }
 
 body {
@@ -19,13 +19,19 @@ body {
   line-height: 1.6;
   margin: 0;
   padding: 20px;
-  background-image: 
-  radial-gradient(circle at 50% 50%, rgba(184, 115, 51, 0.1) 0%, transparent 80%),
-  repeating-linear-gradient(45deg, 
-  rgba(139, 69, 19, 0.05) 0px, 
-  rgba(139, 69, 19, 0.05) 1px, 
-  transparent 1px, 
-  transparent 2px);
+  background-image:
+    radial-gradient(
+      circle at 50% 50%,
+      rgba(184, 115, 51, 0.1) 0%,
+      transparent 80%
+    ),
+    repeating-linear-gradient(
+      45deg,
+      rgba(139, 69, 19, 0.05) 0px,
+      rgba(139, 69, 19, 0.05) 1px,
+      transparent 1px,
+      transparent 2px
+    );
 }
 
 .container {
@@ -41,9 +47,9 @@ body {
   padding: 30px;
   margin-bottom: 30px;
   position: relative;
-  box-shadow: 
-  0 0 15px rgba(184, 115, 51, 0.2),
-  inset 0 0 30px rgba(139, 69, 19, 0.3);
+  box-shadow:
+    0 0 15px rgba(184, 115, 51, 0.2),
+    inset 0 0 30px rgba(139, 69, 19, 0.3);
 }
 
 .document-stamp {
@@ -55,7 +61,7 @@ body {
   padding: 5px 15px;
   transform: rotate(5deg);
   border: 2px solid var(--primary-light);
-  box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
   z-index: 2;
   font-weight: bold;
 }
@@ -92,7 +98,7 @@ body {
 }
 
 .warning-box::before {
-  content: "⚠ ATENÇÃO";
+  content: '⚠ ATENÇÃO';
   position: absolute;
   top: -10px;
   left: 10px;
@@ -123,10 +129,9 @@ body {
   padding: 20px;
   margin-bottom: 20px;
   position: relative;
-  box-shadow: 
-  0 0 10px rgba(184, 115, 51, 0.1),
-  inset 0 0 20px rgba(139, 69, 19, 0.2);
-
+  box-shadow:
+    0 0 10px rgba(184, 115, 51, 0.1),
+    inset 0 0 20px rgba(139, 69, 19, 0.2);
 
   .exercise-number {
     color: var(--primary-light);
@@ -181,9 +186,15 @@ body {
   }
 
   @keyframes flicker {
-    0% { opacity: 1; }
-    50% { opacity: 0.95; }
-    100% { opacity: 1; }
+    0% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.95;
+    }
+    100% {
+      opacity: 1;
+    }
   }
 
   .document-header {
@@ -191,20 +202,20 @@ body {
   }
 
   @keyframes metallic-shine {
-    0% { 
-      box-shadow: 
-      0 0 5px var(--primary),
-      inset 0 0 10px rgba(184, 115, 51, 0.3);
+    0% {
+      box-shadow:
+        0 0 5px var(--primary),
+        inset 0 0 10px rgba(184, 115, 51, 0.3);
     }
-    50% { 
-      box-shadow: 
-      0 0 15px var(--primary-light),
-      inset 0 0 20px rgba(184, 115, 51, 0.5);
+    50% {
+      box-shadow:
+        0 0 15px var(--primary-light),
+        inset 0 0 20px rgba(184, 115, 51, 0.5);
     }
-    100% { 
-      box-shadow: 
-      0 0 5px var(--primary),
-      inset 0 0 10px rgba(184, 115, 51, 0.3);
+    100% {
+      box-shadow:
+        0 0 5px var(--primary),
+        inset 0 0 10px rgba(184, 115, 51, 0.3);
     }
   }
 
@@ -224,4 +235,5 @@ body {
   /* Estilo para fórmulas matemáticas */
   .mjx-chtml {
     color: var(--text) !important;
-}}
+  }
+}

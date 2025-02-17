@@ -1,279 +1,304 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Exercícios Classificados - Cálculo Vetorial</title>
     <!-- Fonte e estilos -->
-    <link href="https://fonts.cdnjs.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../styles.css">
+    <link
+      href="https://fonts.cdnjs.com/css2?family=Share+Tech+Mono&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../styles.css" />
 
     <!-- MathJax para LaTeX -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
-</head>
-<body>
-
-<div class="container">
-    <div class="document-header">
+  </head>
+  <body>
+    <div class="container">
+      <div class="document-header">
         <div class="document-stamp">SIGILOSO</div>
         <div class="document-date">
-            DATA: <span class="censored">18</span> DE JULHO DE <span class="censored">1965</span>
-            <br>
-            LOCALIZAÇÃO: <span class="censored">BASE AVANÇADA [REDACTED]</span>
+          DATA: <span class="censored">18</span> DE JULHO DE
+          <span class="censored">1965</span>
+          <br />
+          LOCALIZAÇÃO: <span class="censored">BASE AVANÇADA [REDACTED]</span>
         </div>
 
         <div class="document-intro">
-            RELATÓRIO DE ANÁLISE: PROJETO <span class="censored">VECTOR-Φ</span>
-            <br><br>
-            A recente missão do <span class="censored">Programa Gemini</span> revelou a necessidade urgente de uma modelagem matemática mais precisa para a determinação da posição e velocidade das cápsulas espaciais em trajetória elíptica variável.
-            <br><br>
-            Em resposta, os teóricos do Setor de Matemática Aplicada desenvolveram novos métodos de análise baseados em **funções vetoriais** do tempo. Os registros a seguir foram extraídos dos cálculos do Dr. <span class="censored">██████████</span>, cujas pesquisas foram cruciais para a navegação e ajustes de trajetória em órbita.
+          RELATÓRIO DE ANÁLISE: PROJETO <span class="censored">VECTOR-Φ</span>
+          <br /><br />
+          A recente missão do
+          <span class="censored">Programa Gemini</span> revelou a necessidade
+          urgente de uma modelagem matemática mais precisa para a determinação
+          da posição e velocidade das cápsulas espaciais em trajetória elíptica
+          variável. <br /><br />
+          Em resposta, os teóricos do Setor de Matemática Aplicada desenvolveram
+          novos métodos de análise baseados em **funções vetoriais** do tempo.
+          Os registros a seguir foram extraídos dos cálculos do Dr.
+          <span class="censored">██████████</span>, cujas pesquisas foram
+          cruciais para a navegação e ajustes de trajetória em órbita.
         </div>
 
         <div class="warning-box">
-            Este documento contém material técnico altamente sensível. O acesso não autorizado pode resultar em **sanções severas** e **revogação de credenciais de segurança**.
+          Este documento contém material técnico altamente sensível. O acesso
+          não autorizado pode resultar em **sanções severas** e **revogação de
+          credenciais de segurança**.
         </div>
 
         <div class="metadata">
-            <span>REF: VΦ-<span class="censored">1038</span>-X</span>
-            <span>NÍVEL DE ACESSO: OMEGA-<span class="censored">5</span></span>
-            <span>CÓPIAS EXISTENTES: <span class="censored">1</span> DE <span class="censored">3</span></span>
+          <span>REF: VΦ-<span class="censored">1038</span>-X</span>
+          <span>NÍVEL DE ACESSO: OMEGA-<span class="censored">5</span></span>
+          <span
+            >CÓPIAS EXISTENTES: <span class="censored">1</span> DE
+            <span class="censored">3</span></span
+          >
         </div>
+      </div>
     </div>
-</div>
-        <main>
-            <ol class="exercise-list">
-                <!-- EXERCÍCIO 2-A -->
-                <li class="exercise-item">
-                    <div class="exercise-number">EXERCÍCIO 2-A</div>
-                    <div class="context">
-                        ARQUIVO: Programa Vostok (1961) — [DADOS PARCIALMENTE DESCLASSIFICADOS]
-                    </div>
-                    <p>
-                        A trajetória de uma cápsula espacial em órbita baixa pode ser descrita por uma 
-                        <strong>função vetorial</strong> no plano:
-                        \[
-                            \vec{r}(t) = \bigl(R\cos t,\; R\sin t\bigr),
-                        \]
-                        onde \(R\) é o raio orbital (aproximadamente constante) e \(t\) é o tempo (em segundos).
-                    </p>
-                    <p>
-                        <strong>Solicitação:</strong> 
-                        <ul>
-                          <li>(a) Identifique as componentes \(x(t)\) e \(y(t)\) de \(\vec{r}(t)\).</li>
-                          <li>(b) Explique sucintamente por que essa função descreve um movimento circular.</li>
-                        </ul>
-                    </p>
-                    <div class="hint">
-                        [DICA OPERACIONAL]: Relembre que \(\cos^2 t + \sin^2 t = 1\).
-                    </div>
-                    <details>
-                        <summary>ACESSAR SOLUÇÃO [NÍVEL 4 REQUERIDO]</summary>
-                        <div class="solution">
-                            <p><strong>SOLUÇÃO:</strong></p>
-                            <p>
-                                (a) As componentes são \(x(t) = R\cos t\) e \(y(t) = R\sin t\).
-                            </p>
-                            <p>
-                                (b) A soma dos quadrados das componentes resulta em 
-                                \(x(t)^2 + y(t)^2 = R^2 \bigl(\cos^2 t + \sin^2 t\bigr) = R^2\),
-                                indicando que o ponto \(\bigl(x(t), y(t)\bigr)\) permanece a uma 
-                                distância constante \(R\) da origem, caracterizando um círculo.
-                            </p>
-                        </div>
-                    </details>
-                </li>
+    <main>
+      <ol class="exercise-list">
+        <!-- EXERCÍCIO 2-A -->
+        <li class="exercise-item">
+          <div class="exercise-number">EXERCÍCIO 2-A</div>
+          <div class="context">
+            ARQUIVO: Programa Vostok (1961) — [DADOS PARCIALMENTE
+            DESCLASSIFICADOS]
+          </div>
+          <p>
+            A trajetória de uma cápsula espacial em órbita baixa pode ser
+            descrita por uma
+            <strong>função vetorial</strong> no plano: \[ \vec{r}(t) =
+            \bigl(R\cos t,\; R\sin t\bigr), \] onde \(R\) é o raio orbital
+            (aproximadamente constante) e \(t\) é o tempo (em segundos).
+          </p>
+          <strong>Solicitação:</strong>
+          <ul>
+            <li>
+              (a) Identifique as componentes \(x(t)\) e \(y(t)\) de
+              \(\vec{r}(t)\).
+            </li>
+            <li>
+              (b) Explique sucintamente por que essa função descreve um
+              movimento circular.
+            </li>
+          </ul>
+          <div class="hint">
+            [DICA OPERACIONAL]: Relembre que \(\cos^2 t + \sin^2 t = 1\).
+          </div>
+          <details>
+            <summary>ACESSAR SOLUÇÃO [NÍVEL 4 REQUERIDO]</summary>
+            <div class="solution">
+              <p><strong>SOLUÇÃO:</strong></p>
+              <p>
+                (a) As componentes são \(x(t) = R\cos t\) e \(y(t) = R\sin t\).
+              </p>
+              <p>
+                (b) A soma dos quadrados das componentes resulta em \(x(t)^2 +
+                y(t)^2 = R^2 \bigl(\cos^2 t + \sin^2 t\bigr) = R^2\), indicando
+                que o ponto \(\bigl(x(t), y(t)\bigr)\) permanece a uma distância
+                constante \(R\) da origem, caracterizando um círculo.
+              </p>
+            </div>
+          </details>
+        </li>
 
-                <!-- EXERCÍCIO 2-B -->
-                <li class="exercise-item">
-                    <div class="exercise-number">EXERCÍCIO 2-B</div>
-                    <div class="context">
-                        ARQUIVO: Missão Apollo (1970) — [DADOS PARCIALMENTE DESCLASSIFICADOS]
-                    </div>
-                    <p>
-                        Um experimento de microgravidade a bordo da Apollo é descrito pela função
-                        \[
-                            \vec{F}(t) = \bigl(t,\; t^2,\; e^t\bigr),
-                        \]
-                        onde cada componente representa um sensor de deslocamento no eixo correspondente.
-                    </p>
-                    <p>
-                        <strong>Solicitação:</strong> 
-                        <ul>
-                          <li>(a) Calcular a posição no tempo \(t=0\), isto é, \(\vec{F}(0)\).</li>
-                          <li>(b) Determinar a <em>derivada</em> \(\vec{F}'(t)\) e interpretar seu significado no contexto da variação de cada sensor.</li>
-                        </ul>
-                    </p>
-                    <details>
-                        <summary>ACESSAR SOLUÇÃO [NÍVEL 4 REQUERIDO]</summary>
-                        <div class="solution">
-                            <p><strong>SOLUÇÃO:</strong></p>
-                            <p>(a) Em \(t=0\), obtemos \(\vec{F}(0) = (0, 0^2, e^0) = (0, 0, 1)\).</p>
-                            <p>(b) A derivada de \(\vec{F}(t)\) é 
-                                \[
-                                    \vec{F}'(t) = \bigl(1,\; 2t,\; e^t\bigr).
-                                \]
-                                <br>
-                                Geometricamente, \(\vec{F}'(t)\) indica a taxa de variação de cada componente 
-                                (ou seja, de cada sensor) em função do tempo.
-                            </p>
-                        </div>
-                    </details>
-                </li>
+        <!-- EXERCÍCIO 2-B -->
+        <li class="exercise-item">
+          <div class="exercise-number">EXERCÍCIO 2-B</div>
+          <div class="context">
+            ARQUIVO: Missão Apollo (1970) — [DADOS PARCIALMENTE
+            DESCLASSIFICADOS]
+          </div>
+          <p>
+            Um experimento de microgravidade a bordo da Apollo é descrito pela
+            função \[ \vec{F}(t) = \bigl(t,\; t^2,\; e^t\bigr), \] onde cada
+            componente representa um sensor de deslocamento no eixo
+            correspondente.
+          </p>
+          <strong>Solicitação:</strong>
+          <ul>
+            <li>
+              (a) Calcular a posição no tempo \(t=0\), isto é, \(\vec{F}(0)\).
+            </li>
+            <li>
+              (b) Determinar a <em>derivada</em> \(\vec{F}'(t)\) e interpretar
+              seu significado no contexto da variação de cada sensor.
+            </li>
+          </ul>
+          <details>
+            <summary>ACESSAR SOLUÇÃO [NÍVEL 4 REQUERIDO]</summary>
+            <div class="solution">
+              <p><strong>SOLUÇÃO:</strong></p>
+              <p>
+                (a) Em \(t=0\), obtemos \(\vec{F}(0) = (0, 0^2, e^0) = (0, 0,
+                1)\).
+              </p>
+              <p>
+                (b) A derivada de \(\vec{F}(t)\) é \[ \vec{F}'(t) = \bigl(1,\;
+                2t,\; e^t\bigr). \]
+                <br />
+                Geometricamente, \(\vec{F}'(t)\) indica a taxa de variação de
+                cada componente (ou seja, de cada sensor) em função do tempo.
+              </p>
+            </div>
+          </details>
+        </li>
 
-                <!-- EXERCÍCIO 2-C -->
-                <li class="exercise-item">
-                    <div class="exercise-number">EXERCÍCIO 2-C</div>
-                    <div class="context">
-                        ARQUIVO: Projeto Gemini (1965) — [DADOS PARCIALMENTE DESCLASSIFICADOS]
-                    </div>
-                    <p>
-                        Suponha que uma <strong>transformação vetorial</strong> 2D, que descreve 
-                        a mudança de coordenadas em um sistema de navegação, seja dada por:
-                    </p>
-                    <p>
-                        \[
-                            \vec{T}(x, y) = \bigl(2x + y,\; -x + 3y\bigr).
-                        \]
-                    </p>
-                    <p>
-                        <strong>Solicitação:</strong>
-                        <ul>
-                            <li>(a) Calcule \(\vec{T}(1, 2)\).</li>
-                            <li>(b) Determine uma expressão geral para \(\vec{T}(x, y)\) em termos de \(x\) e \(y\).</li>
-                            <li>(c) Interprete como essa transformação afeta um vetor arbitrário do plano.</li>
-                        </ul>
-                    </p>
-                    <details>
-                        <summary>ACESSAR SOLUÇÃO [NÍVEL 4 REQUERIDO]</summary>
-                        <div class="solution">
-                            <p><strong>SOLUÇÃO:</strong></p>
-                            <p>
-                                (a) \(\vec{T}(1, 2) = (2\cdot1 + 2,\; -1 + 3\cdot2) = (4, 5)\).
-                            </p>
-                            <p>
-                                (b) \(\vec{T}(x, y) = (2x + y,\; -x + 3y)\).
-                            </p>
-                            <p>
-                                (c) A transformação combina operações lineares (escala e rotação/shear). 
-                                Ou seja, cada par \((x, y)\) é mapeado para um novo par que mistura os valores 
-                                de \(x\) e \(y\). Isso pode representar, por exemplo, uma mudança de base 
-                                ou de perspectiva num sistema de navegação.
-                            </p>
-                        </div>
-                    </details>
-                </li>
+        <!-- EXERCÍCIO 2-C -->
+        <li class="exercise-item">
+          <div class="exercise-number">EXERCÍCIO 2-C</div>
+          <div class="context">
+            ARQUIVO: Projeto Gemini (1965) — [DADOS PARCIALMENTE
+            DESCLASSIFICADOS]
+          </div>
+          <p>
+            Suponha que uma <strong>transformação vetorial</strong> 2D, que
+            descreve a mudança de coordenadas em um sistema de navegação, seja
+            dada por:
+          </p>
+          <p>\[ \vec{T}(x, y) = \bigl(2x + y,\; -x + 3y\bigr). \]</p>
+          <strong>Solicitação:</strong>
+          <ul>
+            <li>(a) Calcule \(\vec{T}(1, 2)\).</li>
+            <li>
+              (b) Determine uma expressão geral para \(\vec{T}(x, y)\) em termos
+              de \(x\) e \(y\).
+            </li>
+            <li>
+              (c) Interprete como essa transformação afeta um vetor arbitrário
+              do plano.
+            </li>
+          </ul>
+          <details>
+            <summary>ACESSAR SOLUÇÃO [NÍVEL 4 REQUERIDO]</summary>
+            <div class="solution">
+              <p><strong>SOLUÇÃO:</strong></p>
+              <p>
+                (a) \(\vec{T}(1, 2) = (2\cdot1 + 2,\; -1 + 3\cdot2) = (4, 5)\).
+              </p>
+              <p>(b) \(\vec{T}(x, y) = (2x + y,\; -x + 3y)\).</p>
+              <p>
+                (c) A transformação combina operações lineares (escala e
+                rotação/shear). Ou seja, cada par \((x, y)\) é mapeado para um
+                novo par que mistura os valores de \(x\) e \(y\). Isso pode
+                representar, por exemplo, uma mudança de base ou de perspectiva
+                num sistema de navegação.
+              </p>
+            </div>
+          </details>
+        </li>
 
-                <!-- EXERCÍCIO 2-D -->
-                <li class="exercise-item">
-                    <div class="exercise-number">EXERCÍCIO 2-D</div>
-                    <div class="context">
-                        ARQUIVO: Laboratório de Propulsão (1982) — [DADOS PARCIALMENTE DESCLASSIFICADOS]
-                    </div>
-                    <p>
-                        Um <strong>campo vetorial</strong> de análise de gases é definido por:
-                        \[
-                            \vec{G}(x, y, z) = \bigl(x^2 + y,\; y^2 + z,\; z^2 + x\bigr).
-                        \]
-                        <br>
-                        <strong>Solicitação:</strong> 
-                        <ul>
-                          <li>(a) Calcule \(\vec{G}(1, 2, 3)\).</li>
-                          <li>(b) Descreva como cada componente do campo depende das variáveis espaciais \((x,y,z)\).</li>
-                        </ul>
-                    </p>
-                    <details>
-                        <summary>ACESSAR SOLUÇÃO [NÍVEL 4 REQUERIDO]</summary>
-                        <div class="solution">
-                            <p><strong>SOLUÇÃO:</strong></p>
-                            <p>
-                                (a) \(\vec{G}(1, 2, 3) = \bigl(1^2 + 2,\; 2^2 + 3,\; 3^2 + 1\bigr) 
-                                = (3,\; 7,\; 10).\)
-                            </p>
-                            <p>
-                                (b) A primeira componente cresce com \(x^2\) e soma \(y\), 
-                                a segunda cresce com \(y^2\) e soma \(z\), 
-                                e a terceira cresce com \(z^2\) e soma \(x\). 
-                                Em problemas físicos, esse tipo de campo pode indicar variações não-lineares 
-                                da pressão ou concentração de partículas em cada eixo.
-                            </p>
-                        </div>
-                    </details>
-                </li>
+        <!-- EXERCÍCIO 2-D -->
+        <li class="exercise-item">
+          <div class="exercise-number">EXERCÍCIO 2-D</div>
+          <div class="context">
+            ARQUIVO: Laboratório de Propulsão (1982) — [DADOS PARCIALMENTE
+            DESCLASSIFICADOS]
+          </div>
+          Um <strong>campo vetorial</strong> de análise de gases é definido por:
+          \[ \vec{G}(x, y, z) = \bigl(x^2 + y,\; y^2 + z,\; z^2 + x\bigr). \]
+          <br />
+          <strong>Solicitação:</strong>
+          <ul>
+            <li>(a) Calcule \(\vec{G}(1, 2, 3)\).</li>
+            <li>
+              (b) Descreva como cada componente do campo depende das variáveis
+              espaciais \((x,y,z)\).
+            </li>
+          </ul>
+          <details>
+            <summary>ACESSAR SOLUÇÃO [NÍVEL 4 REQUERIDO]</summary>
+            <div class="solution">
+              <p><strong>SOLUÇÃO:</strong></p>
+              <p>
+                (a) \(\vec{G}(1, 2, 3) = \bigl(1^2 + 2,\; 2^2 + 3,\; 3^2 +
+                1\bigr) = (3,\; 7,\; 10).\)
+              </p>
+              <p>
+                (b) A primeira componente cresce com \(x^2\) e soma \(y\), a
+                segunda cresce com \(y^2\) e soma \(z\), e a terceira cresce com
+                \(z^2\) e soma \(x\). Em problemas físicos, esse tipo de campo
+                pode indicar variações não-lineares da pressão ou concentração
+                de partículas em cada eixo.
+              </p>
+            </div>
+          </details>
+        </li>
 
-                <!-- EXERCÍCIO 2-E -->
-                <li class="exercise-item">
-                    <div class="exercise-number">EXERCÍCIO 2-E</div>
-                    <div class="context">
-                        ARQUIVO: Projeto Skylab (1973) — [DADOS PARCIALMENTE DESCLASSIFICADOS]
-                    </div>
-                    <p>
-                        Analise o movimento descrito por:
-                        \[
-                            \vec{v}(t) = \bigl(e^t\cos t,\; e^t\sin t\bigr).
-                        \]
-                        Esse tipo de trajetória pode ser usado para simular 
-                        <em>movimentos combinados de rotação e expansão</em> em condições de gravidade reduzida.
-                    </p>
-                    <p>
-                        <strong>Solicitação:</strong>
-                        <ul>
-                            <li>(a) Verifique se o movimento é circular ou espiral.</li>
-                            <li>(b) Calcule a velocidade \(\vec{v}'(t)\) e a aceleração \(\vec{v}''(t)\).</li>
-                            <li>(c) Discuta como \(\|\vec{v}(t)\|\) se comporta à medida que \(t\) aumenta.</li>
-                        </ul>
-                    </p>
-                    <div class="hint">
-                        [DICA OPERACIONAL]: Analise o módulo da função: \(\sqrt{(e^t\cos t)^2 + (e^t\sin t)^2}\).
-                    </div>
-                    <details>
-                        <summary>ACESSAR SOLUÇÃO [NÍVEL 4 REQUERIDO]</summary>
-                        <div class="solution">
-                            <p><strong>SOLUÇÃO:</strong></p>
-                            <p>
-                                (a) Observamos que \(\|\vec{v}(t)\| = \sqrt{ e^{2t}(\cos^2 t + \sin^2 t) } 
-                                = e^t\). 
-                                Assim, o raio não é constante; ele cresce exponencialmente. 
-                                Logo, trata-se de uma <em>espiral</em> (não é um círculo de raio fixo).
-                            </p>
-                            <p>
-                                (b) 
-                                \[
-                                    \vec{v}'(t) 
-                                    = \frac{d}{dt}\bigl(e^t\cos t,\; e^t\sin t\bigr) 
-                                    = \bigl(e^t\cos t - e^t\sin t,\; e^t\sin t + e^t\cos t\bigr).
-                                \]
-                                <br>
-                                \[
-                                    \vec{v}''(t) = \frac{d}{dt}\bigl(e^t\cos t - e^t\sin t,\; e^t\sin t + e^t\cos t\bigr).
-                                \]
-                                O cálculo detalhado mostra termos mistos de \(e^t\cos t\) e \(e^t\sin t\) em cada derivada.
-                            </p>
-                            <p>
-                                (c) Como \(\|\vec{v}(t)\| = e^t\), seu módulo cresce exponencialmente com o tempo \(t\). 
-                                Em um contexto físico, isso poderia representar um afastamento acelerado do centro de rotação.
-                            </p>
-                        </div>
-                    </details>
-                </li>
-            </ol>
-        </main>
-    </div>
-
+        <!-- EXERCÍCIO 2-E -->
+        <li class="exercise-item">
+          <div class="exercise-number">EXERCÍCIO 2-E</div>
+          <div class="context">
+            ARQUIVO: Projeto Skylab (1973) — [DADOS PARCIALMENTE
+            DESCLASSIFICADOS]
+          </div>
+          <p>
+            Analise o movimento descrito por: \[ \vec{v}(t) = \bigl(e^t\cos t,\;
+            e^t\sin t\bigr). \] Esse tipo de trajetória pode ser usado para
+            simular
+            <em>movimentos combinados de rotação e expansão</em> em condições de
+            gravidade reduzida.
+          </p>
+          <strong>Solicitação:</strong>
+          <ul>
+            <li>(a) Verifique se o movimento é circular ou espiral.</li>
+            <li>
+              (b) Calcule a velocidade \(\vec{v}'(t)\) e a aceleração
+              \(\vec{v}''(t)\).
+            </li>
+            <li>
+              (c) Discuta como \(\|\vec{v}(t)\|\) se comporta à medida que \(t\)
+              aumenta.
+            </li>
+          </ul>
+          <div class="hint">
+            [DICA OPERACIONAL]: Analise o módulo da função: \(\sqrt{(e^t\cos
+            t)^2 + (e^t\sin t)^2}\).
+          </div>
+          <details>
+            <summary>ACESSAR SOLUÇÃO [NÍVEL 4 REQUERIDO]</summary>
+            <div class="solution">
+              <p><strong>SOLUÇÃO:</strong></p>
+              <p>
+                (a) Observamos que \(\|\vec{v}(t)\| = \sqrt{ e^{2t}(\cos^2 t +
+                \sin^2 t) } = e^t\). Assim, o raio não é constante; ele cresce
+                exponencialmente. Logo, trata-se de uma <em>espiral</em> (não é
+                um círculo de raio fixo).
+              </p>
+              <p>
+                (b) \[ \vec{v}'(t) = \frac{d}{dt}\bigl(e^t\cos t,\; e^t\sin
+                t\bigr) = \bigl(e^t\cos t - e^t\sin t,\; e^t\sin t + e^t\cos
+                t\bigr). \]
+                <br />
+                \[ \vec{v}''(t) = \frac{d}{dt}\bigl(e^t\cos t - e^t\sin t,\;
+                e^t\sin t + e^t\cos t\bigr). \] O cálculo detalhado mostra
+                termos mistos de \(e^t\cos t\) e \(e^t\sin t\) em cada derivada.
+              </p>
+              <p>
+                (c) Como \(\|\vec{v}(t)\| = e^t\), seu módulo cresce
+                exponencialmente com o tempo \(t\). Em um contexto físico, isso
+                poderia representar um afastamento acelerado do centro de
+                rotação.
+              </p>
+            </div>
+          </details>
+        </li>
+      </ol>
+    </main>
     <!-- Configuração do MathJax -->
     <script>
-        MathJax.Hub.Config({
-            tex2jax: {
-                inlineMath: [['\\(','\\)']],
-                displayMath: [['\\[','\\]']],
-                processEscapes: true
-            },
-            "HTML-CSS": {
-                // Ajuste de cor do texto renderizado
-                color: "#d4af37"
-            }
-        });
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [['\\(', '\\)']],
+          displayMath: [['\\[', '\\]']],
+          processEscapes: true,
+        },
+        'HTML-CSS': {
+          // Ajuste de cor do texto renderizado
+          color: '#d4af37',
+        },
+      });
     </script>
-</body>
+  </body>
 </html>
-

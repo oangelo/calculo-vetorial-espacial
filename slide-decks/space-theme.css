@@ -4,238 +4,269 @@
  */
 
 :root {
-    --space-black: #0a0a0f;
-    --deep-blue: #1a237e;
-    --star-blue: #4FC3F7;
-    --nebula-blue: rgba(79, 195, 247, 0.15);
-    --text-color: #e0e0e0;
-    --accent-color: #64B5F6;
+  --space-black: #0a0a0f;
+  --deep-blue: #1a237e;
+  --star-blue: #4fc3f7;
+  --nebula-blue: rgba(79, 195, 247, 0.15);
+  --text-color: #e0e0e0;
+  --accent-color: #64b5f6;
 }
 
 /* Ambiente espacial base */
 .reveal {
-    background: var(--space-black);
-    color: var(--text-color);
-    position: relative;
-    overflow: hidden;
+  background: var(--space-black);
+  color: var(--text-color);
+  position: relative;
+  overflow: hidden;
 }
 
 /* Campo estelar estático */
 .reveal::before {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: 
-        radial-gradient(2px 2px at 20px 30px, #fff, rgba(0,0,0,0)) calc(50px * 1) calc(50px * 1),
-        radial-gradient(2px 2px at 40px 70px, #fff, rgba(0,0,0,0)) calc(50px * 2) calc(50px * 2),
-        radial-gradient(2px 2px at 50px 160px, #fff, rgba(0,0,0,0)) calc(50px * 3) calc(50px * 3),
-        radial-gradient(2px 2px at 90px 40px, #fff, rgba(0,0,0,0)) calc(50px * 4) calc(50px * 4),
-        radial-gradient(2px 2px at 130px 80px, #fff, rgba(0,0,0,0)) calc(50px * 5) calc(50px * 5),
-        radial-gradient(3px 3px at 160px 120px, var(--star-blue), rgba(0,0,0,0)) calc(50px * 6) calc(50px * 6),
-        radial-gradient(2px 2px at 200px 150px, #fff, rgba(0,0,0,0)) calc(50px * 7) calc(50px * 7),
-        radial-gradient(2px 2px at 250px 250px, #fff, rgba(0,0,0,0)) calc(50px * 8) calc(50px * 8),
-        radial-gradient(3px 3px at 300px 350px, var(--star-blue), rgba(0,0,0,0)) calc(50px * 9) calc(50px * 9);
-    background-size: 500px 500px;
-    opacity: 0.8;
-    pointer-events: none;
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background:
+    radial-gradient(2px 2px at 20px 30px, #fff, rgba(0, 0, 0, 0)) calc(50px * 1)
+      calc(50px * 1),
+    radial-gradient(2px 2px at 40px 70px, #fff, rgba(0, 0, 0, 0)) calc(50px * 2)
+      calc(50px * 2),
+    radial-gradient(2px 2px at 50px 160px, #fff, rgba(0, 0, 0, 0))
+      calc(50px * 3) calc(50px * 3),
+    radial-gradient(2px 2px at 90px 40px, #fff, rgba(0, 0, 0, 0)) calc(50px * 4)
+      calc(50px * 4),
+    radial-gradient(2px 2px at 130px 80px, #fff, rgba(0, 0, 0, 0))
+      calc(50px * 5) calc(50px * 5),
+    radial-gradient(3px 3px at 160px 120px, var(--star-blue), rgba(0, 0, 0, 0))
+      calc(50px * 6) calc(50px * 6),
+    radial-gradient(2px 2px at 200px 150px, #fff, rgba(0, 0, 0, 0))
+      calc(50px * 7) calc(50px * 7),
+    radial-gradient(2px 2px at 250px 250px, #fff, rgba(0, 0, 0, 0))
+      calc(50px * 8) calc(50px * 8),
+    radial-gradient(3px 3px at 300px 350px, var(--star-blue), rgba(0, 0, 0, 0))
+      calc(50px * 9) calc(50px * 9);
+  background-size: 500px 500px;
+  opacity: 0.8;
+  pointer-events: none;
 }
 
 /* Animação dos asteroides */
 @keyframes asteroid1 {
-    from {
-        transform: translate(-100vw, -50vh) rotate(30deg);
-        opacity: 0;
-    }
-    5% { opacity: 1; }
-    95% { opacity: 1; }
-    to {
-        transform: translate(100vw, 50vh) rotate(30deg);
-        opacity: 0;
-    }
+  from {
+    transform: translate(-100vw, -50vh) rotate(30deg);
+    opacity: 0;
+  }
+  5% {
+    opacity: 1;
+  }
+  95% {
+    opacity: 1;
+  }
+  to {
+    transform: translate(100vw, 50vh) rotate(30deg);
+    opacity: 0;
+  }
 }
 
 @keyframes asteroid2 {
-    from {
-        transform: translate(100vw, -30vh) rotate(-45deg);
-        opacity: 0;
-    }
-    5% { opacity: 1; }
-    95% { opacity: 1; }
-    to {
-        transform: translate(-100vw, 30vh) rotate(-45deg);
-        opacity: 0;
-    }
+  from {
+    transform: translate(100vw, -30vh) rotate(-45deg);
+    opacity: 0;
+  }
+  5% {
+    opacity: 1;
+  }
+  95% {
+    opacity: 1;
+  }
+  to {
+    transform: translate(-100vw, 30vh) rotate(-45deg);
+    opacity: 0;
+  }
 }
 
 .reveal .asteroid {
-    position: fixed;
-    width: 3px;
-    height: 3px;
-    background: #fff;
-    border-radius: 50%;
-    pointer-events: none;
-    opacity: 0;
+  position: fixed;
+  width: 3px;
+  height: 3px;
+  background: #fff;
+  border-radius: 50%;
+  pointer-events: none;
+  opacity: 0;
 }
 
 .reveal .asteroid::after {
-    content: '';
-    position: absolute;
-    width: 20px;
-    height: 2px;
-    background: linear-gradient(to right, #fff, transparent);
-    transform: translateX(-100%);
+  content: '';
+  position: absolute;
+  width: 20px;
+  height: 2px;
+  background: linear-gradient(to right, #fff, transparent);
+  transform: translateX(-100%);
 }
 
 .reveal .asteroid:nth-child(1) {
-    top: 20%;
-    animation: asteroid1 20s linear infinite;
-    animation-delay: 0s;
+  top: 20%;
+  animation: asteroid1 20s linear infinite;
+  animation-delay: 0s;
 }
 
 .reveal .asteroid:nth-child(2) {
-    top: 60%;
-    animation: asteroid2 25s linear infinite;
-    animation-delay: 10s;
+  top: 60%;
+  animation: asteroid2 25s linear infinite;
+  animation-delay: 10s;
 }
 
 /* Estrutura dos slides */
 .reveal .slides {
-    text-align: center;
+  text-align: center;
 }
 
 .reveal .slides section {
-    padding: 20px;
-    font-size: 28px;
+  padding: 20px;
+  font-size: 28px;
 }
 
 /* Títulos */
 .reveal h1 {
-    color: var(--star-blue);
-    font-size: 2.5em;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    text-shadow: 0 0 15px rgba(79, 195, 247, 0.5);
-    margin-bottom: 0.8em;
+  color: var(--star-blue);
+  font-size: 2.5em;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  text-shadow: 0 0 15px rgba(79, 195, 247, 0.5);
+  margin-bottom: 0.8em;
 }
 
 .reveal h2 {
-    color: var(--star-blue);
-    font-size: 1.8em;
-    margin-bottom: 0.5em;
-    text-shadow: 0 0 10px rgba(79, 195, 247, 0.3);
+  color: var(--star-blue);
+  font-size: 1.8em;
+  margin-bottom: 0.5em;
+  text-shadow: 0 0 10px rgba(79, 195, 247, 0.3);
 }
 
 .reveal h3 {
-    color: var(--accent-color);
-    font-size: 1.3em;
+  color: var(--accent-color);
+  font-size: 1.3em;
 }
 
 /* Conteúdo textual */
 .reveal p {
-    text-align: center;
-    line-height: 1.6;
-    margin: 1em auto;
-    max-width: 90%;
+  text-align: center;
+  line-height: 1.6;
+  margin: 1em auto;
+  max-width: 90%;
 }
 
 /* Listas */
-.reveal ul, .reveal ol {
-    display: inline-block;
-    text-align: left;
-    margin: 0.5em auto;
-    list-style-type: disc;
+.reveal ul,
+.reveal ol {
+  display: inline-block;
+  text-align: left;
+  margin: 0.5em auto;
+  list-style-type: disc;
 }
 
-.reveal ul li, .reveal ol li {
-    margin: 0.5em 0;
-    line-height: 1.4;
+.reveal ul li,
+.reveal ol li {
+  margin: 0.5em 0;
+  line-height: 1.4;
 }
 
 /* Elementos matemáticos */
 .reveal .math {
-    font-size: 1.2em;
-    margin: 1em auto;
-    max-width: 90%;
-    text-align: center;
-    position: relative;
-    z-index: 1;
+  font-size: 1.2em;
+  margin: 1em auto;
+  max-width: 90%;
+  text-align: center;
+  position: relative;
+  z-index: 1;
 }
 
 /* Blocos de código */
 .reveal pre {
-    background: rgba(26, 35, 126, 0.3);
-    border: 1px solid rgba(79, 195, 247, 0.2);
-    box-shadow: 0 0 20px rgba(79, 195, 247, 0.1);
-    margin: 1em auto;
-    max-width: 90%;
-    padding: 1em;
+  background: rgba(26, 35, 126, 0.3);
+  border: 1px solid rgba(79, 195, 247, 0.2);
+  box-shadow: 0 0 20px rgba(79, 195, 247, 0.1);
+  margin: 1em auto;
+  max-width: 90%;
+  padding: 1em;
 }
 
 .reveal code {
-    background: rgba(26, 35, 126, 0.3);
-    color: var(--star-blue);
-    padding: 0.2em 0.4em;
-    border-radius: 3px;
+  background: rgba(26, 35, 126, 0.3);
+  color: var(--star-blue);
+  padding: 0.2em 0.4em;
+  border-radius: 3px;
 }
 
 /* Citações */
 .reveal blockquote {
-    background: rgba(26, 35, 126, 0.3);
-    border-left: 4px solid var(--accent-color);
-    box-shadow: 0 0 20px rgba(79, 195, 247, 0.1);
-    margin: 1em auto;
-    padding: 1em;
-    max-width: 85%;
-    text-align: left;
+  background: rgba(26, 35, 126, 0.3);
+  border-left: 4px solid var(--accent-color);
+  box-shadow: 0 0 20px rgba(79, 195, 247, 0.1);
+  margin: 1em auto;
+  padding: 1em;
+  max-width: 85%;
+  text-align: left;
 }
 
 /* Links */
 .reveal a {
-    color: var(--star-blue);
-    text-decoration: none;
-    transition: color 0.2s ease, text-shadow 0.2s ease;
+  color: var(--star-blue);
+  text-decoration: none;
+  transition:
+    color 0.2s ease,
+    text-shadow 0.2s ease;
 }
 
 .reveal a:hover {
-    color: var(--accent-color);
-    text-shadow: 0 0 8px rgba(79, 195, 247, 0.5);
+  color: var(--accent-color);
+  text-shadow: 0 0 8px rgba(79, 195, 247, 0.5);
 }
 
 /* Elementos de navegação */
 .reveal .controls {
-    color: var(--accent-color);
+  color: var(--accent-color);
 }
 
 .reveal .progress {
-    background: rgba(79, 195, 247, 0.2);
-    height: 3px;
+  background: rgba(79, 195, 247, 0.2);
+  height: 3px;
 }
 
 .reveal .progress span {
-    background: var(--accent-color);
+  background: var(--accent-color);
 }
 
 /* Transições entre slides */
 .reveal .slides section {
-    transition: transform 0.4s ease, opacity 0.4s ease;
+  transition:
+    transform 0.4s ease,
+    opacity 0.4s ease;
 }
 
 /* Imagens */
 .reveal img {
-    max-width: 90%;
-    height: auto;
-    margin: 1em auto;
-    border: 1px solid rgba(79, 195, 247, 0.2);
-    box-shadow: 0 0 20px rgba(79, 195, 247, 0.1);
+  max-width: 90%;
+  height: auto;
+  margin: 1em auto;
+  border: 1px solid rgba(79, 195, 247, 0.2);
+  box-shadow: 0 0 20px rgba(79, 195, 247, 0.1);
 }
 
 /* Media queries para responsividade */
 @media screen and (max-width: 768px) {
-    .reveal h1 { font-size: 2em; }
-    .reveal h2 { font-size: 1.5em; }
-    .reveal pre { font-size: 0.9em; }
-    .reveal .slides section { padding: 10px; }
+  .reveal h1 {
+    font-size: 2em;
+  }
+  .reveal h2 {
+    font-size: 1.5em;
+  }
+  .reveal pre {
+    font-size: 0.9em;
+  }
+  .reveal .slides section {
+    padding: 10px;
+  }
 }

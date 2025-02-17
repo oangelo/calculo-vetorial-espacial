@@ -1,235 +1,244 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-BR">
-<head>
+  <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Exercícios Classificados - Cálculo Vetorial</title>
     <!-- Fonte e estilos -->
-    <link href="https://fonts.cdnjs.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../styles.css">
+    <link
+      href="https://fonts.cdnjs.com/css2?family=Share+Tech+Mono&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../styles.css" />
 
     <!-- MathJax para renderizar LaTeX -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
-</head>
-<body>
+  </head>
+  <body>
     <div class="container">
-        <header>
-            <h1>CLASSIFICADO - NÍVEL 4</h1>
-            <h2>Cálculo Vetorial - Setor Espacial</h2>
-            <div class="clearance-level">AUTORIZAÇÃO NECESSÁRIA</div>
-        </header>
+      <header>
+        <h1>CLASSIFICADO - NÍVEL 4</h1>
+        <h2>Cálculo Vetorial - Setor Espacial</h2>
+        <div class="clearance-level">AUTORIZAÇÃO NECESSÁRIA</div>
+      </header>
 
-        <main>
-            <ol class="exercise-list">
+      <main>
+        <ol class="exercise-list">
+          <!-- EXERCÍCIO 3-A -->
+          <li class="exercise-item">
+            <div class="exercise-number">EXERCÍCIO 3-A</div>
+            <div class="context">
+              ARQUIVO: Programa Explorer (1958) — [DADOS PARCIALMENTE
+              DESCLASSIFICADOS]
+            </div>
+            <p>
+              Considere o campo vetorial bidimensional \[ \vec{F}(x,y) = (x^2 -
+              y,\; x + y^2). \] (a) Calcule \(\vec{F}(1,2)\). <br />
+              (b) Interprete o significado físico deste resultado em um possível
+              contexto espacial.
+            </p>
+            <div class="hint">
+              [DICA OPERACIONAL]: Avalie cada componente separadamente e
+              relacione com a posição \((x,y)\).
+            </div>
+            <details>
+              <summary>ACESSAR SOLUÇÃO [NÍVEL 4 REQUERIDO]</summary>
+              <div class="solution">
+                <p><strong>SOLUÇÃO:</strong></p>
+                <p>
+                  (a) Substituindo \((x,y) = (1,2)\): \[ \vec{F}(1,2) = (1^2 -
+                  2,\; 1 + 2^2) = (-1,\; 5). \]
+                </p>
+                <p>
+                  (b) Em termos físicos, esse vetor \((-1, 5)\) poderia
+                  representar, por exemplo, a direção e intensidade de um
+                  “fluxo” ou “força” resultante atuando em \((1,2)\). No
+                  contexto espacial, seria o vetor associado à influência de
+                  algum campo (gravitacional, magnético etc.) nesse ponto
+                  específico.
+                </p>
+              </div>
+            </details>
+          </li>
 
-                <!-- EXERCÍCIO 3-A -->
-                <li class="exercise-item">
-                    <div class="exercise-number">EXERCÍCIO 3-A</div>
-                    <div class="context">
-                        ARQUIVO: Programa Explorer (1958) — [DADOS PARCIALMENTE DESCLASSIFICADOS]
-                    </div>
-                    <p>
-                        Considere o campo vetorial bidimensional
-                        \[
-                            \vec{F}(x,y) = (x^2 - y,\; x + y^2).
-                        \]
-                        (a) Calcule \(\vec{F}(1,2)\). <br />
-                        (b) Interprete o significado físico deste resultado em um possível contexto espacial.
-                    </p>
-                    <div class="hint">
-                        [DICA OPERACIONAL]: Avalie cada componente separadamente e relacione com a posição \((x,y)\).
-                    </div>
-                    <details>
-                        <summary>ACESSAR SOLUÇÃO [NÍVEL 4 REQUERIDO]</summary>
-                        <div class="solution">
-                            <p><strong>SOLUÇÃO:</strong></p>
-                            <p>
-                                (a) Substituindo \((x,y) = (1,2)\):
-                                \[
-                                    \vec{F}(1,2) = (1^2 - 2,\; 1 + 2^2) = (-1,\; 5).
-                                \]
-                            </p>
-                            <p>
-                                (b) Em termos físicos, esse vetor \((-1, 5)\) poderia representar, por exemplo, 
-                                a direção e intensidade de um “fluxo” ou “força” resultante 
-                                atuando em \((1,2)\). No contexto espacial, 
-                                seria o vetor associado à influência de algum campo (gravitacional, magnético etc.) 
-                                nesse ponto específico.
-                            </p>
-                        </div>
-                    </details>
-                </li>
+          <!-- EXERCÍCIO 3-B -->
+          <li class="exercise-item">
+            <div class="exercise-number">EXERCÍCIO 3-B</div>
+            <div class="context">
+              ARQUIVO: Projeto Lagrange (1978) — [DADOS PARCIALMENTE
+              DESCLASSIFICADOS]
+            </div>
+            <p>
+              Seja \[ \vec{G}(x,y,z) = (x - y,\; y - z,\; z - x). \] (a)
+              Determine todos os pontos \((x,y,z)\) em que \(\vec{G}(x,y,z) =
+              \vec{0}\). <br />
+              (b) Explique como esses pontos se assemelham a “pontos de
+              equilíbrio” no contexto de campos vetoriais.
+            </p>
+            <div class="hint">
+              [DICA OPERACIONAL]: \(\vec{G} = \vec{0}\) significa que cada
+              componente deve ser igual a zero.
+            </div>
+            <details>
+              <summary>ACESSAR SOLUÇÃO [NÍVEL 4 REQUERIDO]</summary>
+              <div class="solution">
+                <p><strong>SOLUÇÃO:</strong></p>
+                <p>
+                  (a) Para \(\vec{G}(x,y,z) = (0,0,0)\), precisamos resolver: \[
+                  x - y = 0,\quad y - z = 0,\quad z - x = 0. \] Isso implica \(x
+                  = y = z\). Logo, todos os pontos da forma \((a,a,a)\) são
+                  soluções.
+                </p>
+                <p>
+                  (b) Tais pontos podem ser vistos como “pontos de equilíbrio”
+                  porque, nesse local, o campo \(\vec{G}\) não “empurra” o
+                  sistema em nenhuma direção; no contexto de mecânica celeste,
+                  são análogos a regiões onde forças se “compensam” (por
+                  exemplo, os verdadeiros pontos de Lagrange são pontos de
+                  equilíbrio gravitacional).
+                </p>
+              </div>
+            </details>
+          </li>
 
-                <!-- EXERCÍCIO 3-B -->
-                <li class="exercise-item">
-                    <div class="exercise-number">EXERCÍCIO 3-B</div>
-                    <div class="context">
-                        ARQUIVO: Projeto Lagrange (1978) — [DADOS PARCIALMENTE DESCLASSIFICADOS]
-                    </div>
-                    <p>
-                        Seja
-                        \[
-                            \vec{G}(x,y,z) = (x - y,\; y - z,\; z - x).
-                        \]
-                        (a) Determine todos os pontos \((x,y,z)\) em que \(\vec{G}(x,y,z) = \vec{0}\). <br />
-                        (b) Explique como esses pontos se assemelham a “pontos de equilíbrio” no contexto de campos vetoriais.
-                    </p>
-                    <div class="hint">
-                        [DICA OPERACIONAL]: \(\vec{G} = \vec{0}\) significa que cada componente deve ser igual a zero.
-                    </div>
-                    <details>
-                        <summary>ACESSAR SOLUÇÃO [NÍVEL 4 REQUERIDO]</summary>
-                        <div class="solution">
-                            <p><strong>SOLUÇÃO:</strong></p>
-                            <p>
-                                (a) Para \(\vec{G}(x,y,z) = (0,0,0)\), precisamos resolver:
-                                \[
-                                    x - y = 0,\quad y - z = 0,\quad z - x = 0.
-                                \]
-                                Isso implica \(x = y = z\). 
-                                Logo, todos os pontos da forma \((a,a,a)\) são soluções.
-                            </p>
-                            <p>
-                                (b) Tais pontos podem ser vistos como “pontos de equilíbrio” 
-                                porque, nesse local, o campo \(\vec{G}\) não “empurra” o sistema em nenhuma direção; 
-                                no contexto de mecânica celeste, são análogos a regiões onde forças se “compensam” 
-                                (por exemplo, os verdadeiros pontos de Lagrange são pontos de equilíbrio gravitacional).
-                            </p>
-                        </div>
-                    </details>
-                </li>
+          <!-- EXERCÍCIO 3-C -->
+          <li class="exercise-item">
+            <div class="exercise-number">EXERCÍCIO 3-C</div>
+            <div class="context">
+              ARQUIVO: Laboratório de Astrofísica (1985) — [DADOS PARCIALMENTE
+              DESCLASSIFICADOS]
+            </div>
+            <p>
+              Dado o campo vetorial em \(\mathbb{R}^2\): \[ \vec{H}(x,y) =
+              \bigl(\sin x,\; \cos y\bigr), \] (a) Avalie \(\vec{H}(0, 0)\) e
+              \(\vec{H}(\pi, \pi)\). <br />
+              (b) Discuta como a variação senoidal e cossenoidal poderia se
+              relacionar à análise de ondas (por exemplo, “vento solar”
+              periódico que incide na Terra).
+            </p>
+            <details>
+              <summary>ACESSAR SOLUÇÃO [NÍVEL 4 REQUERIDO]</summary>
+              <div class="solution">
+                <p><strong>SOLUÇÃO:</strong></p>
+                <p>
+                  (a) \[ \vec{H}(0,0) = (\sin 0,\; \cos 0) = (0,\; 1), \] \[
+                  \vec{H}(\pi,\pi) = (\sin \pi,\; \cos \pi) = (0,\; -1). \]
+                </p>
+                <p>
+                  (b) Em um contexto físico, esses termos senoidais podem
+                  representar padrões de variação periódica (como marés,
+                  oscilações de radiação, etc.). Para “ventos solares”,
+                  poderíamos ter um fluxo que se intensifica e diminui
+                  ciclicamente, descrito por funções seno e cosseno.
+                </p>
+              </div>
+            </details>
+          </li>
 
-                <!-- EXERCÍCIO 3-C -->
-                <li class="exercise-item">
-                    <div class="exercise-number">EXERCÍCIO 3-C</div>
-                    <div class="context">
-                        ARQUIVO: Laboratório de Astrofísica (1985) — [DADOS PARCIALMENTE DESCLASSIFICADOS]
-                    </div>
-                    <p>
-                        Dado o campo vetorial em \(\mathbb{R}^2\):
-                        \[
-                            \vec{H}(x,y) = \bigl(\sin x,\; \cos y\bigr),
-                        \]
-                        (a) Avalie \(\vec{H}(0, 0)\) e \(\vec{H}(\pi, \pi)\). <br/>
-                        (b) Discuta como a variação senoidal e cossenoidal poderia se relacionar à análise de ondas 
-                        (por exemplo, “vento solar” periódico que incide na Terra).
-                    </p>
-                    <details>
-                        <summary>ACESSAR SOLUÇÃO [NÍVEL 4 REQUERIDO]</summary>
-                        <div class="solution">
-                            <p><strong>SOLUÇÃO:</strong></p>
-                            <p>
-                                (a) 
-                                \[
-                                    \vec{H}(0,0) = (\sin 0,\; \cos 0) = (0,\; 1),
-                                \]
-                                \[
-                                    \vec{H}(\pi,\pi) = (\sin \pi,\; \cos \pi) = (0,\; -1).
-                                \]
-                            </p>
-                            <p>
-                                (b) Em um contexto físico, esses termos senoidais podem representar padrões 
-                                de variação periódica (como marés, oscilações de radiação, etc.). 
-                                Para “ventos solares”, poderíamos ter um fluxo que se intensifica e diminui ciclicamente, 
-                                descrito por funções seno e cosseno.
-                            </p>
-                        </div>
-                    </details>
-                </li>
+          <!-- EXERCÍCIO 3-D -->
+          <li class="exercise-item">
+            <div class="exercise-number">EXERCÍCIO 3-D</div>
+            <div class="context">
+              ARQUIVO: Missão Voyager (1979) — [DADOS PARCIALMENTE
+              DESCLASSIFICADOS]
+            </div>
+            <p>
+              O campo gravitacional de um corpo esférico no espaço 3D pode ser
+              descrito (de forma simplificada) como \[ \vec{F}(\vec{r}) =
+              -\gamma \frac{M}{\|\vec{r}\|^3} \,\vec{r}, \] onde \(\vec{r} =
+              (x,y,z)\), \(\|\vec{r}\|\) é a distância ao centro, \(\gamma\) é a
+              constante gravitacional, e \(M\) a massa do corpo central.
+            </p>
+            <p>
+              (a) Explique por que há um sinal negativo neste campo. <br />
+              (b) Identifique a relação entre a intensidade do campo e a
+              distância ao centro \(\|\vec{r}\|\).
+            </p>
+            <details>
+              <summary>ACESSAR SOLUÇÃO [NÍVEL 4 REQUERIDO]</summary>
+              <div class="solution">
+                <p><strong>SOLUÇÃO:</strong></p>
+                <p>
+                  (a) O sinal negativo indica que a força (ou vetor do campo)
+                  aponta para o centro do corpo (atração gravitacional).
+                  \(\vec{r}\) é direcionado para fora, então \(-\vec{r}\) indica
+                  a direção oposta.
+                </p>
+                <p>
+                  (b) A magnitude do vetor gravitacional é inversamente
+                  proporcional ao quadrado da distância: \[ \|\vec{F}\| = \gamma
+                  \frac{M}{\|\vec{r}\|^2}. \] Isso mostra a “lei do inverso do
+                  quadrado”, típica de interações gravitacionais.
+                </p>
+              </div>
+            </details>
+          </li>
 
-                <!-- EXERCÍCIO 3-D -->
-                <li class="exercise-item">
-                    <div class="exercise-number">EXERCÍCIO 3-D</div>
-                    <div class="context">
-                        ARQUIVO: Missão Voyager (1979) — [DADOS PARCIALMENTE DESCLASSIFICADOS]
-                    </div>
-                    <p>
-                        O campo gravitacional de um corpo esférico no espaço 3D 
-                        pode ser descrito (de forma simplificada) como
-                        \[
-                            \vec{F}(\vec{r}) = -\gamma \frac{M}{\|\vec{r}\|^3} \,\vec{r},
-                        \]
-                        onde \(\vec{r} = (x,y,z)\), \(\|\vec{r}\|\) é a distância ao centro, 
-                        \(\gamma\) é a constante gravitacional, e \(M\) a massa do corpo central.
-                    </p>
-                    <p>
-                        (a) Explique por que há um sinal negativo neste campo. <br/>
-                        (b) Identifique a relação entre a intensidade do campo e a distância ao centro \(\|\vec{r}\|\).
-                    </p>
-                    <details>
-                        <summary>ACESSAR SOLUÇÃO [NÍVEL 4 REQUERIDO]</summary>
-                        <div class="solution">
-                            <p><strong>SOLUÇÃO:</strong></p>
-                            <p>
-                                (a) O sinal negativo indica que a força (ou vetor do campo) 
-                                aponta para o centro do corpo (atração gravitacional). 
-                                \(\vec{r}\) é direcionado para fora, então \(-\vec{r}\) indica a direção oposta.
-                            </p>
-                            <p>
-                                (b) A magnitude do vetor gravitacional é inversamente proporcional ao quadrado da distância:
-                                \[
-                                    \|\vec{F}\| = \gamma \frac{M}{\|\vec{r}\|^2}.
-                                \]
-                                Isso mostra a “lei do inverso do quadrado”, típica de interações gravitacionais.
-                            </p>
-                        </div>
-                    </details>
-                </li>
-
-                <!-- EXERCÍCIO 3-E -->
-                <li class="exercise-item">
-                    <div class="exercise-number">EXERCÍCIO 3-E</div>
-                    <div class="context">
-                        ARQUIVO: Centro de Controle Espacial (1992) — [DADOS PARCIALMENTE DESCLASSIFICADOS]
-                    </div>
-                    <p>
-                        Considere a distinção entre uma <strong>função vetorial</strong> e um 
-                        <strong>campo vetorial</strong>:
-                        <ul>
-                            <li><em>Função vetorial:</em> \(\vec{r}: \mathbb{R} \to \mathbb{R}^3\)</li>
-                            <li><em>Campo vetorial:</em> \(\vec{F}: \mathbb{R}^3 \to \mathbb{R}^3\)</li>
-                        </ul>
-                    </p>
-                    <p>
-                        (a) Dê um exemplo de cada um no contexto da exploração espacial. <br />
-                        (b) Explique por que uma trajetória de foguete \(\vec{r}(t)\) não 
-                        pode ser considerada um campo vetorial.
-                    </p>
-                    <details>
-                        <summary>ACESSAR SOLUÇÃO [NÍVEL 4 REQUERIDO]</summary>
-                        <div class="solution">
-                            <p><strong>SOLUÇÃO:</strong></p>
-                            <p>
-                                (a) Exemplo de função vetorial: \(\vec{r}(t)\) descrevendo a trajetória de um satélite em função do tempo. <br/>
-                                Exemplo de campo vetorial: \(\vec{G}(x,y,z)\) descrevendo a força gravitacional em cada ponto do espaço.
-                            </p>
-                            <p>
-                                (b) A trajetória \(\vec{r}(t)\) possui domínio unidimensional (o tempo), 
-                                enquanto um campo vetorial exige que o domínio seja um subconjunto de \(\mathbb{R}^3\). 
-                                Em outras palavras, a trajetória define “onde o foguete está a cada instante”, 
-                                e não atribui um vetor a todos os pontos possíveis do espaço simultaneamente.
-                            </p>
-                        </div>
-                    </details>
-                </li>
-            </ol>
-        </main>
+          <!-- EXERCÍCIO 3-E -->
+          <li class="exercise-item">
+            <div class="exercise-number">EXERCÍCIO 3-E</div>
+            <div class="context">
+              ARQUIVO: Centro de Controle Espacial (1992) — [DADOS PARCIALMENTE
+              DESCLASSIFICADOS]
+            </div>
+            <p>
+              Considere a distinção entre uma <strong>função vetorial</strong> e
+              um <strong>campo vetorial</strong>:
+            </p>
+            <ul>
+              <li>
+                <em>Função vetorial:</em> \(\vec{r}: \mathbb{R} \to
+                \mathbb{R}^3\)
+              </li>
+              <li>
+                <em>Campo vetorial:</em> \(\vec{F}: \mathbb{R}^3 \to
+                \mathbb{R}^3\)
+              </li>
+            </ul>
+            <p>
+              (a) Dê um exemplo de cada um no contexto da exploração espacial.
+              <br />
+              (b) Explique por que uma trajetória de foguete \(\vec{r}(t)\) não
+              pode ser considerada um campo vetorial.
+            </p>
+            <details>
+              <summary>ACESSAR SOLUÇÃO [NÍVEL 4 REQUERIDO]</summary>
+              <div class="solution">
+                <p><strong>SOLUÇÃO:</strong></p>
+                <p>
+                  (a) Exemplo de função vetorial: \(\vec{r}(t)\) descrevendo a
+                  trajetória de um satélite em função do tempo. <br />
+                  Exemplo de campo vetorial: \(\vec{G}(x,y,z)\) descrevendo a
+                  força gravitacional em cada ponto do espaço.
+                </p>
+                <p>
+                  (b) A trajetória \(\vec{r}(t)\) possui domínio unidimensional
+                  (o tempo), enquanto um campo vetorial exige que o domínio seja
+                  um subconjunto de \(\mathbb{R}^3\). Em outras palavras, a
+                  trajetória define “onde o foguete está a cada instante”, e não
+                  atribui um vetor a todos os pontos possíveis do espaço
+                  simultaneamente.
+                </p>
+              </div>
+            </details>
+          </li>
+        </ol>
+      </main>
     </div>
 
     <!-- Configuração do MathJax -->
     <script>
-        MathJax.Hub.Config({
-            tex2jax: {
-                inlineMath: [['\\(','\\)']],
-                displayMath: [['\\[','\\]']],
-                processEscapes: true
-            },
-            "HTML-CSS": {
-                // Ajuste de cor do texto renderizado
-                color: "#d4af37"
-            }
-        });
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [['\\(', '\\)']],
+          displayMath: [['\\[', '\\]']],
+          processEscapes: true,
+        },
+        'HTML-CSS': {
+          // Ajuste de cor do texto renderizado
+          color: '#d4af37',
+        },
+      });
     </script>
-</body>
+  </body>
 </html>
-
