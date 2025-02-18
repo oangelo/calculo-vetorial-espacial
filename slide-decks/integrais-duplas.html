@@ -1,9 +1,11 @@
 <!doctype html>
-<html lang="pt-BR">
+<html>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Cálculo Vetorial: integrais-duplas</title>
+    <title>
+      Cálculo Vetorial: Funções de Várias Variáveis Reais a Valores Vetoriais
+    </title>
     <link rel="stylesheet" href="reveal.js/dist/reveal.css" />
     <link rel="stylesheet" href="space-theme.css" />
     <script src="reveal.js/dist/reveal.js"></script>
@@ -20,13 +22,187 @@
       };
     </script>
   </head>
+
   <body>
     <div class="reveal">
       <div class="slides">
-        <section>
-          <h1>integrais-duplas</h1>
+        <!-- Slide 1: Introdução -->
+        <section data-background-color="#1a237e">
+          <section>
+            <h1>Integrais Duplas</h1>
+            <h3>Uma Jornada pela Matemática da Exploração Espacial</h3>
+            <!-- 
+                    INSTRUÇÕES:
+                    - Criar uma animação de entrada para o título
+                    - Incluir imagem de fundo relacionada à corrida espacial
+                    - Adicionar contador de slides no canto inferior
+                    -->
+          </section>
+
+          <section>
+            <h2>Por que Integrais Duplas?</h2>
+            <!-- 
+                    INSTRUÇÕES:
+                    - Incluir 3-4 exemplos práticos da NASA/programas espaciais
+                    - Criar infográfico mostrando aplicações em foguetes
+                    - Adicionar linha do tempo interativa (1957-1969)
+                    -->
+          </section>
+        </section>
+
+        <!-- Slide 2: Fundamentos -->
+        <section data-background-color="#311b92">
+          <section>
+            <h2>Da Soma de Riemann à Integral Dupla</h2>
+            <!-- 
+                    INSTRUÇÕES:
+                    - Implementar visualização interativa das somas de Riemann
+                    - Mostrar convergência com slider de subdivisões
+                    - Incluir analogia com imageamento de satélite
+                    -->
+          </section>
+
+          <section>
+            <h2>Construindo a Intuição</h2>
+            <!-- 
+                    INSTRUÇÕES:
+                    - Criar animação do processo de limite
+                    - Demonstrar aproximações sucessivas
+                    - Incluir exercício interativo simples
+                    -->
+          </section>
+        </section>
+
+        <!-- Slide 3: Definição Formal -->
+        <section data-background-color="#0d47a1">
+          <section>
+            <h2>Definição Matemática</h2>
+            <!-- 
+                    INSTRUÇÕES:
+                    - Apresentar notação LaTeX com animação por partes
+                    - Destacar cada componente da definição
+                    - Incluir interpretação geométrica em 3D
+                    -->
+          </section>
+
+          <section>
+            <h2>Componentes Essenciais</h2>
+            <!-- 
+                    INSTRUÇÕES:
+                    - Detalhar região de integração
+                    - Explicar função integranda
+                    - Demonstrar elemento de área
+                    -->
+          </section>
+        </section>
+
+        <!-- Slide 4: Condições de Integrabilidade -->
+        <section data-background-color="#1565c0">
+          <section>
+            <h2>Quando Podemos Integrar?</h2>
+            <!-- 
+                    INSTRUÇÕES:
+                    - Listar condições com exemplos visuais
+                    - Mostrar contraexemplos importantes
+                    - Relacionar com problemas práticos da engenharia
+                    -->
+          </section>
+
+          <section>
+            <h2>Casos Especiais</h2>
+            <!-- 
+                    INSTRUÇÕES:
+                    - Abordar descontinuidades removíveis
+                    - Explicar conjuntos de medida nula
+                    - Incluir exemplos da indústria aeroespacial
+                    -->
+          </section>
+        </section>
+
+        <!-- Slide 5: Propriedades -->
+        <section data-background-color="#0277bd">
+          <section>
+            <h2>Propriedades Fundamentais</h2>
+            <!-- 
+                    INSTRUÇÕES:
+                    - Criar cards interativos para cada propriedade
+                    - Incluir demonstrações visuais
+                    - Adicionar exemplos práticos da NASA
+                    -->
+          </section>
+
+          <section>
+            <h2>Aplicações Práticas</h2>
+            <!-- 
+                    INSTRUÇÕES:
+                    - Mostrar uso em cálculos de massa
+                    - Demonstrar aplicação em pressão atmosférica
+                    - Incluir exemplo de transferência de calor
+                    -->
+          </section>
+        </section>
+
+        <!-- Slide 6: Laboratório Virtual -->
+        <section data-background-color="#00838f">
+          <section>
+            <h2>Experimentação Digital</h2>
+            <!-- 
+                    INSTRUÇÕES:
+                    - Implementar calculadora interativa
+                    - Criar visualizador de regiões de integração
+                    - Adicionar ferramentas de análise de erro
+                    -->
+          </section>
+
+          <section>
+            <h2>Desafios Práticos</h2>
+            <!-- 
+                    INSTRUÇÕES:
+                    - Incluir problemas da corrida espacial
+                    - Criar simulações de casos reais
+                    - Adicionar sistema de verificação de respostas
+                    -->
+          </section>
+        </section>
+
+        <!-- Slide 7: Conclusão -->
+        <section data-background-color="#006064">
+          <section>
+            <h2>Sintetizando o Conhecimento</h2>
+            <!-- 
+                    INSTRUÇÕES:
+                    - Criar mapa conceitual interativo
+                    - Resumir principais aplicações
+                    - Incluir recursos para aprofundamento
+                    -->
+          </section>
+
+          <section>
+            <h2>Próximos Passos</h2>
+            <!-- 
+                    INSTRUÇÕES:
+                    - Listar tópicos avançados relacionados
+                    - Incluir problemas desafiadores
+                    - Adicionar referências históricas finais
+                    -->
+          </section>
         </section>
       </div>
     </div>
+
+    <script src="dist/reveal.js"></script>
+    <script>
+      Reveal.initialize({
+        hash: true,
+        slideNumber: true,
+        navigationMode: 'linear',
+        transition: 'slide',
+        math: {
+          mathjax:
+            'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+        },
+      });
+    </script>
   </body>
 </html>
