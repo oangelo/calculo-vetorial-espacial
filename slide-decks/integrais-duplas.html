@@ -27,31 +27,135 @@
     <div class="reveal">
       <div class="slides">
         <!-- Slide 1: Introdução -->
-        <section data-background-color="#1a237e">
-          <section>
-            <h1>Integrais Duplas</h1>
-            <h3>Uma Jornada pela Matemática da Exploração Espacial</h3>
-            <!-- 
+        <section>
+          <section data-background-color="#1a237e">
+            <section>
+              <h1>Integrais Duplas</h1>
+              <h3>Uma Jornada pela Matemática da Exploração Espacial</h3>
+              <!-- 
                     INSTRUÇÕES:
                     - Criar uma animação de entrada para o título
                     - Incluir imagem de fundo relacionada à corrida espacial
                     - Adicionar contador de slides no canto inferior
                     -->
+            </section>
+            <h1>Integrais Duplas</h1>
+            <h3>Explorando Aplicações no Espaço</h3>
+            <p>
+              Uma introdução às ideias por trás da integração em duas dimensões.
+            </p>
+            <!-- Imagem motivacional -->
+            <img
+              class="slide-image"
+              src="https://via.placeholder.com/600x300?text=Explorando+o+Espaço"
+              alt="Explorando o Espaço"
+            />
           </section>
 
+          <!-- Slide 2: Introdução Motivacional -->
           <section>
-            <h2>Por que Integrais Duplas?</h2>
-            <!-- 
-                    INSTRUÇÕES:
-                    - Incluir 3-4 exemplos práticos da NASA/programas espaciais
-                    - Criar infográfico mostrando aplicações em foguetes
-                    - Adicionar linha do tempo interativa (1957-1969)
-                    -->
+            <h2>Por que estudar integrais duplas?</h2>
+            <ul>
+              <li>Permitem medir quantidades acumuladas em áreas complexas</li>
+              <li>
+                São fundamentais para o design e análise de estruturas espaciais
+              </li>
+              <li>
+                Aplicações que vão desde a energia solar até a distribuição de
+                materiais
+              </li>
+            </ul>
+            <p>
+              Imagine calcular a energia que um painel solar capta ou encontrar
+              o equilíbrio perfeito de uma nave espacial!
+            </p>
+          </section>
+
+          <!-- Slide 3: Aplicação - Energia Solar -->
+          <section>
+            <h2>Capturando Energia no Espaço</h2>
+            <p>
+              Em satélites, os painéis solares não são simplesmente retângulos.
+              Eles podem ter formas curvas ou inclinadas para maximizar a
+              captação de luz.
+            </p>
+            <img
+              class="slide-image"
+              src="https://via.placeholder.com/600x300?text=Pain%C3%A9is+Solares"
+              alt="Painéis Solares"
+            />
+            <p>
+              Através das integrais duplas, é possível somar as contribuições de
+              cada ponto do painel, otimizando o design!
+            </p>
+          </section>
+
+          <!-- Slide 4: Aplicação - Distribuição de Materiais -->
+          <section>
+            <h2>Distribuição de Materiais e Equilíbrio</h2>
+            <p>
+              Em uma nave espacial, o equilíbrio é essencial para a estabilidade
+              durante as manobras.
+            </p>
+            <p>
+              Ao analisar a distribuição de massa de componentes com densidade
+              variável, podemos determinar o centro de massa da nave.
+            </p>
+            <img
+              class="slide-image"
+              src="https://via.placeholder.com/600x300?text=Centro+de+Massa"
+              alt="Centro de Massa"
+            />
+            <p>
+              Essa abordagem ajuda os engenheiros a garantir que a nave mantenha
+              sua orientação durante o voo.
+            </p>
+          </section>
+
+          <!-- Slide 5: Aplicação - Formas Irregulares -->
+          <section>
+            <h2>Medindo Superfícies Complexas</h2>
+            <p>
+              Componentes espaciais muitas vezes possuem formas irregulares.
+            </p>
+            <p>
+              As integrais duplas auxiliam na determinação da área dessas
+              superfícies, importante para o design e a análise estrutural.
+            </p>
+            <img
+              class="slide-image"
+              src="https://via.placeholder.com/600x300?text=Superf%C3%ADcie+Irregular"
+              alt="Superfície Irregular"
+            />
+            <p>
+              Com essa técnica, os engenheiros conseguem estimar com precisão a
+              área necessária para projetos inovadores!
+            </p>
+          </section>
+
+          <!-- Slide 6: Conclusão -->
+          <section>
+            <h2>Integrais Duplas no Futuro da Engenharia Espacial</h2>
+            <p>
+              De painéis solares a estruturas complexas, as integrais duplas são
+              uma ferramenta poderosa para transformar desafios em soluções
+              inovadoras.
+            </p>
+            <p>
+              Ao dominar esses conceitos, você estará um passo mais próximo de
+              participar de grandes projetos espaciais!
+            </p>
+            <h3>Vamos explorar juntos esse universo!</h3>
+            <img
+              class="slide-image"
+              src="https://via.placeholder.com/600x300?text=Rumo+ao+Espa%C3%A7o"
+              alt="Rumo ao Espaço"
+            />
           </section>
         </section>
 
         <!-- Slide 2: Fundamentos -->
-        <section data-background-color="#311b92">
+        <section>
           <section>
             <h2>Da Soma de Riemann à Integral Dupla</h2>
             <!-- 
@@ -60,6 +164,92 @@
                     - Mostrar convergência com slider de subdivisões
                     - Incluir analogia com imageamento de satélite
                     -->
+          </section>
+
+          <section>
+            <h2>Da Soma de Riemann à Integral Dupla</h2>
+            <div
+              style="display: flex; flex-direction: column; align-items: center"
+            >
+              <canvas id="riemannCanvas" width="500" height="400"></canvas>
+              <div class="controls-container">
+                <div class="control-group">
+                  <label class="label"
+                    >Número de Subdivisões:
+                    <span id="subdivLabel">2</span></label
+                  >
+                  <input
+                    type="range"
+                    id="subdivSlider"
+                    min="2"
+                    max="20"
+                    value="10"
+                  />
+                </div>
+                <div class="control-group">
+                  <label class="label"
+                    >Ângulo de Visualização:
+                    <span id="angleLabel">30°</span></label
+                  >
+                  <input
+                    type="range"
+                    id="angleSlider"
+                    min="0"
+                    max="90"
+                    value="45"
+                  />
+                </div>
+              </div>
+              <div class="info-text">
+                Função: f(x,y) = x²/4 + y²/9<br />
+                Região: [-1,1] × [-1,1]<br />
+                Valor aproximado da integral: <span id="integralValue">0</span>
+              </div>
+            </div>
+          </section>
+          <section>
+            <h2>Da Soma de Riemann à Integral Dupla</h2>
+            <div
+              style="display: flex; flex-direction: column; align-items: center"
+            >
+              <canvas id="riemannCanvas" width="500" height="400"></canvas>
+              <div class="controls-container">
+                <div class="control-group">
+                  <label class="label"
+                    >Número de Subdivisões:
+                    <span id="subdivLabel">2</span></label
+                  >
+                  <input
+                    type="range"
+                    id="subdivSlider"
+                    min="2"
+                    max="10"
+                    value="2"
+                  />
+                </div>
+                <div class="control-group">
+                  <label class="label"
+                    >Ângulo de Visualização:
+                    <span id="angleLabel">30°</span></label
+                  >
+                  <input
+                    type="range"
+                    id="angleSlider"
+                    min="0"
+                    max="90"
+                    value="30"
+                  />
+                </div>
+              </div>
+              <div class="info-text">
+                <p>Função: f(x,y) = x²/4 + y²/9</p>
+                <p>Região: [-1,1] × [-1,1]</p>
+                <p>
+                  Valor aproximado da integral:
+                  <span id="integralValue">0</span>
+                </p>
+              </div>
+            </div>
           </section>
 
           <section>
@@ -203,6 +393,170 @@
           config: 'TeX-AMS_HTML-full',
         },
       });
+    </script>
+    <script>
+      // Riemann sum visualization
+      class RiemannVisualization {
+        constructor() {
+          this.canvas = document.getElementById('riemannCanvas');
+          this.ctx = this.canvas.getContext('2d');
+          this.subdivisions = 2;
+          this.angle = 30;
+          this.scale = 120;
+
+          this.setupControls();
+          this.draw();
+        }
+
+        f(x, y) {
+          return Math.pow(x, 2) / 4 + Math.pow(y, 2) / 9;
+        }
+
+        to2D(x, y, z) {
+          const angleRad = (this.angle * Math.PI) / 180;
+          const isoX = (x - y) * Math.cos(angleRad);
+          const isoY = ((x + y) * Math.sin(angleRad)) / 2 - z * 0.7;
+          return {
+            x: isoX * this.scale + this.canvas.width / 2,
+            y: isoY * this.scale + this.canvas.height / 2,
+          };
+        }
+
+        draw() {
+          const ctx = this.ctx;
+          const width = this.canvas.width;
+          const height = this.canvas.height;
+
+          // Clear canvas
+          ctx.clearRect(0, 0, width, height);
+
+          // Draw axes
+          ctx.beginPath();
+          ctx.strokeStyle = '#666666';
+          ctx.lineWidth = 1;
+
+          const xStart = this.to2D(-1.2, 0, 0);
+          const xEnd = this.to2D(1.2, 0, 0);
+          ctx.moveTo(xStart.x, xStart.y);
+          ctx.lineTo(xEnd.x, xEnd.y);
+
+          const yStart = this.to2D(0, -1.2, 0);
+          const yEnd = this.to2D(0, 1.2, 0);
+          ctx.moveTo(yStart.x, yStart.y);
+          ctx.lineTo(yEnd.x, yEnd.y);
+
+          const zStart = this.to2D(0, 0, 0);
+          const zEnd = this.to2D(0, 0, 1.2);
+          ctx.moveTo(zStart.x, zStart.y);
+          ctx.lineTo(zEnd.x, zEnd.y);
+
+          ctx.stroke();
+
+          // Draw Riemann sum rectangles
+          const dx = 2 / this.subdivisions;
+          const dy = 2 / this.subdivisions;
+
+          for (let i = 0; i < this.subdivisions; i++) {
+            for (let j = 0; j < this.subdivisions; j++) {
+              const x = -1 + i * dx;
+              const y = -1 + j * dy;
+              const z = this.f(x, y);
+
+              ctx.beginPath();
+              ctx.strokeStyle = '#3498db';
+              ctx.fillStyle = `rgba(52, 152, 219, ${0.2 + z * 0.3})`;
+              ctx.lineWidth = 1;
+
+              const points = [
+                this.to2D(x, y, 0),
+                this.to2D(x + dx, y, 0),
+                this.to2D(x + dx, y + dy, 0),
+                this.to2D(x, y + dy, 0),
+                this.to2D(x, y, z),
+                this.to2D(x + dx, y, z),
+                this.to2D(x + dx, y + dy, z),
+                this.to2D(x, y + dy, z),
+              ];
+
+              // Draw base
+              ctx.moveTo(points[0].x, points[0].y);
+              ctx.lineTo(points[1].x, points[1].y);
+              ctx.lineTo(points[2].x, points[2].y);
+              ctx.lineTo(points[3].x, points[3].y);
+              ctx.lineTo(points[0].x, points[0].y);
+
+              // Draw vertical edges
+              for (let k = 0; k < 4; k++) {
+                ctx.moveTo(points[k].x, points[k].y);
+                ctx.lineTo(points[k + 4].x, points[k + 4].y);
+              }
+
+              // Draw top
+              ctx.moveTo(points[4].x, points[4].y);
+              ctx.lineTo(points[5].x, points[5].y);
+              ctx.lineTo(points[6].x, points[6].y);
+              ctx.lineTo(points[7].x, points[7].y);
+              ctx.lineTo(points[4].x, points[4].y);
+
+              ctx.stroke();
+              ctx.fill();
+            }
+          }
+
+          this.updateIntegralValue();
+        }
+
+        calculateApproximation() {
+          const dx = 2 / this.subdivisions;
+          const dy = 2 / this.subdivisions;
+          let sum = 0;
+
+          for (let i = 0; i < this.subdivisions; i++) {
+            for (let j = 0; j < this.subdivisions; j++) {
+              const x = -1 + i * dx + dx / 2;
+              const y = -1 + j * dy + dy / 2;
+              sum += this.f(x, y) * dx * dy;
+            }
+          }
+          return sum.toFixed(4);
+        }
+
+        updateIntegralValue() {
+          document.getElementById('integralValue').textContent =
+            this.calculateApproximation();
+        }
+
+        setupControls() {
+          const subdivSlider = document.getElementById('subdivSlider');
+          const angleSlider = document.getElementById('angleSlider');
+          const subdivLabel = document.getElementById('subdivLabel');
+          const angleLabel = document.getElementById('angleLabel');
+
+          subdivSlider.addEventListener('input', (e) => {
+            this.subdivisions = parseInt(e.target.value);
+            subdivLabel.textContent = this.subdivisions;
+            this.draw();
+          });
+
+          angleSlider.addEventListener('input', (e) => {
+            this.angle = parseInt(e.target.value);
+            angleLabel.textContent = this.angle + '°';
+            this.draw();
+          });
+        }
+      }
+
+      // Initialize visualization when slide becomes active
+      Reveal.on('slidechanged', (event) => {
+        if (event.currentSlide.querySelector('#riemannCanvas')) {
+          new RiemannVisualization();
+        }
+      });
+
+      // Also initialize if we start on the visualization slide
+      if (document.querySelector('#riemannCanvas')) {
+        new RiemannVisualization();
+      }
     </script>
   </body>
 </html>
