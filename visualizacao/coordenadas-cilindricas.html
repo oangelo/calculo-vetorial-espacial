@@ -1,0 +1,436 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Visualização de Coordenadas Cilíndricas</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <style>
+      body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background-color: #f0f0f0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-height: 100vh;
+        padding: 20px;
+      }
+      .container {
+        background-color: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        max-width: 800px;
+        width: 100%;
+      }
+      h1 {
+        text-align: center;
+        color: #333;
+        margin-bottom: 10px;
+      }
+      .instructions {
+        text-align: center;
+        color: #666;
+        margin-bottom: 20px;
+      }
+      #canvas-container {
+        width: 100%;
+        height: 400px;
+        position: relative;
+        margin-bottom: 20px;
+      }
+      .controls {
+        display: grid;
+        grid-template-columns: 100px 1fr 80px;
+        gap: 10px;
+        align-items: center;
+        margin-bottom: 10px;
+      }
+      .controls label {
+        color: #333;
+      }
+      .controls input[type='range'] {
+        width: 100%;
+      }
+      .controls span {
+        text-align: right;
+      }
+      .coordinates {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+        margin-top: 20px;
+        padding: 10px;
+        background-color: #f8f8f8;
+        border-radius: 5px;
+      }
+      .coordinate-box {
+        padding: 10px;
+        background-color: white;
+        border-radius: 5px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      }
+      .coordinate-box h3 {
+        margin: 0 0 10px 0;
+        color: #333;
+        font-size: 1em;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Visualização de Coordenadas Cilíndricas</h1>
+      <p class="instructions">
+        Arraste o mouse para rotacionar a visualização<br />
+        Use a roda do mouse para zoom
+      </p>
+      <div id="canvas-container"></div>
+      <div class="controls">
+        <label for="rho">ρ (rho):</label>
+        <input type="range" id="rho" min="0" max="10" step="0.1" value="5" />
+        <span id="rho-value">5.0</span>
+      </div>
+      <div class="controls">
+        <label for="theta">θ (theta):</label>
+        <input type="range" id="theta" min="0" max="360" step="1" value="45" />
+        <span id="theta-value">45°</span>
+      </div>
+      <div class="controls">
+        <label for="z">z:</label>
+        <input type="range" id="z" min="-10" max="10" step="0.1" value="3" />
+        <span id="z-value">3.0</span>
+      </div>
+      <div class="coordinates">
+        <div class="coordinate-box">
+          <h3>Coordenadas Cilíndricas</h3>
+          <div id="cylindrical-coords"></div>
+        </div>
+        <div class="coordinate-box">
+          <h3>Coordenadas Cartesianas</h3>
+          <div id="cartesian-coords"></div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Configuração da cena Three.js
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000);
+      const renderer = new THREE.WebGLRenderer({ antialias: true });
+      const container = document.getElementById('canvas-container');
+
+      // Configurar renderer
+      renderer.setSize(container.clientWidth, container.clientHeight);
+      renderer.setClearColor(0xffffff);
+      container.appendChild(renderer.domElement);
+
+      // Configurar camera
+      camera.position.set(15, 15, 15);
+      camera.lookAt(0, 0, 0);
+
+      // Controles
+      let isDragging = false;
+      let previousMousePosition = { x: 0, y: 0 };
+      let cameraRotation = { x: 0, y: 0 };
+
+      // Materiais
+      const redMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 });
+      const blueMaterial = new THREE.MeshBasicMaterial({ color: 0x0000ff });
+      const transparentMaterial = new THREE.MeshBasicMaterial({
+        color: 0x88aaff,
+        transparent: true,
+        opacity: 0.2,
+      });
+
+      // Criar geometria base
+      function createBaseGeometry() {
+        // Eixos personalizados
+        const axesGroup = new THREE.Group();
+
+        // Materiais para os eixos
+        const xAxisMaterial = new THREE.LineBasicMaterial({
+          color: 0xff0000,
+          linewidth: 2,
+        });
+        const yAxisMaterial = new THREE.LineBasicMaterial({
+          color: 0x00ff00,
+          linewidth: 2,
+        });
+        const zAxisMaterial = new THREE.LineBasicMaterial({
+          color: 0x0000ff,
+          linewidth: 2,
+        });
+
+        // Criar eixos
+        const xAxis = new THREE.Line(
+          new THREE.BufferGeometry().setFromPoints([
+            new THREE.Vector3(0, 0, 0),
+            new THREE.Vector3(12, 0, 0),
+          ]),
+          xAxisMaterial
+        );
+
+        const yAxis = new THREE.Line(
+          new THREE.BufferGeometry().setFromPoints([
+            new THREE.Vector3(0, 0, 0),
+            new THREE.Vector3(0, 12, 0),
+          ]),
+          yAxisMaterial
+        );
+
+        const zAxis = new THREE.Line(
+          new THREE.BufferGeometry().setFromPoints([
+            new THREE.Vector3(0, 0, 0),
+            new THREE.Vector3(0, 0, 12),
+          ]),
+          zAxisMaterial
+        );
+
+        // Adicionar labels aos eixos
+        const textMaterial = new THREE.MeshBasicMaterial({ color: 0x000000 });
+        const loader = new THREE.TextureLoader();
+
+        // Criando sprites para os labels
+        const createLabel = (text, position, color) => {
+          const canvas = document.createElement('canvas');
+          const context = canvas.getContext('2d');
+          canvas.width = 128;
+          canvas.height = 128;
+          context.font = 'Bold 80px Arial';
+          context.fillStyle = color;
+          context.textAlign = 'center';
+          context.textBaseline = 'middle';
+          context.fillText(text, 64, 64);
+
+          const texture = new THREE.CanvasTexture(canvas);
+          const spriteMaterial = new THREE.SpriteMaterial({ map: texture });
+          const sprite = new THREE.Sprite(spriteMaterial);
+          sprite.position.copy(position);
+          sprite.scale.set(2, 2, 2);
+          return sprite;
+        };
+
+        axesGroup.add(xAxis);
+        axesGroup.add(yAxis);
+        axesGroup.add(zAxis);
+        axesGroup.add(createLabel('x', new THREE.Vector3(13, 0, 0), '#ff0000'));
+        axesGroup.add(createLabel('y', new THREE.Vector3(0, 13, 0), '#00ff00'));
+        axesGroup.add(createLabel('z', new THREE.Vector3(0, 0, 13), '#0000ff'));
+
+        scene.add(axesGroup);
+
+        // Grid circular
+        const circularGrid = new THREE.Group();
+        for (let r = 1; r <= 10; r++) {
+          const circle = new THREE.Line(
+            new THREE.CircleGeometry(r, 64),
+            new THREE.LineBasicMaterial({ color: 0x888888 })
+          );
+          circle.rotation.x = -Math.PI / 2;
+          circularGrid.add(circle);
+        }
+        scene.add(circularGrid);
+
+        // Cilindro guia inicial (será atualizado dinamicamente)
+        const cylinder = new THREE.Mesh(
+          new THREE.CylinderGeometry(5, 5, 6, 32),
+          transparentMaterial
+        );
+        cylinder.position.y = 3;
+        cylinder.userData.dynamic = true;
+        scene.add(cylinder);
+      }
+
+      // Atualizar visualização
+      function updateVisualization(rho, theta, z) {
+        // Limpar elementos dinâmicos
+        // Remover elementos dinâmicos anteriores
+        scene.children = scene.children.filter(
+          (child) =>
+            !(child instanceof THREE.Points) &&
+            !(child instanceof THREE.Line && child.userData.dynamic) &&
+            !(child instanceof THREE.Mesh && child.userData.dynamic)
+        );
+
+        // Atualizar cilindro guia
+        const cylinder = new THREE.Mesh(
+          new THREE.CylinderGeometry(rho, rho, Math.abs(z), 32),
+          transparentMaterial
+        );
+        cylinder.position.y = z / 2;
+        cylinder.userData.dynamic = true;
+        scene.add(cylinder);
+
+        // Converter para radianos
+        const thetaRad = (theta * Math.PI) / 180;
+
+        // Calcular coordenadas cartesianas
+        const x = rho * Math.cos(thetaRad);
+        const y = rho * Math.sin(thetaRad);
+
+        // Ponto atual
+        const point = new THREE.Points(
+          new THREE.BufferGeometry().setFromPoints([
+            new THREE.Vector3(x, z, y),
+          ]),
+          new THREE.PointsMaterial({ color: 0xff0000, size: 0.5 })
+        );
+        scene.add(point);
+
+        // Linha ρ
+        const rhoLine = new THREE.Line(
+          new THREE.BufferGeometry().setFromPoints([
+            new THREE.Vector3(0, 0, 0),
+            new THREE.Vector3(x, 0, y),
+          ]),
+          new THREE.LineBasicMaterial({ color: 0x800080, linewidth: 3 })
+        );
+        rhoLine.userData.dynamic = true;
+        scene.add(rhoLine);
+
+        // Linha z
+        const zLine = new THREE.Line(
+          new THREE.BufferGeometry().setFromPoints([
+            new THREE.Vector3(x, 0, y),
+            new THREE.Vector3(x, z, y),
+          ]),
+          new THREE.LineBasicMaterial({ color: 0x0000ff })
+        );
+        zLine.userData.dynamic = true;
+        scene.add(zLine);
+
+        // Arco θ (semicírculo)
+        const curve = new THREE.EllipseCurve(
+          0,
+          0, // centro
+          rho,
+          rho, // raio x, y
+          0,
+          thetaRad, // ângulo inicial e final
+          false, // sentido anti-horário
+          0 // rotação inicial
+        );
+
+        const points = curve.getPoints(50);
+        const arcGeometry = new THREE.BufferGeometry().setFromPoints(
+          points.map((p) => new THREE.Vector3(p.x, 0, p.y))
+        );
+
+        const thetaArc = new THREE.Line(
+          arcGeometry,
+          new THREE.LineBasicMaterial({
+            color: 0xff0000,
+            linewidth: 2,
+          })
+        );
+        thetaArc.userData.dynamic = true;
+        scene.add(thetaArc);
+
+        // Texto θ
+        const labelPos = new THREE.Vector3(
+          1.5 * Math.cos(thetaRad / 2),
+          0,
+          1.5 * Math.sin(thetaRad / 2)
+        );
+
+        // Atualizar coordenadas
+        document.getElementById('cylindrical-coords').textContent =
+          `ρ: ${rho.toFixed(2)}, θ: ${theta.toFixed(1)}°, z: ${z.toFixed(2)}`;
+        document.getElementById('cartesian-coords').textContent =
+          `x: ${x.toFixed(2)}, y: ${y.toFixed(2)}, z: ${z.toFixed(2)}`;
+      }
+
+      // Event listeners
+      container.addEventListener('mousedown', (e) => {
+        isDragging = true;
+        previousMousePosition = {
+          x: e.offsetX,
+          y: e.offsetY,
+        };
+      });
+
+      container.addEventListener('mousemove', (e) => {
+        if (!isDragging) return;
+
+        const deltaMove = {
+          x: e.offsetX - previousMousePosition.x,
+          y: e.offsetY - previousMousePosition.y,
+        };
+
+        cameraRotation.x += deltaMove.y * 0.01;
+        cameraRotation.y += deltaMove.x * 0.01;
+
+        const radius = camera.position.length();
+        camera.position.x =
+          radius * Math.sin(cameraRotation.y) * Math.cos(cameraRotation.x);
+        camera.position.y = radius * Math.sin(cameraRotation.x);
+        camera.position.z =
+          radius * Math.cos(cameraRotation.y) * Math.cos(cameraRotation.x);
+        camera.lookAt(0, 0, 0);
+
+        previousMousePosition = {
+          x: e.offsetX,
+          y: e.offsetY,
+        };
+      });
+
+      container.addEventListener('mouseup', () => {
+        isDragging = false;
+      });
+
+      container.addEventListener('wheel', (e) => {
+        const zoomSpeed = 0.1;
+        const direction = e.deltaY > 0 ? 1 : -1;
+        const factor = 1 + direction * zoomSpeed;
+        camera.position.multiplyScalar(factor);
+        e.preventDefault();
+      });
+
+      // Controles deslizantes
+      function setupSliders() {
+        const sliders = ['rho', 'theta', 'z'];
+        sliders.forEach((id) => {
+          const slider = document.getElementById(id);
+          const value = document.getElementById(`${id}-value`);
+          slider.addEventListener('input', () => {
+            value.textContent =
+              id === 'theta'
+                ? `${slider.value}°`
+                : parseFloat(slider.value).toFixed(1);
+            updateVisualization(
+              parseFloat(document.getElementById('rho').value),
+              parseFloat(document.getElementById('theta').value),
+              parseFloat(document.getElementById('z').value)
+            );
+          });
+        });
+      }
+
+      // Responsividade
+      window.addEventListener('resize', () => {
+        const width = container.clientWidth;
+        const height = container.clientHeight;
+        camera.aspect = width / height;
+        camera.updateProjectionMatrix();
+        renderer.setSize(width, height);
+      });
+
+      // Inicialização
+      function init() {
+        createBaseGeometry();
+        setupSliders();
+        updateVisualization(5, 45, 3);
+        animate();
+      }
+
+      // Loop de animação
+      function animate() {
+        requestAnimationFrame(animate);
+        renderer.render(scene, camera);
+      }
+
+      init();
+    </script>
+  </body>
+</html>
