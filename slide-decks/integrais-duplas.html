@@ -28,28 +28,12 @@
       <div class="slides">
         <!-- Slide 1: Introdução -->
         <section>
-          <section data-background-color="#1a237e">
-            <section>
-              <h1>Integrais Duplas</h1>
-              <h3>Uma Jornada pela Matemática da Exploração Espacial</h3>
-              <!-- 
-                    INSTRUÇÕES:
-                    - Criar uma animação de entrada para o título
-                    - Incluir imagem de fundo relacionada à corrida espacial
-                    - Adicionar contador de slides no canto inferior
-                    -->
-            </section>
+          <section>
             <h1>Integrais Duplas</h1>
-            <h3>Explorando Aplicações no Espaço</h3>
+            <h3>Uma Jornada pela Matemática da Exploração Espacial</h3>
             <p>
               Uma introdução às ideias por trás da integração em duas dimensões.
             </p>
-            <!-- Imagem motivacional -->
-            <img
-              class="slide-image"
-              src="https://via.placeholder.com/600x300?text=Explorando+o+Espaço"
-              alt="Explorando o Espaço"
-            />
           </section>
 
           <!-- Slide 2: Introdução Motivacional -->
@@ -79,11 +63,6 @@
               Eles podem ter formas curvas ou inclinadas para maximizar a
               captação de luz.
             </p>
-            <img
-              class="slide-image"
-              src="https://via.placeholder.com/600x300?text=Pain%C3%A9is+Solares"
-              alt="Painéis Solares"
-            />
             <p>
               Através das integrais duplas, é possível somar as contribuições de
               cada ponto do painel, otimizando o design!
@@ -101,11 +80,6 @@
               Ao analisar a distribuição de massa de componentes com densidade
               variável, podemos determinar o centro de massa da nave.
             </p>
-            <img
-              class="slide-image"
-              src="https://via.placeholder.com/600x300?text=Centro+de+Massa"
-              alt="Centro de Massa"
-            />
             <p>
               Essa abordagem ajuda os engenheiros a garantir que a nave mantenha
               sua orientação durante o voo.
@@ -122,11 +96,6 @@
               As integrais duplas auxiliam na determinação da área dessas
               superfícies, importante para o design e a análise estrutural.
             </p>
-            <img
-              class="slide-image"
-              src="https://via.placeholder.com/600x300?text=Superf%C3%ADcie+Irregular"
-              alt="Superfície Irregular"
-            />
             <p>
               Com essa técnica, os engenheiros conseguem estimar com precisão a
               área necessária para projetos inovadores!
@@ -145,12 +114,6 @@
               Ao dominar esses conceitos, você estará um passo mais próximo de
               participar de grandes projetos espaciais!
             </p>
-            <h3>Vamos explorar juntos esse universo!</h3>
-            <img
-              class="slide-image"
-              src="https://via.placeholder.com/600x300?text=Rumo+ao+Espa%C3%A7o"
-              alt="Rumo ao Espaço"
-            />
           </section>
         </section>
 
@@ -158,179 +121,181 @@
         <section>
           <section>
             <h2>Da Soma de Riemann à Integral Dupla</h2>
-            <!-- 
-                    INSTRUÇÕES:
-                    - Implementar visualização interativa das somas de Riemann
-                    - Mostrar convergência com slider de subdivisões
-                    - Incluir analogia com imageamento de satélite
-                    -->
-          </section>
-
-          <section>
-            <h2>Da Soma de Riemann à Integral Dupla</h2>
-            <div
-              style="display: flex; flex-direction: column; align-items: center"
-            >
-              <canvas id="riemannCanvas" width="500" height="400"></canvas>
-              <div class="controls-container">
-                <div class="control-group">
-                  <label class="label"
-                    >Número de Subdivisões:
-                    <span id="subdivLabel">2</span></label
-                  >
-                  <input
-                    type="range"
-                    id="subdivSlider"
-                    min="2"
-                    max="20"
-                    value="10"
-                  />
-                </div>
-                <div class="control-group">
-                  <label class="label"
-                    >Ângulo de Visualização:
-                    <span id="angleLabel">30°</span></label
-                  >
-                  <input
-                    type="range"
-                    id="angleSlider"
-                    min="0"
-                    max="90"
-                    value="45"
-                  />
-                </div>
-              </div>
-              <div class="info-text">
-                Função: f(x,y) = x²/4 + y²/9<br />
-                Região: [-1,1] × [-1,1]<br />
-                Valor aproximado da integral: <span id="integralValue">0</span>
-              </div>
-            </div>
+            <p>
+              A ideia fundamental da integral dupla surge do conceito de soma de
+              Riemann, onde subdividimos uma região do plano em pequenos
+              “retângulos” e somamos os valores de uma função nesses
+              subdomínios. À medida que refinamos a partição (tornando os
+              retângulos cada vez menores), aproximamos o valor “exato” da
+              integral.
+            </p>
+            <p>
+              Historicamente, avanços em Cálculo foram cruciais durante a
+              Corrida Espacial em plena Guerra Fria. O estudo de integrais em
+              múltiplas variáveis permitiu modelar efeitos de gravidade,
+              trajetória de foguetes e distribuição de massa em satélites,
+              impulsionando a capacidade de desenvolvimento tecnológico.
+            </p>
           </section>
 
           <section>
             <h2>Construindo a Intuição</h2>
-            <!-- 
-                    INSTRUÇÕES:
-                    - Criar animação do processo de limite
-                    - Demonstrar aproximações sucessivas
-                    - Incluir exercício interativo simples
-                    -->
+            <p>
+              Podemos visualizar a integral dupla como o processo de somar
+              infinitos pequenos “pedaços” de área. Cada um desses pedaços
+              contribui para o valor total, e tomar o limite do refinamento das
+              partições garante o resultado preciso.
+            </p>
+            <p>
+              Pense em um mapa topográfico: cada porção minúscula do terreno
+              possui uma altura (a função) que será somada para encontrar, por
+              exemplo, o volume total de um morro ou montanha. Essa ideia de
+              sucessivas aproximações está no cerne do método de soma de
+              Riemann.
+            </p>
           </section>
         </section>
 
         <!-- Slide 3: Definição Formal -->
-        <section data-background-color="#0d47a1">
+        <section>
           <section>
             <h2>Definição Matemática</h2>
-            <!-- 
-                    INSTRUÇÕES:
-                    - Apresentar notação LaTeX com animação por partes
-                    - Destacar cada componente da definição
-                    - Incluir interpretação geométrica em 3D
-                    -->
+            <p>
+              A <strong>integral dupla</strong> de uma função \( f(x, y) \)
+              sobre uma região \( D \) no plano é definida como:
+            </p>
+            <p>
+              \[ \iint_D f(x, y)\, dA \;=\; \lim_{m,n \to \infty} \sum_{i=1}^m
+              \sum_{j=1}^n f\bigl(x_{ij},\,y_{ij}\bigr) \,\Delta A_{ij}. \]
+            </p>
+            <p>
+              Nesta expressão, dividimos \( D \) em uma malha de \( m \times n
+              \) sub-regiões, calculamos o valor de \( f \) em cada sub-região e
+              multiplicamos pela área de cada pedacinho (\(\Delta A_{ij}\)).
+            </p>
+            <p>
+              Geometricamente, a integral dupla pode ser vista como o “sólido”
+              tridimensional que se estende sobre \( D \) em que a altura em
+              cada ponto é dada por \( f(x, y) \).
+            </p>
           </section>
 
           <section>
             <h2>Componentes Essenciais</h2>
-            <!-- 
-                    INSTRUÇÕES:
-                    - Detalhar região de integração
-                    - Explicar função integranda
-                    - Demonstrar elemento de área
-                    -->
+            <ul>
+              <li>
+                <strong>Região de Integração \(D\):</strong> O domínio sobre o
+                qual a função é avaliada, podendo ser simples (retângulos) ou
+                mais complexo (regiões curvas).
+              </li>
+              <li>
+                <strong>Função Integranda \(f(x,y)\):</strong> Pode representar
+                densidade, temperatura, pressão, etc., dependendo do problema
+                físico ou geométrico.
+              </li>
+              <li>
+                <strong>Elemento de Área \(dA\):</strong> Geralmente escrito
+                como \(dx\,dy\) ou \(r\,dr\,d\theta\) (em coordenadas polares),
+                representa cada pedacinho infinitesimal de área.
+              </li>
+            </ul>
+            <p>
+              Cada um desses componentes desempenha um papel fundamental na
+              construção do valor final da integral.
+            </p>
+          </section>
+        </section>
+        <!-- Slide 4: Propriedades e Métodos de Integração -->
+        <section>
+          <!-- Sub-Slide: Propriedades Básicas -->
+          <section>
+            <h2>Propriedades Básicas da Integral Dupla</h2>
+            <ul>
+              <li>
+                Linearidade:
+                <p>
+                  \(\displaystyle \iint_D (f + g)\, dA = \iint_D f\, dA +
+                  \iint_D g\, dA\)
+                </p>
+                <p>
+                  \(\displaystyle \iint_D (c \cdot f)\, dA = c \cdot \iint_D f\,
+                  dA\)
+                </p>
+              </li>
+              <li>Aditividade em Sub-Regiões:</li>
+              <li>Positividade e Comparação de Funções:</li>
+            </ul>
+          </section>
+
+          <!-- Sub-Slide: Integração Iterada -->
+          <section>
+            <h2>Integração Iterada</h2>
+            <p>
+              \(\displaystyle \iint_D f(x,y)\,dA = \int_a^b
+              \left(\int_{g_1(x)}^{g_2(x)} f(x,y)\,dy\right) dx\)
+            </p>
+            <p>
+              A integral dupla pode ser transformada em duas integrais simples,
+              resolvendo primeiro em relação a \(y\), depois em relação a \(x\),
+              ou o contrário. É a base do <em>Método de Fubini</em>.
+            </p>
+          </section>
+
+          <!-- Sub-Slide: Mudança de Coordenadas -->
+          <section>
+            <h2>Mudança de Coordenadas</h2>
+            <p>\(\displaystyle x = r\cos\theta,\quad y = r\sin\theta\)</p>
+            <p>\(\displaystyle dA = r\,dr\,d\theta\)</p>
+            <p>
+              Em outras coordenadas, é necessário considerar o Jacobiano da
+              transformação para obter o elemento de área correto.
+            </p>
+          </section>
+
+          <!-- Sub-Slide: Exemplos Práticos -->
+          <section>
+            <h2>Exemplos Práticos</h2>
+            <ul>
+              <li>\(f(x,y) = \sin(x)\cdot y^2\), região retangular</li>
+              <li>
+                \(f(r,\theta) = e^r\), região circular em coordenadas polares
+              </li>
+              <li>Exercícios com regiões triangulares e poligonais</li>
+            </ul>
           </section>
         </section>
 
-        <!-- Slide 4: Condições de Integrabilidade -->
-        <section data-background-color="#1565c0">
+        <!-- Slide 5: Exemplos de Integração Dupla -->
+        <section>
+          <!-- Sub-Slide: Exemplo 1 -->
           <section>
-            <h2>Quando Podemos Integrar?</h2>
-            <!-- 
-                    INSTRUÇÕES:
-                    - Listar condições com exemplos visuais
-                    - Mostrar contraexemplos importantes
-                    - Relacionar com problemas práticos da engenharia
-                    -->
+            <h2>Exemplo 1</h2>
+            <p><strong>Função e Região:</strong></p>
+            <ul>
+              <li>\(\displaystyle f(x,y) = x + 2y\)</li>
+              <li>\(\displaystyle D = [0,2] \times [1,3]\)</li>
+            </ul>
           </section>
-
           <section>
-            <h2>Casos Especiais</h2>
-            <!-- 
-                    INSTRUÇÕES:
-                    - Abordar descontinuidades removíveis
-                    - Explicar conjuntos de medida nula
-                    - Incluir exemplos da indústria aeroespacial
-                    -->
-          </section>
-        </section>
-
-        <!-- Slide 5: Propriedades -->
-        <section data-background-color="#0277bd">
-          <section>
-            <h2>Propriedades Fundamentais</h2>
-            <!-- 
-                    INSTRUÇÕES:
-                    - Criar cards interativos para cada propriedade
-                    - Incluir demonstrações visuais
-                    - Adicionar exemplos práticos da NASA
-                    -->
-          </section>
-
-          <section>
-            <h2>Aplicações Práticas</h2>
-            <!-- 
-                    INSTRUÇÕES:
-                    - Mostrar uso em cálculos de massa
-                    - Demonstrar aplicação em pressão atmosférica
-                    - Incluir exemplo de transferência de calor
-                    -->
-          </section>
-        </section>
-
-        <!-- Slide 6: Laboratório Virtual -->
-        <section data-background-color="#00838f">
-          <section>
-            <h2>Experimentação Digital</h2>
-            <!-- 
-                    INSTRUÇÕES:
-                    - Implementar calculadora interativa
-                    - Criar visualizador de regiões de integração
-                    - Adicionar ferramentas de análise de erro
-                    -->
-          </section>
-
-          <section>
-            <h2>Desafios Práticos</h2>
-            <!-- 
-                    INSTRUÇÕES:
-                    - Incluir problemas da corrida espacial
-                    - Criar simulações de casos reais
-                    - Adicionar sistema de verificação de respostas
-                    -->
-          </section>
-        </section>
-
-        <!-- Slide 7: Conclusão -->
-        <section data-background-color="#006064">
-          <section>
-            <h2>Sintetizando o Conhecimento</h2>
-            <!-- 
-                    INSTRUÇÕES:
-                    - Criar mapa conceitual interativo
-                    - Resumir principais aplicações
-                    - Incluir recursos para aprofundamento
-                    -->
-          </section>
-
-          <section>
-            <h2>Próximos Passos</h2>
-            <!-- 
-                    INSTRUÇÕES:
-                    - Listar tópicos avançados relacionados
-                    - Incluir problemas desafiadores
-                    - Adicionar referências históricas finais
-                    -->
+            <p><strong>Cálculo:</strong></p>
+            <ol>
+              <li>
+                \(\displaystyle \int_0^2 \left(\int_1^3 (x + 2y)\, dy\right)
+                dx\)
+              </li>
+              <li>
+                Integração em \(y\): \(\displaystyle \int_1^3 (x + 2y)\, dy =
+                \left[xy + y^2\right]_{1}^{3} = x(3-1) + (3^2 - 1^2) = 2x + 8\)
+              </li>
+              <li>
+                Agora em \(x\): \(\displaystyle \int_0^2 (2x + 8)\, dx = \left[
+                x^2 + 8x \right]_0^2 = (4 + 16) - 0 = 20\)
+              </li>
+            </ol>
+            <p>
+              <strong>Resultado:</strong> \(\displaystyle \iint_D f(x,y)\,dA =
+              20\)
+            </p>
           </section>
         </section>
       </div>
@@ -349,170 +314,6 @@
           config: 'TeX-AMS_HTML-full',
         },
       });
-    </script>
-    <script>
-      // Riemann sum visualization
-      class RiemannVisualization {
-        constructor() {
-          this.canvas = document.getElementById('riemannCanvas');
-          this.ctx = this.canvas.getContext('2d');
-          this.subdivisions = 2;
-          this.angle = 30;
-          this.scale = 120;
-
-          this.setupControls();
-          this.draw();
-        }
-
-        f(x, y) {
-          return Math.pow(x, 2) / 4 + Math.pow(y, 2) / 9;
-        }
-
-        to2D(x, y, z) {
-          const angleRad = (this.angle * Math.PI) / 180;
-          const isoX = (x - y) * Math.cos(angleRad);
-          const isoY = ((x + y) * Math.sin(angleRad)) / 2 - z * 0.7;
-          return {
-            x: isoX * this.scale + this.canvas.width / 2,
-            y: isoY * this.scale + this.canvas.height / 2,
-          };
-        }
-
-        draw() {
-          const ctx = this.ctx;
-          const width = this.canvas.width;
-          const height = this.canvas.height;
-
-          // Clear canvas
-          ctx.clearRect(0, 0, width, height);
-
-          // Draw axes
-          ctx.beginPath();
-          ctx.strokeStyle = '#666666';
-          ctx.lineWidth = 1;
-
-          const xStart = this.to2D(-1.2, 0, 0);
-          const xEnd = this.to2D(1.2, 0, 0);
-          ctx.moveTo(xStart.x, xStart.y);
-          ctx.lineTo(xEnd.x, xEnd.y);
-
-          const yStart = this.to2D(0, -1.2, 0);
-          const yEnd = this.to2D(0, 1.2, 0);
-          ctx.moveTo(yStart.x, yStart.y);
-          ctx.lineTo(yEnd.x, yEnd.y);
-
-          const zStart = this.to2D(0, 0, 0);
-          const zEnd = this.to2D(0, 0, 1.2);
-          ctx.moveTo(zStart.x, zStart.y);
-          ctx.lineTo(zEnd.x, zEnd.y);
-
-          ctx.stroke();
-
-          // Draw Riemann sum rectangles
-          const dx = 2 / this.subdivisions;
-          const dy = 2 / this.subdivisions;
-
-          for (let i = 0; i < this.subdivisions; i++) {
-            for (let j = 0; j < this.subdivisions; j++) {
-              const x = -1 + i * dx;
-              const y = -1 + j * dy;
-              const z = this.f(x, y);
-
-              ctx.beginPath();
-              ctx.strokeStyle = '#3498db';
-              ctx.fillStyle = `rgba(52, 152, 219, ${0.2 + z * 0.3})`;
-              ctx.lineWidth = 1;
-
-              const points = [
-                this.to2D(x, y, 0),
-                this.to2D(x + dx, y, 0),
-                this.to2D(x + dx, y + dy, 0),
-                this.to2D(x, y + dy, 0),
-                this.to2D(x, y, z),
-                this.to2D(x + dx, y, z),
-                this.to2D(x + dx, y + dy, z),
-                this.to2D(x, y + dy, z),
-              ];
-
-              // Draw base
-              ctx.moveTo(points[0].x, points[0].y);
-              ctx.lineTo(points[1].x, points[1].y);
-              ctx.lineTo(points[2].x, points[2].y);
-              ctx.lineTo(points[3].x, points[3].y);
-              ctx.lineTo(points[0].x, points[0].y);
-
-              // Draw vertical edges
-              for (let k = 0; k < 4; k++) {
-                ctx.moveTo(points[k].x, points[k].y);
-                ctx.lineTo(points[k + 4].x, points[k + 4].y);
-              }
-
-              // Draw top
-              ctx.moveTo(points[4].x, points[4].y);
-              ctx.lineTo(points[5].x, points[5].y);
-              ctx.lineTo(points[6].x, points[6].y);
-              ctx.lineTo(points[7].x, points[7].y);
-              ctx.lineTo(points[4].x, points[4].y);
-
-              ctx.stroke();
-              ctx.fill();
-            }
-          }
-
-          this.updateIntegralValue();
-        }
-
-        calculateApproximation() {
-          const dx = 2 / this.subdivisions;
-          const dy = 2 / this.subdivisions;
-          let sum = 0;
-
-          for (let i = 0; i < this.subdivisions; i++) {
-            for (let j = 0; j < this.subdivisions; j++) {
-              const x = -1 + i * dx + dx / 2;
-              const y = -1 + j * dy + dy / 2;
-              sum += this.f(x, y) * dx * dy;
-            }
-          }
-          return sum.toFixed(4);
-        }
-
-        updateIntegralValue() {
-          document.getElementById('integralValue').textContent =
-            this.calculateApproximation();
-        }
-
-        setupControls() {
-          const subdivSlider = document.getElementById('subdivSlider');
-          const angleSlider = document.getElementById('angleSlider');
-          const subdivLabel = document.getElementById('subdivLabel');
-          const angleLabel = document.getElementById('angleLabel');
-
-          subdivSlider.addEventListener('input', (e) => {
-            this.subdivisions = parseInt(e.target.value);
-            subdivLabel.textContent = this.subdivisions;
-            this.draw();
-          });
-
-          angleSlider.addEventListener('input', (e) => {
-            this.angle = parseInt(e.target.value);
-            angleLabel.textContent = this.angle + '°';
-            this.draw();
-          });
-        }
-      }
-
-      // Initialize visualization when slide becomes active
-      Reveal.on('slidechanged', (event) => {
-        if (event.currentSlide.querySelector('#riemannCanvas')) {
-          new RiemannVisualization();
-        }
-      });
-
-      // Also initialize if we start on the visualization slide
-      if (document.querySelector('#riemannCanvas')) {
-        new RiemannVisualization();
-      }
     </script>
   </body>
 </html>
