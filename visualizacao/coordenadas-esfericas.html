@@ -1,0 +1,485 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Visualização de Coordenadas Esféricas</title>
+    <style>
+      .container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        font-family: Arial, sans-serif;
+      }
+      .controls {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin: 20px 0;
+        align-items: center;
+      }
+      .control-group {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        width: 300px;
+      }
+      .control-group label {
+        width: 120px;
+        text-align: right;
+      }
+      .control-group input {
+        flex-grow: 1;
+      }
+      canvas {
+        border: 1px solid #ccc;
+        margin: 20px 0;
+      }
+      .coordinates {
+        font-family: monospace;
+        margin-bottom: 20px;
+      }
+      .instructions {
+        color: #666;
+        font-style: italic;
+        margin: 10px 0 20px;
+        text-align: center;
+      }
+      details {
+        margin-top: 30px;
+        padding: 15px;
+        background-color: #f5f5f5;
+        border-radius: 5px;
+      }
+      details summary {
+        cursor: pointer;
+        font-weight: bold;
+        margin-bottom: 10px;
+      }
+      pre {
+        background-color: #fff;
+        padding: 15px;
+        border-radius: 3px;
+        overflow-x: auto;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2>Visualização de Coordenadas Esféricas</h2>
+      <p class="instructions">
+        Clique e arraste para girar a visualização. Use a roda do mouse para
+        zoom.
+      </p>
+
+      <canvas id="canvas" width="600" height="400"></canvas>
+
+      <div class="coordinates">
+        <p>
+          Coordenadas Esféricas: (r, θ, φ) = (<span id="spherical-coords"
+            >5, 45°, 45°</span
+          >)
+        </p>
+        <p>
+          Coordenadas Cartesianas: (x, y, z) = (<span id="cartesian-coords"
+            >0, 0, 0</span
+          >)
+        </p>
+      </div>
+
+      <div class="controls">
+        <div class="control-group">
+          <label for="r">r (raio): <span id="r-value">5</span></label>
+          <input type="range" id="r" min="0" max="10" step="0.1" value="5" />
+        </div>
+        <div class="control-group">
+          <label for="theta"
+            >θ (theta): <span id="theta-value">45°</span></label
+          >
+          <input
+            type="range"
+            id="theta"
+            min="0"
+            max="360"
+            step="1"
+            value="45"
+          />
+        </div>
+        <div class="control-group">
+          <label for="phi">φ (phi): <span id="phi-value">45°</span></label>
+          <input type="range" id="phi" min="0" max="180" step="1" value="45" />
+        </div>
+      </div>
+
+      <details>
+        <summary>Prompt para gerar esta visualização</summary>
+        <pre>
+Criar uma visualização de coordenadas esféricas com:
+
+1. Canvas 3D interativo:
+   - Eixos X, Y, Z coloridos
+   - Grid no plano XY em cinza médio
+   - Esfera semitransparente mostrando o raio atual
+   - Rotação por arrasto do mouse
+   - Zoom com roda do mouse
+
+2. Elementos visuais:
+   - Ponto vermelho mostrando a posição atual
+   - Linha do raio até o ponto
+   - Arco theta (laranja) no plano XY
+   - Arco phi (roxo) rotacionado com o raio
+   - Projeções nos planos
+
+3. Controles:
+   - Slider para raio (r): 0 a 10
+   - Slider para theta (θ): 0° a 360°
+   - Slider para phi (φ): 0° a 180°
+
+4. Informações:
+   - Coordenadas esféricas atuais
+   - Coordenadas cartesianas calculadas
+
+5. Layout:
+   - Título e instruções no topo
+   - Canvas centralizado
+   - Coordenadas abaixo do canvas
+   - Controles deslizantes alinhados verticalmente
+</pre
+        >
+      </details>
+    </div>
+
+    <script>
+      // [Configuração inicial e funções auxiliares mantidas]
+      const canvas = document.getElementById('canvas');
+      const ctx = canvas.getContext('2d');
+      const rSlider = document.getElementById('r');
+      const thetaSlider = document.getElementById('theta');
+      const phiSlider = document.getElementById('phi');
+      const rValue = document.getElementById('r-value');
+      const thetaValue = document.getElementById('theta-value');
+      const phiValue = document.getElementById('phi-value');
+      const sphericalCoords = document.getElementById('spherical-coords');
+      const cartesianCoords = document.getElementById('cartesian-coords');
+
+      const centerX = canvas.width / 2;
+      const centerY = canvas.height / 2;
+      let scale = 30;
+      let viewRotationX = 30;
+      let viewRotationY = -30;
+      let isDragging = false;
+      let lastMouseX = 0;
+      let lastMouseY = 0;
+
+      function toRadians(degrees) {
+        return (degrees * Math.PI) / 180;
+      }
+
+      function sphericalToCartesian(r, theta, phi) {
+        const thetaRad = toRadians(theta);
+        const phiRad = toRadians(phi);
+
+        const x = r * Math.sin(phiRad) * Math.cos(thetaRad);
+        const y = r * Math.sin(phiRad) * Math.sin(thetaRad);
+        const z = r * Math.cos(phiRad);
+
+        return { x, y, z };
+      }
+
+      function rotatePoint(x, y, z) {
+        const cosX = Math.cos(toRadians(viewRotationX));
+        const sinX = Math.sin(toRadians(viewRotationX));
+        const y1 = y * cosX - z * sinX;
+        const z1 = y * sinX + z * cosX;
+
+        const cosY = Math.cos(toRadians(viewRotationY));
+        const sinY = Math.sin(toRadians(viewRotationY));
+        const x2 = x * cosY + z1 * sinY;
+        const z2 = -x * sinY + z1 * cosY;
+
+        return { x: x2, y: y1, z: z2 };
+      }
+
+      function project(x, y, z) {
+        const point = rotatePoint(x, y, z);
+        return {
+          x: centerX + point.x * scale,
+          y: centerY + point.y * scale,
+          z: point.z,
+        };
+      }
+
+      function drawLine3D(x1, y1, z1, x2, y2, z2, style) {
+        const start = project(x1, y1, z1);
+        const end = project(x2, y2, z2);
+
+        ctx.beginPath();
+        ctx.strokeStyle = style.color || '#000';
+        ctx.lineWidth = style.width || 1;
+        if (style.dash) ctx.setLineDash(style.dash);
+        ctx.moveTo(start.x, start.y);
+        ctx.lineTo(end.x, end.y);
+        ctx.stroke();
+        ctx.setLineDash([]);
+      }
+
+      function drawArcXY(r, startTheta, endTheta, color) {
+        const steps = 50;
+        ctx.beginPath();
+        ctx.strokeStyle = color;
+        ctx.lineWidth = 2;
+
+        for (let i = 0; i <= steps; i++) {
+          const theta = startTheta + (endTheta - startTheta) * (i / steps);
+          const thetaRad = toRadians(theta);
+          const x = r * Math.cos(thetaRad);
+          const y = r * Math.sin(thetaRad);
+          const projected = project(x, y, 0);
+
+          if (i === 0) {
+            ctx.moveTo(projected.x, projected.y);
+          } else {
+            ctx.lineTo(projected.x, projected.y);
+          }
+        }
+        ctx.stroke();
+      }
+
+      function drawArcYZ(r, phi, color) {
+        const steps = 50;
+        ctx.beginPath();
+        ctx.strokeStyle = color;
+        ctx.lineWidth = 2;
+
+        for (let i = 0; i <= steps; i++) {
+          const currentPhi = (i / steps) * phi;
+          const phiRad = toRadians(currentPhi);
+          const y = r * Math.sin(phiRad);
+          const z = r * Math.cos(phiRad);
+          const projected = project(0, y, z);
+
+          if (i === 0) {
+            ctx.moveTo(projected.x, projected.y);
+          } else {
+            ctx.lineTo(projected.x, projected.y);
+          }
+        }
+        ctx.stroke();
+      }
+
+      function drawSphere(radius) {
+        const steps = 20;
+        // Desenhar círculos horizontais
+        for (let phi = 0; phi <= 180; phi += 15) {
+          const phiRad = toRadians(phi);
+          ctx.beginPath();
+          ctx.strokeStyle = 'rgba(200, 200, 200, 0.2)';
+          ctx.lineWidth = 1;
+
+          for (let theta = 0; theta <= 360; theta += 5) {
+            const thetaRad = toRadians(theta);
+            const r = radius * Math.sin(phiRad);
+            const x = r * Math.cos(thetaRad);
+            const y = r * Math.sin(thetaRad);
+            const z = radius * Math.cos(phiRad);
+
+            const projected = project(x, y, z);
+            if (theta === 0) {
+              ctx.moveTo(projected.x, projected.y);
+            } else {
+              ctx.lineTo(projected.x, projected.y);
+            }
+          }
+          ctx.stroke();
+        }
+
+        // Desenhar círculos verticais
+        for (let theta = 0; theta < 360; theta += 15) {
+          const thetaRad = toRadians(theta);
+          ctx.beginPath();
+          ctx.strokeStyle = 'rgba(200, 200, 200, 0.2)';
+
+          for (let phi = 0; phi <= 180; phi += 5) {
+            const phiRad = toRadians(phi);
+            const r = radius * Math.sin(phiRad);
+            const x = r * Math.cos(thetaRad);
+            const y = r * Math.sin(thetaRad);
+            const z = radius * Math.cos(phiRad);
+
+            const projected = project(x, y, z);
+            if (phi === 0) {
+              ctx.moveTo(projected.x, projected.y);
+            } else {
+              ctx.lineTo(projected.x, projected.y);
+            }
+          }
+          ctx.stroke();
+        }
+      }
+
+      function drawCoordinateSystem() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // Desenhar grid no plano XY
+        const gridSize = 5;
+        ctx.strokeStyle = '#eee';
+        ctx.lineWidth = 0.5;
+        for (let i = -gridSize; i <= gridSize; i++) {
+          drawLine3D(i, -gridSize, 0, i, gridSize, 0, {
+            color: '#eee',
+            width: 0.5,
+          });
+          drawLine3D(-gridSize, i, 0, gridSize, i, 0, {
+            color: '#eee',
+            width: 0.5,
+          });
+        }
+
+        // Desenhar grid no plano YZ
+        for (let i = -gridSize; i <= gridSize; i++) {
+          drawLine3D(0, i, -gridSize, 0, i, gridSize, {
+            color: '#eee',
+            width: 0.5,
+          });
+          drawLine3D(0, -gridSize, i, 0, gridSize, i, {
+            color: '#eee',
+            width: 0.5,
+          });
+        }
+
+        // Eixos principais
+        drawLine3D(-gridSize, 0, 0, gridSize, 0, 0, {
+          color: '#FF0000',
+          width: 2,
+        }); // X
+        drawLine3D(0, -gridSize, 0, 0, gridSize, 0, {
+          color: '#00FF00',
+          width: 2,
+        }); // Y
+        drawLine3D(0, 0, -gridSize, 0, 0, gridSize, {
+          color: '#0000FF',
+          width: 2,
+        }); // Z
+
+        // Rótulos dos eixos
+        const origin = project(0, 0, 0);
+        const xEnd = project(gridSize, 0, 0);
+        const yEnd = project(0, gridSize, 0);
+        const zEnd = project(0, 0, gridSize);
+
+        ctx.font = '12px Arial';
+        ctx.fillStyle = '#FF0000';
+        ctx.fillText('X', xEnd.x, xEnd.y);
+        ctx.fillStyle = '#00FF00';
+        ctx.fillText('Y', yEnd.x, yEnd.y);
+        ctx.fillStyle = '#0000FF';
+        ctx.fillText('Z', zEnd.x, zEnd.y);
+      }
+
+      function drawPoint(r, theta, phi) {
+        const { x, y, z } = sphericalToCartesian(r, theta, phi);
+        const projected = project(x, y, z);
+        const origin = project(0, 0, 0);
+
+        // Projeção no plano XY
+        const xyProjection = project(x, y, 0);
+        drawLine3D(0, 0, 0, x, y, 0, { color: '#999', dash: [5, 5] }); // Raio projetado
+        drawLine3D(x, y, z, x, y, 0, { color: '#666', dash: [5, 5] }); // Linha vertical até XY
+        drawArcXY(Math.sqrt(x * x + y * y), 0, theta, '#FF8C00'); // Arco theta
+
+        // Arco phi rotacionado
+        const thetaRad = toRadians(theta);
+        for (let i = 0; i <= 50; i++) {
+          const currentPhi = (i / 50) * phi;
+          const phiRad = toRadians(currentPhi);
+          const radius = r * Math.sin(phiRad);
+          const height = r * Math.cos(phiRad);
+          const arcX = radius * Math.cos(thetaRad);
+          const arcY = radius * Math.sin(thetaRad);
+          const arcZ = height;
+
+          const projected = project(arcX, arcY, arcZ);
+          if (i === 0) {
+            ctx.beginPath();
+            ctx.strokeStyle = '#9932CC';
+            ctx.lineWidth = 2;
+            ctx.moveTo(projected.x, projected.y);
+          } else {
+            ctx.lineTo(projected.x, projected.y);
+          }
+        }
+        ctx.stroke();
+
+        // Linha do raio principal
+        drawLine3D(0, 0, 0, x, y, z, { color: '#333', width: 2 });
+
+        // Ponto
+        ctx.beginPath();
+        ctx.fillStyle = 'red';
+        ctx.arc(projected.x, projected.y, 5, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Atualizar coordenadas
+        sphericalCoords.textContent = `${r.toFixed(1)}, ${theta.toFixed(0)}°, ${phi.toFixed(0)}°`;
+        cartesianCoords.textContent = `${x.toFixed(2)}, ${y.toFixed(2)}, ${z.toFixed(2)}`;
+      }
+
+      function update() {
+        const r = parseFloat(rSlider.value);
+        const theta = parseFloat(thetaSlider.value);
+        const phi = parseFloat(phiSlider.value);
+
+        rValue.textContent = r.toFixed(1);
+        thetaValue.textContent = theta.toFixed(0) + '°';
+        phiValue.textContent = phi.toFixed(0) + '°';
+
+        drawCoordinateSystem();
+        drawSphere(r);
+        drawPoint(r, theta, phi);
+      }
+
+      // [Eventos do mouse mantidos iguais]
+      canvas.addEventListener('mousedown', (e) => {
+        isDragging = true;
+        lastMouseX = e.clientX;
+        lastMouseY = e.clientY;
+      });
+
+      canvas.addEventListener('mousemove', (e) => {
+        if (!isDragging) return;
+
+        const deltaX = e.clientX - lastMouseX;
+        const deltaY = e.clientY - lastMouseY;
+
+        viewRotationY += deltaX * 0.5;
+        viewRotationX += deltaY * 0.5;
+
+        viewRotationX = Math.max(-89, Math.min(89, viewRotationX));
+
+        lastMouseX = e.clientX;
+        lastMouseY = e.clientY;
+
+        update();
+      });
+
+      canvas.addEventListener('mouseup', () => {
+        isDragging = false;
+      });
+
+      canvas.addEventListener('mouseleave', () => {
+        isDragging = false;
+      });
+
+      canvas.addEventListener('wheel', (e) => {
+        e.preventDefault();
+        scale *= e.deltaY > 0 ? 0.9 : 1.1;
+        scale = Math.max(10, Math.min(100, scale));
+        update();
+      });
+
+      rSlider.addEventListener('input', update);
+      thetaSlider.addEventListener('input', update);
+      phiSlider.addEventListener('input', update);
+
+      update();
+    </script>
+  </body>
+</html>
