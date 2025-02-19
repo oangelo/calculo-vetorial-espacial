@@ -1,0 +1,231 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Visualização de Densidade de Asteroides</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <style>
+      body {
+        margin: 0;
+        background-color: #000;
+      }
+      canvas {
+        display: block;
+      }
+      #info {
+        position: absolute;
+        top: 10px;
+        width: 100%;
+        text-align: center;
+        color: white;
+        font-family: Arial, sans-serif;
+        pointer-events: none;
+      }
+      #controls {
+        position: absolute;
+        bottom: 10px;
+        left: 10px;
+        color: white;
+        font-family: Arial, sans-serif;
+        background: rgba(0, 0, 0, 0.5);
+        padding: 10px;
+        border-radius: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="info">
+      Campo de Asteroides - Densidade Linear
+      <br />
+      A densidade de asteroides diminui linearmente com a distância ao centro
+    </div>
+    <div id="controls">
+      <label
+        >Velocidade de Rotação:
+        <input
+          type="range"
+          id="speed"
+          min="0"
+          max="0.05"
+          step="0.001"
+          value="0.01"
+      /></label>
+      <br />
+      <label
+        >Número de Asteroides:
+        <input
+          type="range"
+          id="numAsteroids"
+          min="100"
+          max="2000"
+          step="100"
+          value="1000"
+      /></label>
+    </div>
+    <script>
+      // Configuração inicial
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(
+        75,
+        window.innerWidth / window.innerHeight,
+        0.1,
+        1000
+      );
+      const renderer = new THREE.WebGLRenderer({ antialias: true });
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      document.body.appendChild(renderer.domElement);
+
+      // Adicionar luz ambiente
+      const ambientLight = new THREE.AmbientLight(0x404040);
+      scene.add(ambientLight);
+
+      // Adicionar luz direcional
+      const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+      directionalLight.position.set(5, 3, 5);
+      scene.add(directionalLight);
+
+      // Configuração da câmera
+      camera.position.z = 50;
+
+      // Criação do grupo de asteroides
+      const asteroidField = new THREE.Group();
+      scene.add(asteroidField);
+
+      // Função para criar geometria irregular de asteroide
+      function createAsteroidGeometry() {
+        const baseGeometry = new THREE.IcosahedronGeometry(0.3, 1);
+        const vertices = baseGeometry.attributes.position;
+
+        // Deformar vértices aleatoriamente
+        for (let i = 0; i < vertices.count; i++) {
+          const x = vertices.getX(i);
+          const y = vertices.getY(i);
+          const z = vertices.getZ(i);
+
+          const deformation = 0.2 * (Math.random() - 0.5);
+          vertices.setXYZ(
+            i,
+            x * (1 + deformation),
+            y * (1 + deformation),
+            z * (1 + deformation)
+          );
+        }
+
+        return baseGeometry;
+      }
+
+      // Função para criar material de asteroide
+      function createAsteroidMaterial() {
+        const type = Math.random();
+
+        if (type < 0.7) {
+          // Rochoso
+          const color = new THREE.Color();
+          const hue = 0.05 + Math.random() * 0.05; // Tons de marrom
+          const saturation = 0.3 + Math.random() * 0.2;
+          const lightness = 0.2 + Math.random() * 0.3;
+          color.setHSL(hue, saturation, lightness);
+
+          return new THREE.MeshStandardMaterial({
+            color: color,
+            roughness: 0.8 + Math.random() * 0.2,
+            metalness: 0.1 + Math.random() * 0.3,
+          });
+        } else if (type < 0.9) {
+          // Metálico
+          return new THREE.MeshStandardMaterial({
+            color: new THREE.Color(0x888888 + Math.random() * 0x444444),
+            roughness: 0.3 + Math.random() * 0.3,
+            metalness: 0.8 + Math.random() * 0.2,
+          });
+        } else {
+          // Gelo
+          return new THREE.MeshStandardMaterial({
+            color: new THREE.Color(0xaaaaff),
+            roughness: 0.2,
+            metalness: 0.1,
+            transparent: true,
+            opacity: 0.8,
+          });
+        }
+      }
+
+      // Função para criar asteroides com densidade variável
+      function createAsteroids(numAsteroids) {
+        // Limpar asteroides existentes
+        while (asteroidField.children.length > 0) {
+          asteroidField.remove(asteroidField.children[0]);
+        }
+
+        const maxRadius = 40; // Raio máximo do campo
+
+        for (let i = 0; i < numAsteroids; i++) {
+          // Posição aleatória em coordenadas esféricas
+          const radius = Math.random() * maxRadius;
+          const theta = Math.random() * Math.PI * 2;
+          const phi = Math.acos(2 * Math.random() - 1);
+
+          // Probabilidade baseada na distância (densidade linear)
+          const probability = 1 - radius / maxRadius;
+
+          if (Math.random() < probability) {
+            // Converter para coordenadas cartesianas
+            const x = radius * Math.sin(phi) * Math.cos(theta);
+            const y = radius * Math.sin(phi) * Math.sin(theta);
+            const z = radius * Math.cos(phi);
+
+            // Criar asteroide com geometria e material personalizado
+            const asteroid = new THREE.Mesh(
+              createAsteroidGeometry(),
+              createAsteroidMaterial()
+            );
+
+            asteroid.position.set(x, y, z);
+
+            // Rotação aleatória
+            asteroid.rotation.x = Math.random() * Math.PI;
+            asteroid.rotation.y = Math.random() * Math.PI;
+            asteroid.rotation.z = Math.random() * Math.PI;
+
+            // Escala aleatória
+            const scale = 0.8 + Math.random() * 0.8;
+            asteroid.scale.set(scale, scale, scale);
+
+            asteroidField.add(asteroid);
+          }
+        }
+      }
+
+      // Controles
+      const speedControl = document.getElementById('speed');
+      const numAsteroidsControl = document.getElementById('numAsteroids');
+
+      // Eventos de controle
+      numAsteroidsControl.addEventListener('input', () => {
+        createAsteroids(parseInt(numAsteroidsControl.value));
+      });
+
+      // Criar asteroides iniciais
+      createAsteroids(parseInt(numAsteroidsControl.value));
+
+      // Animação
+      function animate() {
+        requestAnimationFrame(animate);
+
+        // Rotação do campo de asteroides
+        asteroidField.rotation.y += parseFloat(speedControl.value);
+        asteroidField.rotation.x += parseFloat(speedControl.value) * 0.5;
+
+        renderer.render(scene, camera);
+      }
+
+      // Redimensionamento da janela
+      window.addEventListener('resize', () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+      });
+
+      animate();
+    </script>
+  </body>
+</html>
