@@ -1,34 +1,46 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-BR">
   <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cálculo Vetorial: Funções de Várias Variáveis Reais a Valores Vetoriais</title>
-    <link rel="stylesheet" href="reveal.js/dist/reveal.css">
-    <link rel="stylesheet" href="space-theme.css">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      Cálculo Vetorial: Funções de Várias Variáveis Reais a Valores Vetoriais
+    </title>
+    <link rel="stylesheet" href="reveal.js/dist/reveal.css" />
+    <link rel="stylesheet" href="space-theme.css" />
     <script src="reveal.js/dist/reveal.js"></script>
     <script src="reveal.js/plugin/math/math.js"></script>
     <script>
-    window.onload = function() {
-    Reveal.initialize({
-    controls: true,
-    progress: true,
-    center: true,
-    hash: true,
-    plugins: [ RevealMath.MathJax3 ]
-    });
-    };
+      window.onload = function () {
+        Reveal.initialize({
+          controls: true,
+          progress: true,
+          center: true,
+          hash: true,
+          plugins: [RevealMath.MathJax3],
+        });
+      };
     </script>
+    <style>
+      .canvas-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+      }
+      canvas {
+        border: 1px solid #333;
+        background-color: #000033;
+      }
+    </style>
   </head>
   <body>
     <div class="reveal">
       <div class="slides">
         <!-- Slide de Título -->
         <section>
-          <section>
-            <h1>Funções de Várias Variáveis Reais a Valores Vetoriais</h1>
-            <h3>Cálculo Vetorial</h3>
-          </section>
+          <h1>Funções de Várias Variáveis Reais a Valores Vetoriais</h1>
+          <h3>Cálculo Vetorial</h3>
         </section>
 
         <!-- Funções Vetoriais-->
@@ -46,19 +58,34 @@
             <h2>Do Unidimensional ao Multidimensional</h2>
             <p>Para compreender funções vetoriais, partamos do familiar:</p>
             <p><strong>Função Escalar:</strong> \(f(x) = 2x\)</p>
-            <p>Para cada número real \(x\), obtemos um único número real \(y\).</p>
-            <p><strong>Função Vetorial:</strong> \(\vec{F}(t) = (x(t), y(t), z(t))\)</p>
-            <p>Para cada número real \(t\), obtemos um vetor com múltiplas componentes.</p>
+            <p>
+              Para cada número real \(x\), obtemos um único número real \(y\).
+            </p>
+            <p>
+              <strong>Função Vetorial:</strong> \(\vec{F}(t) = (x(t), y(t),
+              z(t))\)
+            </p>
+            <p>
+              Para cada número real \(t\), obtemos um vetor com múltiplas
+              componentes.
+            </p>
           </section>
 
           <section>
             <h2>Funções Vetoriais</h2>
             <div class="fragment">
-              <p>Uma função vetorial é qualquer função que produz vetores como saída</p>
+              <p>
+                Uma função vetorial é qualquer função que produz vetores como
+                saída
+              </p>
               <p>Podem ter diferentes tipos de domínio, por exemplo:</p>
               <ul>
-                <li>\(\vec{r}: \mathbb{R} \to \mathbb{R}^n\) (curva no espaço)</li>
-                <li>\(\vec{F}: \mathbb{R}^n \to \mathbb{R}^n\) (campo vetorial)</li>
+                <li>
+                  \(\vec{r}: \mathbb{R} \to \mathbb{R}^n\) (curva no espaço)
+                </li>
+                <li>
+                  \(\vec{F}: \mathbb{R}^n \to \mathbb{R}^n\) (campo vetorial)
+                </li>
                 <li>\(\vec{G}: \mathbb{R}^m \to \mathbb{R}^n\) (caso geral)</li>
               </ul>
             </div>
@@ -66,11 +93,24 @@
 
           <section>
             <h2>Funções Vetoriais: Uma Linguagem para Descrever o Movimento</h2>
-            <p>Quando descrevemos o movimento de um objeto no espaço, precisamos especificar múltiplas informações simultaneamente. Em cada instante \(t\), precisamos conhecer:</p>
+            <p>
+              Quando descrevemos o movimento de um objeto no espaço, precisamos
+              especificar múltiplas informações simultaneamente. Em cada
+              instante \(t\), precisamos conhecer:
+            </p>
             <ul>
-              <li>Sua posição em relação a diferentes eixos: \((x(t), y(t), z(t))\)</li>
-              <li>Sua velocidade em cada direção: \((\dot{x}(t), \dot{y}(t), \dot{z}(t))\)</li>
-              <li>As forças que atuam sobre ele: \(\vec{F}(t) = (F_x(t), F_y(t), F_z(t))\)</li>
+              <li>
+                Sua posição em relação a diferentes eixos: \((x(t), y(t),
+                z(t))\)
+              </li>
+              <li>
+                Sua velocidade em cada direção: \((\dot{x}(t), \dot{y}(t),
+                \dot{z}(t))\)
+              </li>
+              <li>
+                As forças que atuam sobre ele: \(\vec{F}(t) = (F_x(t), F_y(t),
+                F_z(t))\)
+              </li>
             </ul>
           </section>
 
@@ -78,33 +118,63 @@
             <h2>Exemplo Fundamental</h2>
             <p><strong>1. Movimento Circular</strong></p>
             <p>\[\vec{r}(t) = (R\cos t, R\sin t)\]</p>
-            <p>Esta função descreve uma trajetória circular de raio R no plano.</p>
+            <p>
+              Esta função descreve uma trajetória circular de raio R no plano.
+            </p>
+          </section>
+
+          <section>
+            <h2>Campo Gravitacional Terra-Lua</h2>
+            <div class="canvas-container">
+              <canvas id="spaceCanvas" width="800" height="550"></canvas>
+            </div>
           </section>
 
           <section>
             <h2>Visualização Geométrica</h2>
-            <p>Uma função vetorial \(\vec{F}: \mathbb{R}^n \to \mathbb{R}^m\) pode ser interpretada de três formas complementares:</p>
+            <p>
+              Uma função vetorial \(\vec{F}: \mathbb{R}^n \to \mathbb{R}^m\)
+              pode ser interpretada de três formas complementares:
+            </p>
             <ul>
-              <li>Como uma curva paramétrica: \(\vec{r}(t) = (x(t), y(t), z(t))\)</li>
-              <li>Como um campo vetorial: \(\vec{F}(x,y) = (P(x,y), Q(x,y))\)</li>
-              <li>Como uma transformação: \(\vec{T}: \mathbb{R}^2 \to \mathbb{R}^2\)</li>
+              <li>
+                Como uma curva paramétrica: \(\vec{r}(t) = (x(t), y(t), z(t))\)
+              </li>
+              <li>
+                Como um campo vetorial: \(\vec{F}(x,y) = (P(x,y), Q(x,y))\)
+              </li>
+              <li>
+                Como uma transformação: \(\vec{T}: \mathbb{R}^2 \to
+                \mathbb{R}^2\)
+              </li>
             </ul>
           </section>
 
           <section>
             <h2>Aplicações na Física</h2>
             <p><strong>Campos Gravitacionais:</strong></p>
-            <p>O campo gravitacional é uma função vetorial que associa a cada ponto do espaço um vetor força:</p>
+            <p>
+              O campo gravitacional é uma função vetorial que associa a cada
+              ponto do espaço um vetor força:
+            </p>
             <p>\[\vec{g}(x,y,z) = -G\frac{M}{r^3}(x,y,z)\]</p>
           </section>
 
           <section>
             <h2>Formalização Matemática</h2>
-            <p>Uma função vetorial \(\vec{F}: \mathbb{R}^n \to \mathbb{R}^m\) é um mapeamento que:</p>
+            <p>
+              Uma função vetorial \(\vec{F}: \mathbb{R}^n \to \mathbb{R}^m\) é
+              um mapeamento que:
+            </p>
             <ul>
-              <li>Recebe \(n\) variáveis independentes: \((x_1, x_2, ..., x_n)\)</li>
+              <li>
+                Recebe \(n\) variáveis independentes: \((x_1, x_2, ..., x_n)\)
+              </li>
               <li>Produz \(m\) componentes: \((y_1, y_2, ..., y_m)\)</li>
-              <li>De forma que: \(\vec{F}(x_1, ..., x_n) = (f_1(x_1, ..., x_n), ..., f_m(x_1, ..., x_n))\)</li>
+              <li>
+                De forma que: \(\vec{F}(x_1, ..., x_n) = (f_1(x_1, ..., x_n),
+                ..., f_m(x_1, ..., x_n))\)
+              </li>
             </ul>
           </section>
         </section>
@@ -113,18 +183,21 @@
         <section>
           <section>
             <h2>Campo Vetorial</h2>
-            <p>Definição: Um campo vetorial \(\vec{F}\) em um conjunto aberto \(U \subseteq \mathbb{R}^n\) é uma função</p>
+            <p>
+              Definição: Um campo vetorial \(\vec{F}\) em um conjunto aberto \(U
+              \subseteq \mathbb{R}^n\) é uma função
+            </p>
             <p>\(\vec{F}: U \to \mathbb{R}^n\)</p>
-            <p>que associa a cada ponto \(\vec{p} \in U\) um vetor \(\vec{F}(\vec{p}) \in \mathbb{R}^n\)</p>
-            <div class="fragment">
-              (⌐⊙_⊙) Entendeu? Não?! Nem eu. Calma! 
-            </div>
+            <p>
+              que associa a cada ponto \(\vec{p} \in U\) um vetor
+              \(\vec{F}(\vec{p}) \in \mathbb{R}^n\)
+            </p>
+            <div class="fragment">(⌐⊙_⊙) Entendeu? Não?! Nem eu. Calma!</div>
             <div class="fragment">
               <p>Exemplo em \(\mathbb{R}^2\):</p>
               <p>\(\vec{F}(x,y) = (x^2-y)\vec{i} + (x+y^2)\vec{j}\)</p>
             </div>
           </section>
-
 
           <!-- Relação entre os Conceitos -->
           <section>
@@ -138,7 +211,10 @@
             </div>
             <div class="fragment">
               <p>Mas nem toda função vetorial é um campo vetorial!</p>
-              <p>Exemplo: A trajetória de uma nave \(\vec{r}(t) = (x(t), y(t), z(t))\)</p>
+              <p>
+                Exemplo: A trajetória de uma nave \(\vec{r}(t) = (x(t), y(t),
+                z(t))\)
+              </p>
               <ul>
                 <li>É uma função vetorial (\(\mathbb{R} \to \mathbb{R}^3\))</li>
                 <li>Não é um campo vetorial (domínio diferente)</li>
@@ -154,7 +230,10 @@
               <ul>
                 <li>Entrada: um número real \(t\) (geralmente tempo)</li>
                 <li>Saída: um vetor em \(\mathbb{R}^n\)</li>
-                <li>Exemplo: trajetória de uma nave \(\vec{r}(t) = (x(t), y(t), z(t))\)</li>
+                <li>
+                  Exemplo: trajetória de uma nave \(\vec{r}(t) = (x(t), y(t),
+                  z(t))\)
+                </li>
               </ul>
             </div>
             <div class="fragment">
@@ -162,7 +241,10 @@
               <ul>
                 <li>Entrada: um ponto no espaço \((x,y,z)\)</li>
                 <li>Saída: um vetor nesse ponto</li>
-                <li>Exemplo: campo gravitacional \(\vec{F}(x,y,z)\) em cada ponto do espaço</li>
+                <li>
+                  Exemplo: campo gravitacional \(\vec{F}(x,y,z)\) em cada ponto
+                  do espaço
+                </li>
               </ul>
             </div>
           </section>
@@ -180,7 +262,10 @@
             </div>
             <div class="fragment">
               <p>Isso é um campo vetorial!</p>
-              <p>Para cada ponto do espaço, associamos um vetor que representa a força.</p>
+              <p>
+                Para cada ponto do espaço, associamos um vetor que representa a
+                força.
+              </p>
             </div>
           </section>
 
@@ -194,7 +279,10 @@
               <p>🛸 Trajetórias de naves espaciais</p>
             </div>
             <div class="fragment">
-              <p>Que outros exemplos de campos vetoriais você consegue identificar na exploração espacial?</p>
+              <p>
+                Que outros exemplos de campos vetoriais você consegue
+                identificar na exploração espacial?
+              </p>
             </div>
           </section>
 
@@ -227,8 +315,14 @@
             <div class="fragment">
               <p>Pontos especiais neste campo:</p>
               <ul>
-                <li>Na origem (0,0): \(\vec{F}(0,0) = (0)\vec{i} + (0)\vec{j}\) - similar a um ponto de Lagrange</li>
-                <li>No ponto (1,0): \(\vec{F}(1,0) = (1)\vec{i} + (1)\vec{j}\) - representa um fluxo diagonal</li>
+                <li>
+                  Na origem (0,0): \(\vec{F}(0,0) = (0)\vec{i} + (0)\vec{j}\) -
+                  similar a um ponto de Lagrange
+                </li>
+                <li>
+                  No ponto (1,0): \(\vec{F}(1,0) = (1)\vec{i} + (1)\vec{j}\) -
+                  representa um fluxo diagonal
+                </li>
               </ul>
             </div>
           </section>
@@ -252,25 +346,36 @@
         <section>
           <section>
             <h2>Rotacional</h2>
-            <p>Seja $\vec{F}(x,y,z) = P(x,y,z)\hat{i} + Q(x,y,z)\hat{j} + R(x,y,z)\hat{k}$ um campo vetorial. O rotacional de $\vec{F}$ é dado por:</p>
-            $$\text{rot }\vec{F} = \nabla \times \vec{F} = \begin{vmatrix} 
-            \hat{i} & \hat{j} & \hat{k} \\
-            \frac{\partial}{\partial x} & \frac{\partial}{\partial y} & \frac{\partial}{\partial z} \\
-            P & Q & R
-            \end{vmatrix}$$
-            $$= \left(\frac{\partial R}{\partial y} - \frac{\partial Q}{\partial z}\right)\hat{i} + \left(\frac{\partial P}{\partial z} - \frac{\partial R}{\partial x}\right)\hat{j} + \left(\frac{\partial Q}{\partial x} - \frac{\partial P}{\partial y}\right)\hat{k}$$
+            <p>
+              Seja $\vec{F}(x,y,z) = P(x,y,z)\hat{i} + Q(x,y,z)\hat{j} +
+              R(x,y,z)\hat{k}$ um campo vetorial. O rotacional de $\vec{F}$ é
+              dado por:
+            </p>
+            $$\text{rot }\vec{F} = \nabla \times \vec{F} = \begin{vmatrix}
+            \hat{i} & \hat{j} & \hat{k} \\ \frac{\partial}{\partial x} &
+            \frac{\partial}{\partial y} & \frac{\partial}{\partial z} \\ P & Q &
+            R \end{vmatrix}$$ $$= \left(\frac{\partial R}{\partial y} -
+            \frac{\partial Q}{\partial z}\right)\hat{i} + \left(\frac{\partial
+            P}{\partial z} - \frac{\partial R}{\partial x}\right)\hat{j} +
+            \left(\frac{\partial Q}{\partial x} - \frac{\partial P}{\partial
+            y}\right)\hat{k}$$
           </section>
 
           <section>
             <h3>Derivadas Parciais: Uma Revisão</h3>
             <p>Imagine um satélite mudando sua posição no espaço:</p>
-            <p>A derivada parcial $\frac{\partial F}{\partial x}$ mede a taxa de variação de $F$ na direção $x$, mantendo $y$ e $z$ constantes</p>
+            <p>
+              A derivada parcial $\frac{\partial F}{\partial x}$ mede a taxa de
+              variação de $F$ na direção $x$, mantendo $y$ e $z$ constantes
+            </p>
             <p>Como um radar rastreando movimento em uma única direção</p>
           </section>
 
           <section>
             <h3>Interpretação Intuitiva</h3>
-            <p>O rotacional mede a tendência de rotação do campo em cada ponto</p>
+            <p>
+              O rotacional mede a tendência de rotação do campo em cada ponto
+            </p>
             <p>Imagine um pequeno satélite de teste em cada ponto do espaço:</p>
             <ul>
               <li>Se ele tende a girar ➜ rotacional não nulo</li>
@@ -281,8 +386,12 @@
           <section>
             <h3>Operador Nabla (∇)</h3>
             <p>O operador vetorial nabla é definido como:</p>
-            $$\nabla = \frac{\partial}{\partial x}\hat{i} + \frac{\partial}{\partial y}\hat{j} + \frac{\partial}{\partial z}\hat{k}$$
-            <p>Como uma "sonda espacial" que mede variações em todas as direções!</p>
+            $$\nabla = \frac{\partial}{\partial x}\hat{i} +
+            \frac{\partial}{\partial y}\hat{j} + \frac{\partial}{\partial
+            z}\hat{k}$$
+            <p>
+              Como uma "sonda espacial" que mede variações em todas as direções!
+            </p>
           </section>
 
           <section>
@@ -300,14 +409,23 @@
         <section>
           <section>
             <h2>Divergente</h2>
-            <p>Seja $\vec{F}(x,y,z) = P\hat{i} + Q\hat{j} + R\hat{k}$ um campo vetorial</p>
-            $\text{div }\vec{F} = \nabla \cdot \vec{F} = \frac{\partial P}{\partial x} + \frac{\partial Q}{\partial y} + \frac{\partial R}{\partial z}$
+            <p>
+              Seja $\vec{F}(x,y,z) = P\hat{i} + Q\hat{j} + R\hat{k}$ um campo
+              vetorial
+            </p>
+            $\text{div }\vec{F} = \nabla \cdot \vec{F} = \frac{\partial
+            P}{\partial x} + \frac{\partial Q}{\partial y} + \frac{\partial
+            R}{\partial z}$
           </section>
 
           <section>
             <h3>Operador Laplaciano</h3>
             <p>O Laplaciano é um caso especial do divergente do gradiente:</p>
-            <p>$$\nabla^2f = \nabla \cdot (\nabla f) = \frac{\partial^2 f}{\partial x^2} + \frac{\partial^2 f}{\partial y^2} + \frac{\partial^2 f}{\partial z^2}$$</p>
+            <p>
+              $$\nabla^2f = \nabla \cdot (\nabla f) = \frac{\partial^2
+              f}{\partial x^2} + \frac{\partial^2 f}{\partial y^2} +
+              \frac{\partial^2 f}{\partial z^2}$$
+            </p>
             <p>Fundamental para:</p>
             <ul>
               <li>Equação do calor</li>
@@ -322,203 +440,441 @@
               <li>Mede o fluxo líquido do campo por unidade de volume</li>
               <li>Fonte (divergente > 0): campo "saindo" do ponto</li>
               <li>Sumidouro (divergente < 0): campo "entrando" no ponto</li>
-            <li>Campo solenoidal (divergente = 0): fluxo conservado</li>
-          </ul>
-        </section>
+              <li>Campo solenoidal (divergente = 0): fluxo conservado</li>
+            </ul>
+          </section>
 
-        <section>
-          <h3>Analogia da Guerra Fria</h3>
-          <p>Imagine um radar rastreando mísseis:</p>
-          <ul>
-            <li>Divergente positivo: detecção de lançamento</li>
-            <li>Divergente negativo: ponto de impacto previsto</li>
-            <li>Divergente zero: míssil em trajetória balística</li>
-          </ul>
-        </section>
-      </section>
-
-
-      <!-- Limite e Continuidade -->
-      <section>
-        <section>
-          <h2>Limite e Continuidade</h2>
-          <p>Definição formal: Uma função vetorial \(\vec{F}: D \subset \mathbb{R}^n \to \mathbb{R}^m\) é contínua em \(\vec{a}\) se:</p>
-          <div class="fragment">
-            <p>\[\lim_{\vec{x} \to \vec{a}} \vec{F}(\vec{x}) = \vec{F}(\vec{a})\]</p>
-            <p>Ou seja, para todo \(\varepsilon > 0\), existe \(\delta > 0\) tal que:</p>
-            <p>\[\|\vec{x} - \vec{a}\| < \delta \implies \|\vec{F}(\vec{x}) - \vec{F}(\vec{a})\| < \varepsilon\]</p>
-          </div>
-        </section>
-
-        <!-- Interpretação Geométrica -->
-        <section>
-          <h2>Interpretação Geométrica</h2>
-          <p>Imagine um satélite em órbita:</p>
-          <div class="fragment">
-            <p>Sua trajetória é descrita por uma função vetorial contínua \(\vec{r}(t)\)</p>
-            <p>\[\vec{r}(t) = \begin{pmatrix} x(t) \\ y(t) \\ z(t) \end{pmatrix}\]</p>
-          </div>
-          <div class="fragment">
-            <p>A continuidade garante que não há "saltos" na trajetória</p>
-          </div>
-        </section>
-
-        <!-- Exemplo Prático -->
-        <section>
-          <h2>Exemplo: Trajetória de Lançamento</h2>
-          <p>Considere a trajetória simplificada de um foguete:</p>
-          <div class="fragment">
-            <p>\[\vec{r}(t) = \begin{pmatrix} v_0t \\ h_0 + v_0t - \frac{1}{2}gt^2 \end{pmatrix}\]</p>
-            <p>Onde:</p>
+          <section>
+            <h3>Analogia da Guerra Fria</h3>
+            <p>Imagine um radar rastreando mísseis:</p>
             <ul>
-              <li>\(v_0\): velocidade inicial</li>
-              <li>\(h_0\): altura inicial</li>
-              <li>\(g\): aceleração da gravidade</li>
+              <li>Divergente positivo: detecção de lançamento</li>
+              <li>Divergente negativo: ponto de impacto previsto</li>
+              <li>Divergente zero: míssil em trajetória balística</li>
             </ul>
-          </div>
+          </section>
         </section>
 
-        <!-- Aplicação: Detecção de Descontinuidades -->
+        <!-- Limite e Continuidade -->
         <section>
-          <h2>Aplicação: Detecção de Falhas</h2>
-          <p>Durante a corrida espacial, detectar descontinuidades era crucial:</p>
-          <div class="fragment">
-            <ul>
-              <li>Falhas em sensores</li>
-              <li>Interferências em sinais de rádio</li>
-              <li>Anomalias em trajetórias</li>
-            </ul>
-          </div>
-          <div class="fragment">
-            <p>Uma descontinuidade pode indicar:</p>
-            <p>\[\lim_{t \to t_0^-} \vec{F}(t) \neq \lim_{t \to t_0^+} \vec{F}(t)\]</p>
-          </div>
-        </section>
-
-        <!-- Critério de Continuidade -->
-        <section>
-          <h2>Critério de Continuidade</h2>
-          <p>Uma função vetorial \(\vec{F}(x,y) = \begin{pmatrix} F_1(x,y) \\ F_2(x,y) \end{pmatrix}\) é contínua se e somente se:</p>
-          <div class="fragment">
-            <p>Cada componente \(F_1(x,y)\) e \(F_2(x,y)\) é contínua</p>
-            <p>Exemplo: Campo gravitacional da Terra</p>
-            <p>\[\vec{g}(x,y,z) = -G\frac{M}{r^3}\begin{pmatrix} x \\ y \\ z \end{pmatrix}\]</p>
-          </div>
-        </section>
-      </section>
-
-      <!-- Derivadas Parciais -->
-      <section>
-        <section>
-          <h2>Derivadas Parciais</h2>
-          <p>Para uma função \(\mathbf{F}(x,y)\), definimos:</p>
-          <div class="fragment">
-            <p>\(\frac{\partial \mathbf{F}}{\partial x} = \lim_{h \to 0} \frac{\mathbf{F}(x+h,y) - \mathbf{F}(x,y)}{h}\)</p>
-            <p>\(\frac{\partial \mathbf{F}}{\partial y} = \lim_{h \to 0} \frac{\mathbf{F}(x,y+h) - \mathbf{F}(x,y)}{h}\)</p>
-          </div>
-          <div class="fragment">
-            <p class="note">Interpretação: Taxa de variação em uma direção, mantendo as outras variáveis constantes</p>
-          </div>
-        </section>
-
-        <!-- Slide 2: Visualização Geométrica -->
-        <section>
-          <h2>Visualização Geométrica</h2>
-          <div class="two-col">
-            <div class="col">
-              <p>Derivada em x: "Fatia" perpendicular ao eixo y</p>
-            </div>
-            <div class="col fragment">
-              <p>Derivada em y: "Fatia" perpendicular ao eixo x</p>
-            </div>
-          </div>
-        </section>
-
-        <!-- Slide 3: Aplicação Espacial -->
-        <section>
-          <h2>Aplicação: Trajetória Orbital</h2>
-          <div class="content-box">
-            <p class="historical-note">A missão Vostok 1 (1961) marcou a primeira vez que um ser humano orbitou a Terra. Em meio à Guerra Fria, os soviéticos precisavam garantir não só que Yuri Gagarin chegasse ao espaço, mas que retornasse em segurança - um desafio matemático sem precedentes.</p>
-            <p>Para este feito histórico, as derivadas parciais foram cruciais para:</p>
-            <ul class="fragment">
-              <li>Calcular variações de velocidade em diferentes direções</li>
-              <li>Otimizar consumo de combustível</li>
-              <li>Prever desvios de trajetória</li>
-            </ul>
-          </div>
-        </section>
-
-        <!-- Slide 4: Exemplo Prático -->
-        <section>
-          <h2>Exemplo: Campo Gravitacional</h2>
-          <div class="fragment">
-            <p>Potencial gravitacional: \(\phi(x,y,z) = -\frac{GM}{r}\)</p>
-            <p>onde \(r = \sqrt{x^2 + y^2 + z^2}\)</p>
-          </div>
-          <div class="fragment">
-            <p>Calcule: \(\frac{\partial \phi}{\partial x}\)</p>
-          </div>
-        </section>
-
-        <!-- Slide 5: Exercício Interativo -->
-        <section>
-          <h2>Exercício: Órbita Lunar</h2>
-          <div class="problem-box">
-            <p>Para uma órbita circular de raio R, temos a energia total:</p>
-            <p>\(E(v,r) = \frac{1}{2}mv^2 - \frac{GMm}{r}\)</p>
+          <section>
+            <h2>Limite e Continuidade</h2>
+            <p>
+              Definição formal: Uma função vetorial \(\vec{F}: D \subset
+              \mathbb{R}^n \to \mathbb{R}^m\) é contínua em \(\vec{a}\) se:
+            </p>
             <div class="fragment">
-              <p>Calcule:</p>
-              <ol>
-                <li>\(\frac{\partial E}{\partial v}\) (variação com velocidade)</li>
-                <li>\(\frac{\partial E}{\partial r}\) (variação com raio)</li>
-              </ol>
+              <p>
+                \[\lim_{\vec{x} \to \vec{a}} \vec{F}(\vec{x}) =
+                \vec{F}(\vec{a})\]
+              </p>
+              <p>
+                Ou seja, para todo \(\varepsilon > 0\), existe \(\delta > 0\)
+                tal que:
+              </p>
+              <p>
+                \[\|\vec{x} - \vec{a}\| < \delta \implies \|\vec{F}(\vec{x}) -
+                \vec{F}(\vec{a})\| < \varepsilon\]
+              </p>
             </div>
-          </div>
+          </section>
+
+          <!-- Interpretação Geométrica -->
+          <section>
+            <h2>Interpretação Geométrica</h2>
+            <p>Imagine um satélite em órbita:</p>
+            <div class="fragment">
+              <p>
+                Sua trajetória é descrita por uma função vetorial contínua
+                \(\vec{r}(t)\)
+              </p>
+              <p>
+                \[\vec{r}(t) = \begin{pmatrix} x(t) \\ y(t) \\ z(t)
+                \end{pmatrix}\]
+              </p>
+            </div>
+            <div class="fragment">
+              <p>A continuidade garante que não há "saltos" na trajetória</p>
+            </div>
+          </section>
+
+          <!-- Exemplo Prático -->
+          <section>
+            <h2>Exemplo: Trajetória de Lançamento</h2>
+            <p>Considere a trajetória simplificada de um foguete:</p>
+            <div class="fragment">
+              <p>
+                \[\vec{r}(t) = \begin{pmatrix} v_0t \\ h_0 + v_0t -
+                \frac{1}{2}gt^2 \end{pmatrix}\]
+              </p>
+              <p>Onde:</p>
+              <ul>
+                <li>\(v_0\): velocidade inicial</li>
+                <li>\(h_0\): altura inicial</li>
+                <li>\(g\): aceleração da gravidade</li>
+              </ul>
+            </div>
+          </section>
+
+          <!-- Aplicação: Detecção de Descontinuidades -->
+          <section>
+            <h2>Aplicação: Detecção de Falhas</h2>
+            <p>
+              Durante a corrida espacial, detectar descontinuidades era crucial:
+            </p>
+            <div class="fragment">
+              <ul>
+                <li>Falhas em sensores</li>
+                <li>Interferências em sinais de rádio</li>
+                <li>Anomalias em trajetórias</li>
+              </ul>
+            </div>
+            <div class="fragment">
+              <p>Uma descontinuidade pode indicar:</p>
+              <p>
+                \[\lim_{t \to t_0^-} \vec{F}(t) \neq \lim_{t \to t_0^+}
+                \vec{F}(t)\]
+              </p>
+            </div>
+          </section>
+
+          <!-- Critério de Continuidade -->
+          <section>
+            <h2>Critério de Continuidade</h2>
+            <p>
+              Uma função vetorial \(\vec{F}(x,y) = \begin{pmatrix} F_1(x,y) \\
+              F_2(x,y) \end{pmatrix}\) é contínua se e somente se:
+            </p>
+            <div class="fragment">
+              <p>Cada componente \(F_1(x,y)\) e \(F_2(x,y)\) é contínua</p>
+              <p>Exemplo: Campo gravitacional da Terra</p>
+              <p>
+                \[\vec{g}(x,y,z) = -G\frac{M}{r^3}\begin{pmatrix} x \\ y \\ z
+                \end{pmatrix}\]
+              </p>
+            </div>
+          </section>
         </section>
 
+        <!-- Derivadas Parciais -->
         <section>
-        <h2>Derivadas Parciais de Campos Vetoriais</h2>
-        <div class="content-box">
-          <p>Para um campo vetorial \(\vec{F}(x,y) = P(x,y)\hat{i} + Q(x,y)\hat{j}\), temos:</p>
-          <div class="fragment">
-            <p>\(\frac{\partial \vec{F}}{\partial x} = \frac{\partial P}{\partial x}\hat{i} + \frac{\partial Q}{\partial x}\hat{j}\)</p>
-            <p>\(\frac{\partial \vec{F}}{\partial y} = \frac{\partial P}{\partial y}\hat{i} + \frac{\partial Q}{\partial y}\hat{j}\)</p>
-          </div>
-        </div>
-      </section>
+          <section>
+            <h2>Derivadas Parciais</h2>
+            <p>Para uma função \(\mathbf{F}(x,y)\), definimos:</p>
+            <div class="fragment">
+              <p>
+                \(\frac{\partial \mathbf{F}}{\partial x} = \lim_{h \to 0}
+                \frac{\mathbf{F}(x+h,y) - \mathbf{F}(x,y)}{h}\)
+              </p>
+              <p>
+                \(\frac{\partial \mathbf{F}}{\partial y} = \lim_{h \to 0}
+                \frac{\mathbf{F}(x,y+h) - \mathbf{F}(x,y)}{h}\)
+              </p>
+            </div>
+            <div class="fragment">
+              <p class="note">
+                Interpretação: Taxa de variação em uma direção, mantendo as
+                outras variáveis constantes
+              </p>
+            </div>
+          </section>
 
-        <!-- Exemplo Prático de Campo Vetorial -->
-        <section>
-          <h2>Exemplo: Campo de Vento Solar</h2>
-          <div class="content-box">
-            <p>Considere o campo de velocidade do vento solar:</p>
-            <p>\(\vec{v}(x,y) = \frac{kx}{r^3}\hat{i} + \frac{ky}{r^3}\hat{j}\)</p>
-            <p>onde \(r = \sqrt{x^2 + y^2}\) e \(k\) é uma constante.</p>
-          </div>
-          <div class="fragment">
-            <p>A derivada parcial em x é?</p>
-          </div>
-          <div class="fragment">
-            <p class="note">Esta derivada nos dá a taxa de variação do vento solar na direção x, crucial para prever a interação com satélites e escudos magnéticos.</p>
-          </div>
+          <!-- Slide 2: Visualização Geométrica -->
+          <section>
+            <h2>Visualização Geométrica</h2>
+            <div class="two-col">
+              <div class="col">
+                <p>Derivada em x: "Fatia" perpendicular ao eixo y</p>
+              </div>
+              <div class="col fragment">
+                <p>Derivada em y: "Fatia" perpendicular ao eixo x</p>
+              </div>
+            </div>
+          </section>
+
+          <!-- Slide 3: Aplicação Espacial -->
+          <section>
+            <h2>Aplicação: Trajetória Orbital</h2>
+            <div class="content-box">
+              <p class="historical-note">
+                A missão Vostok 1 (1961) marcou a primeira vez que um ser humano
+                orbitou a Terra. Em meio à Guerra Fria, os soviéticos precisavam
+                garantir não só que Yuri Gagarin chegasse ao espaço, mas que
+                retornasse em segurança - um desafio matemático sem precedentes.
+              </p>
+              <p>
+                Para este feito histórico, as derivadas parciais foram cruciais
+                para:
+              </p>
+              <ul class="fragment">
+                <li>Calcular variações de velocidade em diferentes direções</li>
+                <li>Otimizar consumo de combustível</li>
+                <li>Prever desvios de trajetória</li>
+              </ul>
+            </div>
+          </section>
+
+          <!-- Slide 4: Exemplo Prático -->
+          <section>
+            <h2>Exemplo: Campo Gravitacional</h2>
+            <div class="fragment">
+              <p>Potencial gravitacional: \(\phi(x,y,z) = -\frac{GM}{r}\)</p>
+              <p>onde \(r = \sqrt{x^2 + y^2 + z^2}\)</p>
+            </div>
+            <div class="fragment">
+              <p>Calcule: \(\frac{\partial \phi}{\partial x}\)</p>
+            </div>
+          </section>
+
+          <!-- Slide 5: Exercício Interativo -->
+          <section>
+            <h2>Exercício: Órbita Lunar</h2>
+            <div class="problem-box">
+              <p>Para uma órbita circular de raio R, temos a energia total:</p>
+              <p>\(E(v,r) = \frac{1}{2}mv^2 - \frac{GMm}{r}\)</p>
+              <div class="fragment">
+                <p>Calcule:</p>
+                <ol>
+                  <li>
+                    \(\frac{\partial E}{\partial v}\) (variação com velocidade)
+                  </li>
+                  <li>\(\frac{\partial E}{\partial r}\) (variação com raio)</li>
+                </ol>
+              </div>
+            </div>
+          </section>
+
+          <section>
+            <h2>Derivadas Parciais de Campos Vetoriais</h2>
+            <div class="content-box">
+              <p>
+                Para um campo vetorial \(\vec{F}(x,y) = P(x,y)\hat{i} +
+                Q(x,y)\hat{j}\), temos:
+              </p>
+              <div class="fragment">
+                <p>
+                  \(\frac{\partial \vec{F}}{\partial x} = \frac{\partial
+                  P}{\partial x}\hat{i} + \frac{\partial Q}{\partial x}\hat{j}\)
+                </p>
+                <p>
+                  \(\frac{\partial \vec{F}}{\partial y} = \frac{\partial
+                  P}{\partial y}\hat{i} + \frac{\partial Q}{\partial y}\hat{j}\)
+                </p>
+              </div>
+            </div>
+          </section>
+
+          <!-- Exemplo Prático de Campo Vetorial -->
+          <section>
+            <h2>Exemplo: Campo de Vento Solar</h2>
+            <div class="content-box">
+              <p>Considere o campo de velocidade do vento solar:</p>
+              <p>
+                \(\vec{v}(x,y) = \frac{kx}{r^3}\hat{i} + \frac{ky}{r^3}\hat{j}\)
+              </p>
+              <p>onde \(r = \sqrt{x^2 + y^2}\) e \(k\) é uma constante.</p>
+            </div>
+            <div class="fragment">
+              <p>A derivada parcial em x é?</p>
+            </div>
+            <div class="fragment">
+              <p class="note">
+                Esta derivada nos dá a taxa de variação do vento solar na
+                direção x, crucial para prever a interação com satélites e
+                escudos magnéticos.
+              </p>
+            </div>
+          </section>
+
+          <section>
+            <h2>Síntese e Conexões</h2>
+            <div class="summary-box">
+              <ul>
+                <li>
+                  Derivadas parciais medem variações em direções específicas
+                </li>
+                <li>Fundamentais para análise de movimento orbital</li>
+                <li>
+                  Essenciais na análise de campos vetoriais (vento solar, campos
+                  magnéticos)
+                </li>
+                <li>Base para otimização de trajetórias</li>
+              </ul>
+            </div>
+            <div class="fragment">
+              <p>
+                Próximo tópico: Gradiente e suas aplicações em otimização de
+                trajetórias
+              </p>
+            </div>
+          </section>
         </section>
-
-        <section>
-          <h2>Síntese e Conexões</h2>
-          <div class="summary-box">
-            <ul>
-              <li>Derivadas parciais medem variações em direções específicas</li>
-              <li>Fundamentais para análise de movimento orbital</li>
-              <li>Essenciais na análise de campos vetoriais (vento solar, campos magnéticos)</li>
-              <li>Base para otimização de trajetórias</li>
-            </ul>
-          </div>
-          <div class="fragment">
-            <p>Próximo tópico: Gradiente e suas aplicações em otimização de trajetórias</p>
-          </div>
-        </section>
-
+      </div>
     </div>
-  </div>
-</body>
+    <script>
+      // Código da visualização do campo gravitacional
+      const canvas = document.getElementById('spaceCanvas');
+      const ctx = canvas.getContext('2d');
+
+      // Constantes do sistema
+      const G = 6.6743e-11; // Constante gravitacional
+      const EARTH_MASS = 5.972e24; // Massa da Terra em kg
+      const MOON_MASS = 7.34767309e22; // Massa da Lua em kg
+      const EARTH_RADIUS = 30; // Raio da Terra em pixels
+      const MOON_RADIUS = 10; // Raio da Lua em pixels
+      const ORBIT_RADIUS = 200; // Raio da órbita em pixels
+      const BASE_VECTOR_LENGTH = 40; // Comprimento base dos vetores
+      const MIN_VECTOR_LENGTH = 3; // Comprimento mínimo dos vetores
+
+      let angle = 0; // Ângulo inicial da Lua
+      let earthPos = { x: canvas.width / 2, y: canvas.height / 2 };
+      let moonPos = { x: 0, y: 0 };
+
+      function calculateGravitationalField(x, y) {
+        const dx1 = x - earthPos.x;
+        const dy1 = y - earthPos.y;
+        const r1 = Math.sqrt(dx1 * dx1 + dy1 * dy1);
+
+        const dx2 = x - moonPos.x;
+        const dy2 = y - moonPos.y;
+        const r2 = Math.sqrt(dx2 * dx2 + dy2 * dy2);
+
+        if (r1 < EARTH_RADIUS || r2 < MOON_RADIUS) {
+          return { fx: 0, fy: 0, magnitude: 0 };
+        }
+
+        const earthForce = (G * EARTH_MASS) / (r1 * r1);
+        const earthFx = (-earthForce * dx1) / r1;
+        const earthFy = (-earthForce * dy1) / r1;
+
+        const moonForce = (G * MOON_MASS) / (r2 * r2);
+        const moonFx = (-moonForce * dx2) / r2;
+        const moonFy = (-moonForce * dy2) / r2;
+
+        const fx = earthFx + moonFx;
+        const fy = earthFy + moonFy;
+        const magnitude = Math.sqrt(fx * fx + fy * fy);
+
+        return { fx, fy, magnitude };
+      }
+
+      function normalizeVectorLength(magnitude, r) {
+        const normalizedLength =
+          BASE_VECTOR_LENGTH / (1 + Math.pow(r / 100, 2));
+        return Math.max(MIN_VECTOR_LENGTH, normalizedLength);
+      }
+
+      function drawVector(x, y) {
+        const dx1 = x - earthPos.x;
+        const dy1 = y - earthPos.y;
+        const r = Math.sqrt(dx1 * dx1 + dy1 * dy1);
+
+        const field = calculateGravitationalField(x, y);
+        if (field.magnitude === 0) return;
+
+        const vectorLength = normalizeVectorLength(field.magnitude, r);
+        const angle = Math.atan2(field.fy, field.fx);
+
+        ctx.beginPath();
+        ctx.moveTo(x, y);
+        ctx.lineTo(
+          x + vectorLength * Math.cos(angle),
+          y + vectorLength * Math.sin(angle)
+        );
+
+        const arrowSize = 3;
+        ctx.lineTo(
+          x +
+            vectorLength * Math.cos(angle) -
+            arrowSize * Math.cos(angle - Math.PI / 6),
+          y +
+            vectorLength * Math.sin(angle) -
+            arrowSize * Math.sin(angle - Math.PI / 6)
+        );
+        ctx.moveTo(
+          x + vectorLength * Math.cos(angle),
+          y + vectorLength * Math.sin(angle)
+        );
+        ctx.lineTo(
+          x +
+            vectorLength * Math.cos(angle) -
+            arrowSize * Math.cos(angle + Math.PI / 6),
+          y +
+            vectorLength * Math.sin(angle) -
+            arrowSize * Math.sin(angle + Math.PI / 6)
+        );
+
+        const opacity = Math.min(1, 1 / (1 + Math.pow(r / 150, 2)));
+        ctx.strokeStyle = `rgba(255, 255, 255, ${opacity})`;
+        ctx.stroke();
+      }
+
+      function drawEarth() {
+        ctx.beginPath();
+        ctx.arc(earthPos.x, earthPos.y, EARTH_RADIUS, 0, Math.PI * 2);
+        ctx.fillStyle = '#4B9CD3';
+        ctx.fill();
+
+        const gradient = ctx.createRadialGradient(
+          earthPos.x,
+          earthPos.y,
+          EARTH_RADIUS * 0.8,
+          earthPos.x,
+          earthPos.y,
+          EARTH_RADIUS
+        );
+        gradient.addColorStop(0, 'rgba(255, 255, 255, 0.2)');
+        gradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
+        ctx.fillStyle = gradient;
+        ctx.fill();
+      }
+
+      function drawMoon() {
+        ctx.beginPath();
+        ctx.arc(moonPos.x, moonPos.y, MOON_RADIUS, 0, Math.PI * 2);
+        ctx.fillStyle = '#D3D3D3';
+        ctx.fill();
+
+        const gradient = ctx.createRadialGradient(
+          moonPos.x,
+          moonPos.y,
+          MOON_RADIUS * 0.8,
+          moonPos.x,
+          moonPos.y,
+          MOON_RADIUS
+        );
+        gradient.addColorStop(0, 'rgba(255, 255, 255, 0.2)');
+        gradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
+        ctx.fillStyle = gradient;
+        ctx.fill();
+      }
+
+      function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        moonPos.x = earthPos.x + ORBIT_RADIUS * Math.cos(angle);
+        moonPos.y = earthPos.y + ORBIT_RADIUS * Math.sin(angle);
+
+        for (let x = 0; x < canvas.width; x += 40) {
+          for (let y = 0; y < canvas.height; y += 40) {
+            drawVector(x, y);
+          }
+        }
+
+        drawEarth();
+        drawMoon();
+
+        angle += 0.02;
+
+        requestAnimationFrame(animate);
+      }
+
+      // Inicia a animação quando o slide da visualização estiver ativo
+      Reveal.on('slidechanged', (event) => {
+        if (event.currentSlide.querySelector('#spaceCanvas')) {
+          animate();
+        }
+      });
+    </script>
+  </body>
 </html>
