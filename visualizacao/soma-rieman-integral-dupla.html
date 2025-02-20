@@ -1,0 +1,354 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Visualização de Soma de Riemann</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-AMS_HTML"></script>
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+          tex2jax: {
+              inlineMath: [['$','$']],
+              displayMath: [['$$','$$']],
+              processEscapes: true
+          }
+      });
+    </script>
+    <style>
+      body {
+        margin: 0;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        font-family:
+          system-ui,
+          -apple-system,
+          sans-serif;
+        background: #f5f5f5;
+      }
+      .container {
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        max-width: 600px;
+        width: 100%;
+      }
+      h1 {
+        color: #2c3e50;
+        text-align: center;
+        font-size: 1.5em;
+        margin-bottom: 20px;
+      }
+      canvas {
+        background: #ffffff;
+        border: 1px solid #e1e1e1;
+        border-radius: 4px;
+        cursor: grab;
+      }
+      canvas:active {
+        cursor: grabbing;
+      }
+      .controls {
+        margin-top: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+      }
+      .control-group {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+      }
+      label {
+        color: #666;
+        font-size: 0.9em;
+      }
+      .formula {
+        margin: 20px 0;
+        padding: 15px;
+        background: #f8f9fa;
+        border-radius: 4px;
+        font-size: 0.9em;
+      }
+      .formula p {
+        color: #666;
+        margin: 10px 0;
+      }
+      .info {
+        margin-top: 20px;
+        padding: 15px;
+        background: #f8f9fa;
+        border-radius: 4px;
+        font-size: 0.9em;
+        color: #666;
+      }
+      details {
+        margin-top: 20px;
+        padding: 15px;
+        background: #f8f9fa;
+        border-radius: 4px;
+      }
+      summary {
+        cursor: pointer;
+        color: #2c3e50;
+      }
+      pre {
+        background: #fff;
+        padding: 15px;
+        border-radius: 4px;
+        overflow-x: auto;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Visualização de Soma de Riemann para Integral Dupla</h1>
+      <canvas id="riemannCanvas" width="500" height="400"></canvas>
+      <div class="controls">
+        <div class="control-group">
+          <label>Número de Subdivisões: <span id="subdivLabel">2</span></label>
+          <input type="range" id="subdivSlider" min="2" max="10" value="2" />
+        </div>
+      </div>
+      <div class="formula">
+        <p>Soma de Riemann para a integral dupla:</p>
+        $$\sum_{i=1}^n \sum_{j=1}^n \frac{x_i^2}{4} + \frac{y_j^2}{9} \Delta x
+        \Delta y \approx \iint_{[-1,1]\times[-1,1]} \left(\frac{x^2}{4} +
+        \frac{y^2}{9}\right) \, dx \, dy$$
+      </div>
+      <div class="info">
+        <p>Função: f(x,y) = x²/4 + y²/9</p>
+        <p>Região: [-1,1] × [-1,1]</p>
+        <p>Valor aproximado da integral: <span id="integralValue">0</span></p>
+        <p><em>Clique e arraste para girar a visualização</em></p>
+      </div>
+    </div>
+
+    <details>
+      <summary>Ver prompt usado para gerar esta visualização</summary>
+      <pre>
+Crie uma página HTML standalone com uma visualização interativa de Somas de Riemann em Integrais Duplas.
+
+Especificações técnicas:
+- Canvas HTML5 para renderização 3D isométrica
+- Interação por mouse/touch para rotação da visualização
+- Layout responsivo e minimalista
+- Dimensões do canvas: 500x400px
+
+Elementos da visualização:
+1. Função a ser visualizada:
+   - Função: f(x,y) = x²/4 + y²/9
+   - Domínio: [-1,1] × [-1,1]
+   - Range: valores positivos
+
+2. Controles interativos:
+   - Mouse/Touch: Rotação da visualização
+   - Slider: Número de subdivisões (range: 2-10)
+
+3. Elementos visuais:
+   - Sistema de coordenadas: 3D com projeção isométrica
+   - Cores: Tons de azul com transparência
+   - Elementos adicionais: Eixos coordenados, retângulos da soma
+
+4. Elementos específicos:
+   - Projeção isométrica com rotação suave
+   - Retângulos com faces transparentes
+   - Gradiente de cor baseado na altura
+   - Eixos de referência
+   - Valor da integral atualizado em tempo real
+        </pre
+      >
+    </details>
+
+    <script>
+      // Aguarda o carregamento completo da página
+      document.addEventListener('DOMContentLoaded', function () {
+        const visualization = new (class {
+          constructor() {
+            this.canvas = document.getElementById('riemannCanvas');
+            this.ctx = this.canvas.getContext('2d');
+            this.subdivisions = 2;
+            this.angle = 30;
+            this.scale = 120;
+            this.isDragging = false;
+            this.lastX = 0;
+            this.lastY = 0;
+
+            this.setupControls();
+            this.setupMouseInteraction();
+            this.draw();
+          }
+
+          f(x, y) {
+            return Math.pow(x, 2) / 4 + Math.pow(y, 2) / 9;
+          }
+
+          to2D(x, y, z) {
+            const angleRad = (this.angle * Math.PI) / 180;
+            const isoX = (x - y) * Math.cos(angleRad);
+            const isoY = ((x + y) * Math.sin(angleRad)) / 2 - z * 0.7;
+            return {
+              x: isoX * this.scale + this.canvas.width / 2,
+              y: isoY * this.scale + this.canvas.height / 2,
+            };
+          }
+
+          draw() {
+            const ctx = this.ctx;
+            const width = this.canvas.width;
+            const height = this.canvas.height;
+
+            ctx.clearRect(0, 0, width, height);
+
+            // Draw axes
+            ctx.beginPath();
+            ctx.strokeStyle = '#666666';
+            ctx.lineWidth = 1;
+
+            const xStart = this.to2D(-1.2, 0, 0);
+            const xEnd = this.to2D(1.2, 0, 0);
+            ctx.moveTo(xStart.x, xStart.y);
+            ctx.lineTo(xEnd.x, xEnd.y);
+
+            const yStart = this.to2D(0, -1.2, 0);
+            const yEnd = this.to2D(0, 1.2, 0);
+            ctx.moveTo(yStart.x, yStart.y);
+            ctx.lineTo(yEnd.x, yEnd.y);
+
+            const zStart = this.to2D(0, 0, 0);
+            const zEnd = this.to2D(0, 0, 1.2);
+            ctx.moveTo(zStart.x, zStart.y);
+            ctx.lineTo(zEnd.x, zEnd.y);
+
+            ctx.stroke();
+
+            // Draw Riemann sum rectangles
+            const dx = 2 / this.subdivisions;
+            const dy = 2 / this.subdivisions;
+
+            for (let i = 0; i < this.subdivisions; i++) {
+              for (let j = 0; j < this.subdivisions; j++) {
+                const x = -1 + i * dx;
+                const y = -1 + j * dy;
+                const z = this.f(x, y);
+
+                ctx.beginPath();
+                ctx.strokeStyle = '#3498db';
+                ctx.fillStyle = `rgba(52, 152, 219, ${0.2 + z * 0.3})`;
+                ctx.lineWidth = 1;
+
+                const points = [
+                  this.to2D(x, y, 0),
+                  this.to2D(x + dx, y, 0),
+                  this.to2D(x + dx, y + dy, 0),
+                  this.to2D(x, y + dy, 0),
+                  this.to2D(x, y, z),
+                  this.to2D(x + dx, y, z),
+                  this.to2D(x + dx, y + dy, z),
+                  this.to2D(x, y + dy, z),
+                ];
+
+                // Draw base
+                ctx.moveTo(points[0].x, points[0].y);
+                ctx.lineTo(points[1].x, points[1].y);
+                ctx.lineTo(points[2].x, points[2].y);
+                ctx.lineTo(points[3].x, points[3].y);
+                ctx.lineTo(points[0].x, points[0].y);
+
+                // Draw vertical edges
+                for (let k = 0; k < 4; k++) {
+                  ctx.moveTo(points[k].x, points[k].y);
+                  ctx.lineTo(points[k + 4].x, points[k + 4].y);
+                }
+
+                // Draw top
+                ctx.moveTo(points[4].x, points[4].y);
+                ctx.lineTo(points[5].x, points[5].y);
+                ctx.lineTo(points[6].x, points[6].y);
+                ctx.lineTo(points[7].x, points[7].y);
+                ctx.lineTo(points[4].x, points[4].y);
+
+                ctx.stroke();
+                ctx.fill();
+              }
+            }
+
+            this.updateIntegralValue();
+          }
+
+          calculateApproximation() {
+            const dx = 2 / this.subdivisions;
+            const dy = 2 / this.subdivisions;
+            let sum = 0;
+
+            for (let i = 0; i < this.subdivisions; i++) {
+              for (let j = 0; j < this.subdivisions; j++) {
+                const x = -1 + i * dx + dx / 2;
+                const y = -1 + j * dy + dy / 2;
+                sum += this.f(x, y) * dx * dy;
+              }
+            }
+            return sum.toFixed(4);
+          }
+
+          updateIntegralValue() {
+            document.getElementById('integralValue').textContent =
+              this.calculateApproximation();
+          }
+
+          setupControls() {
+            const subdivSlider = document.getElementById('subdivSlider');
+            const subdivLabel = document.getElementById('subdivLabel');
+
+            subdivSlider.addEventListener('input', (e) => {
+              this.subdivisions = parseInt(e.target.value);
+              subdivLabel.textContent = this.subdivisions;
+              this.draw();
+            });
+          }
+
+          setupMouseInteraction() {
+            const getEventPos = (e) => {
+              if (e.touches) {
+                return { x: e.touches[0].clientX, y: e.touches[0].clientY };
+              }
+              return { x: e.clientX, y: e.clientY };
+            };
+
+            const startDrag = (e) => {
+              const pos = getEventPos(e);
+              this.isDragging = true;
+              this.lastX = pos.x;
+              this.lastY = pos.y;
+            };
+
+            const endDrag = () => {
+              this.isDragging = false;
+            };
+
+            const drag = (e) => {
+              if (!this.isDragging) return;
+
+              const pos = getEventPos(e);
+              const deltaX = pos.x - this.lastX;
+              this.angle = (this.angle + deltaX * 0.5) % 360;
+              this.lastX = pos.x;
+              this.draw();
+            };
+
+            this.canvas.addEventListener('mousedown', startDrag);
+            this.canvas.addEventListener('touchstart', startDrag);
+
+            document.addEventListener('mousemove', drag);
+            document.addEventListener('touchmove', drag);
+
+            document.addEventListener('mouseup', endDrag);
+            document.addEventListener('touchend', endDrag);
+          }
+        })();
+      });
+    </script>
+  </body>
+</html>
