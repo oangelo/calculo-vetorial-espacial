@@ -1,318 +1,953 @@
-<!doctype html>
 <html>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>
-      Cálculo Vetorial: Funções de Várias Variáveis Reais a Valores Vetoriais
+      Integrais Duplas: Uma Jornada pela Matemática da Exploração Espacial
     </title>
+
+    <!-- Links para os estilos do RevealJS -->
     <link rel="stylesheet" href="reveal.js/dist/reveal.css" />
     <link rel="stylesheet" href="space-theme.css" />
+    <link rel="stylesheet" href="integrais-duplas-complementar.css" />
+
+    <!-- Scripts do RevealJS -->
     <script src="reveal.js/dist/reveal.js"></script>
     <script src="reveal.js/plugin/math/math.js"></script>
-    <script>
-      window.onload = function () {
-        Reveal.initialize({
-          controls: true,
-          progress: true,
-          center: true,
-          hash: true,
-          plugins: [RevealMath.MathJax3],
-        });
-      };
-    </script>
   </head>
 
   <body>
     <div class="reveal">
+      <!-- Efeito de asteroides do tema espacial -->
+      <div class="asteroid"></div>
+      <div class="asteroid"></div>
+
       <div class="slides">
-        <!-- Slide 1: Introdução -->
+        <!-- Seção 1: Introdução -->
         <section>
+          <!-- Slide 1.1: Título principal -->
           <section>
             <h1>Integrais Duplas</h1>
             <h3>Uma Jornada pela Matemática da Exploração Espacial</h3>
             <p>
-              Uma introdução às ideias por trás da integração em duas dimensões.
+              Uma introdução às ideias por trás da integração em duas dimensões
             </p>
           </section>
 
-          <!-- Slide 2: Introdução Motivacional -->
+          <!-- Slide 1.2: Motivação -->
           <section>
             <h2>Por que estudar integrais duplas?</h2>
+            <p>
+              As integrais duplas nos permitem quantificar fenômenos que ocorrem
+              sobre superfícies, expandindo nossa capacidade de compreender o
+              mundo além das linhas unidimensionais.
+            </p>
             <ul>
-              <li>Permitem medir quantidades acumuladas em áreas complexas</li>
               <li>
-                São fundamentais para o design e análise de estruturas espaciais
+                Permitem medir <strong>quantidades acumuladas</strong> em áreas
+                complexas
               </li>
               <li>
-                Aplicações que vão desde a energia solar até a distribuição de
-                materiais
+                São fundamentais para o <strong>design e análise</strong> de
+                estruturas espaciais
               </li>
             </ul>
-            <p>
-              Imagine calcular a energia que um painel solar capta ou encontrar
-              o equilíbrio perfeito de uma nave espacial!
-            </p>
+            <div class="question-prompt">
+              Como calcularíamos a energia total absorvida por um painel solar
+              de formato irregular?
+            </div>
           </section>
 
-          <!-- Slide 3: Aplicação - Energia Solar -->
+          <!-- Slide 1.3: Aplicações em engenharia espacial -->
+          <section>
+            <h2>Aplicações na Engenharia Espacial</h2>
+            <p>
+              No vasto contexto da exploração espacial, as integrais duplas
+              transcendem o domínio abstrato da matemática para se tornarem
+              ferramentas práticas de engenharia:
+            </p>
+            <ul>
+              <li>Otimização de painéis solares</li>
+              <li>Cálculo do centro de massa de componentes</li>
+              <li>Análise estrutural de materiais compostos</li>
+              <li>Modelagem de campos gravitacionais</li>
+            </ul>
+          </section>
+
+          <!-- Slide 1.4: Aplicação - Energia Solar -->
           <section>
             <h2>Capturando Energia no Espaço</h2>
             <p>
-              Em satélites, os painéis solares não são simplesmente retângulos.
-              Eles podem ter formas curvas ou inclinadas para maximizar a
-              captação de luz.
+              Em satélites, os painéis solares frequentemente assumem
+              configurações não-retangulares, criando um desafio matemático
+              interessante.
             </p>
             <p>
-              Através das integrais duplas, é possível somar as contribuições de
-              cada ponto do painel, otimizando o design!
+              A intensidade da radiação solar
+              <strong>varia em cada ponto</strong> do painel conforme sua
+              orientação com relação ao Sol. Através das integrais duplas,
+              podemos expressar a energia total capturada como:
+            </p>
+            <div class="formula-block">
+              \[ \text{Energia Total} = \iint_D I(x,y) \, dA \]
+            </div>
+            <p>
+              onde \(I(x,y)\) representa a intensidade da radiação em cada ponto
+              da superfície do painel.
             </p>
           </section>
 
-          <!-- Slide 4: Aplicação - Distribuição de Materiais -->
+          <!-- Slide 1.5: Aplicação - Distribuição de Massa -->
           <section>
             <h2>Distribuição de Materiais e Equilíbrio</h2>
             <p>
-              Em uma nave espacial, o equilíbrio é essencial para a estabilidade
-              durante as manobras.
+              O equilíbrio de uma nave espacial durante manobras depende
+              fundamentalmente da distribuição de sua massa.
             </p>
             <p>
-              Ao analisar a distribuição de massa de componentes com densidade
-              variável, podemos determinar o centro de massa da nave.
+              Se representarmos a densidade do material em cada ponto como
+              \(\rho(x,y)\), o centro de massa pode ser determinado através de
+              integrais duplas:
             </p>
-            <p>
-              Essa abordagem ajuda os engenheiros a garantir que a nave mantenha
-              sua orientação durante o voo.
-            </p>
+            <div class="formula-block">
+              \[ x_{CM} = \frac{1}{M}\iint_D x \cdot \rho(x,y) \, dA \] \[
+              y_{CM} = \frac{1}{M}\iint_D y \cdot \rho(x,y) \, dA \]
+            </div>
+            <p>onde \(M\) é a massa total da estrutura.</p>
           </section>
 
-          <!-- Slide 5: Aplicação - Formas Irregulares -->
+          <!-- Slide 1.6: Aplicação - Superfícies Complexas -->
           <section>
             <h2>Medindo Superfícies Complexas</h2>
             <p>
-              Componentes espaciais muitas vezes possuem formas irregulares.
+              Os componentes espaciais frequentemente possuem geometrias não
+              triviais que desafiam métodos elementares de cálculo de área.
             </p>
             <p>
-              As integrais duplas auxiliam na determinação da área dessas
-              superfícies, importante para o design e a análise estrutural.
+              As integrais duplas nos permitem calcular áreas de superfícies
+              através da expressão:
             </p>
+            <div class="formula-block">
+              \[ A = \iint_D \sqrt{1 + \left(\frac{\partial z}{\partial
+              x}\right)^2 + \left(\frac{\partial z}{\partial y}\right)^2} \, dA
+              \]
+            </div>
             <p>
-              Com essa técnica, os engenheiros conseguem estimar com precisão a
-              área necessária para projetos inovadores!
-            </p>
-          </section>
-
-          <!-- Slide 6: Conclusão -->
-          <section>
-            <h2>Integrais Duplas no Futuro da Engenharia Espacial</h2>
-            <p>
-              De painéis solares a estruturas complexas, as integrais duplas são
-              uma ferramenta poderosa para transformar desafios em soluções
-              inovadoras.
-            </p>
-            <p>
-              Ao dominar esses conceitos, você estará um passo mais próximo de
-              participar de grandes projetos espaciais!
+              Esta formulação captura a curvatura local da superfície, essencial
+              para o design preciso de antenas, escudos térmicos e estruturas de
+              suporte.
             </p>
           </section>
         </section>
 
-        <!-- Slide 2: Fundamentos -->
+        <!-- Seção 2: Fundamentos -->
         <section>
+          <!-- Slide 2.1: Da Soma de Riemann à Integral -->
           <section>
             <h2>Da Soma de Riemann à Integral Dupla</h2>
             <p>
-              A ideia fundamental da integral dupla surge do conceito de soma de
-              Riemann, onde subdividimos uma região do plano em pequenos
-              “retângulos” e somamos os valores de uma função nesses
-              subdomínios. À medida que refinamos a partição (tornando os
-              retângulos cada vez menores), aproximamos o valor “exato” da
-              integral.
+              A ideia fundamental por trás da integral dupla surge da tentativa
+              de quantificar acumulações sobre regiões bidimensionais.
             </p>
+            <p>Imaginemos um processo de aproximação onde:</p>
+            <ol>
+              <li>
+                Dividimos uma região \(D\) em pequenas subáreas \(\Delta
+                A_{ij}\)
+              </li>
+              <li>Em cada subárea, avaliamos a função \(f(x_i, y_j)\)</li>
+              <li>Multiplicamos o valor da função pela área da subregião</li>
+              <li>Somamos todas as contribuições</li>
+            </ol>
             <p>
-              Historicamente, avanços em Cálculo foram cruciais durante a
-              Corrida Espacial em plena Guerra Fria. O estudo de integrais em
-              múltiplas variáveis permitiu modelar efeitos de gravidade,
-              trajetória de foguetes e distribuição de massa em satélites,
-              impulsionando a capacidade de desenvolvimento tecnológico.
+              À medida que refinamos essa malha, aproximamo-nos da integral
+              dupla.
             </p>
           </section>
 
+          <!-- Slide 2.2: Visualização da Soma de Riemann -->
+          <section>
+            <h2>Visualização da Soma de Riemann</h2>
+            <div class="visualization-container">
+              <div id="riemann-container" class="viz-container">
+                <div class="canvas-container">
+                  <canvas id="riemannCanvas" width="600" height="400"></canvas>
+                  <div class="value-display">
+                    Valor: <span id="integralValue">0</span>
+                  </div>
+                </div>
+                <div class="controls-container">
+                  <span class="slider-label">Número de Subdivisões:</span>
+                  <input
+                    type="range"
+                    id="subdivSlider"
+                    min="2"
+                    max="10"
+                    value="4"
+                  />
+                  <span class="slider-value" id="subdivValue">4</span>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Slide 2.3: Contexto Histórico -->
+          <section>
+            <h2>Perspectiva Histórica</h2>
+            <p>
+              O desenvolvimento das integrais multivariáveis encontrou um
+              propósito renovado durante a Corrida Espacial na Guerra Fria.
+            </p>
+            <p>
+              Os desafios impostos pela exploração do espaço exigiam modelos
+              matemáticos mais sofisticados para:
+            </p>
+            <ul>
+              <li>
+                Calcular trajetórias complexas considerando múltiplos campos
+                gravitacionais
+              </li>
+              <li>
+                Otimizar o consumo de combustível em órbitas não-circulares
+              </li>
+              <li>
+                Projetar estruturas leves mas resistentes às condições extremas
+              </li>
+            </ul>
+            <p>
+              Estas necessidades práticas impulsionaram avanços teóricos
+              significativos no campo do cálculo multivariável.
+            </p>
+          </section>
+
+          <!-- Slide 2.4: Construindo a Intuição -->
           <section>
             <h2>Construindo a Intuição</h2>
             <p>
-              Podemos visualizar a integral dupla como o processo de somar
-              infinitos pequenos “pedaços” de área. Cada um desses pedaços
-              contribui para o valor total, e tomar o limite do refinamento das
-              partições garante o resultado preciso.
+              Podemos visualizar a integral dupla como um processo de
+              <em>acumulação contínua</em> sobre uma região planar.
             </p>
+            <div class="concept-box">
+              <p>
+                Imagine um mapa topográfico onde a altura de cada ponto
+                representa o valor da função \(f(x,y)\). A integral dupla seria
+                equivalente ao volume de água que preencheria o "vale" formado
+                entre a superfície e o plano \(xy\).
+              </p>
+            </div>
             <p>
-              Pense em um mapa topográfico: cada porção minúscula do terreno
-              possui uma altura (a função) que será somada para encontrar, por
-              exemplo, o volume total de um morro ou montanha. Essa ideia de
-              sucessivas aproximações está no cerne do método de soma de
-              Riemann.
+              Esta analogia nos permite entender intuitivamente por que a
+              integral dupla frequentemente representa um volume no espaço
+              tridimensional.
             </p>
           </section>
         </section>
 
-        <!-- Slide 3: Definição Formal -->
+        <!-- Seção 3: Definição Formal -->
         <section>
+          <!-- Slide 3.1: Definição Matemática -->
           <section>
             <h2>Definição Matemática</h2>
             <p>
-              A <strong>integral dupla</strong> de uma função \( f(x, y) \)
-              sobre uma região \( D \) no plano é definida como:
+              A <strong>integral dupla</strong> de uma função \(f(x,y)\) sobre
+              uma região \(D\) no plano é formalmente definida como o limite de
+              uma soma de Riemann:
             </p>
-            <p>
+            <div class="formula-block">
               \[ \iint_D f(x, y)\, dA \;=\; \lim_{m,n \to \infty} \sum_{i=1}^m
-              \sum_{j=1}^n f\bigl(x_{ij},\,y_{ij}\bigr) \,\Delta A_{ij}. \]
-            </p>
+              \sum_{j=1}^n f\bigl(x_{ij},\,y_{ij}\bigr) \,\Delta A_{ij} \]
+            </div>
             <p>
-              Nesta expressão, dividimos \( D \) em uma malha de \( m \times n
-              \) sub-regiões, calculamos o valor de \( f \) em cada sub-região e
-              multiplicamos pela área de cada pedacinho (\(\Delta A_{ij}\)).
-            </p>
-            <p>
-              Geometricamente, a integral dupla pode ser vista como o “sólido”
-              tridimensional que se estende sobre \( D \) em que a altura em
-              cada ponto é dada por \( f(x, y) \).
+              Esta definição captura a essência da integral como uma soma
+              infinitesimal de contribuições sobre toda a região \(D\).
             </p>
           </section>
 
+          <!-- Slide 3.2: Visualização do Volume -->
+          <section>
+            <h2>Volume como Integral Dupla</h2>
+            <div class="visualization-container">
+              <div id="volume-container" class="viz-container">
+                <div class="canvas-container">
+                  <canvas id="volumeCanvas" width="600" height="400"></canvas>
+                  <div class="value-display">
+                    V = <span id="volumeValue">0</span>
+                  </div>
+                  <div class="formula-display">f(x,y) = x²/4 + y²/9</div>
+                </div>
+                <div class="controls-container">
+                  <span class="slider-label">Tamanho da Região:</span>
+                  <input
+                    type="range"
+                    id="limitRange"
+                    min="2"
+                    max="10"
+                    value="5"
+                  />
+                  <span class="slider-value" id="limitValue">1</span>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Slide 3.3: Componentes Essenciais -->
           <section>
             <h2>Componentes Essenciais</h2>
+            <p>
+              A formulação da integral dupla envolve três elementos
+              fundamentais:
+            </p>
             <ul>
               <li>
-                <strong>Região de Integração \(D\):</strong> O domínio sobre o
-                qual a função é avaliada, podendo ser simples (retângulos) ou
-                mais complexo (regiões curvas).
+                <strong>Região de Integração \(D\)</strong>: Define o domínio
+                sobre o qual integramos, podendo ser simples (retângulos) ou
+                mais complexo (regiões curvas, delimitadas por funções).
               </li>
               <li>
-                <strong>Função Integranda \(f(x,y)\):</strong> Pode representar
-                densidade, temperatura, pressão, etc., dependendo do problema
-                físico ou geométrico.
+                <strong>Função Integranda \(f(x,y)\)</strong>: Representa a
+                grandeza que estamos acumulando em cada ponto do domínio, como
+                densidade, temperatura ou pressão.
               </li>
               <li>
-                <strong>Elemento de Área \(dA\):</strong> Geralmente escrito
+                <strong>Elemento de Área \(dA\)</strong>: Tipicamente escrito
                 como \(dx\,dy\) ou \(r\,dr\,d\theta\) (em coordenadas polares),
-                representa cada pedacinho infinitesimal de área.
+                representa a "forma" infinitesimal de nossa integração.
               </li>
             </ul>
-            <p>
-              Cada um desses componentes desempenha um papel fundamental na
-              construção do valor final da integral.
-            </p>
           </section>
         </section>
-        <!-- Slide 4: Propriedades e Métodos de Integração -->
+
+        <!-- Seção 4: Propriedades e Métodos -->
         <section>
-          <!-- Sub-Slide: Propriedades Básicas -->
+          <!-- Slide 4.1: Propriedades Básicas -->
           <section>
-            <h2>Propriedades Básicas da Integral Dupla</h2>
+            <h2>Propriedades Básicas</h2>
+            <p>
+              As integrais duplas preservam propriedades fundamentais das
+              integrais simples:
+            </p>
             <ul>
               <li>
-                Linearidade:
-                <p>
+                <strong>Linearidade</strong>:
+                <div class="formula-block">
                   \(\displaystyle \iint_D (f + g)\, dA = \iint_D f\, dA +
                   \iint_D g\, dA\)
-                </p>
-                <p>
+                </div>
+                <div class="formula-block">
                   \(\displaystyle \iint_D (c \cdot f)\, dA = c \cdot \iint_D f\,
                   dA\)
-                </p>
+                </div>
               </li>
-              <li>Aditividade em Sub-Regiões:</li>
-              <li>Positividade e Comparação de Funções:</li>
+              <li>
+                <strong>Aditividade em Sub-Regiões</strong>: Se \(D = D_1 \cup
+                D_2\) com \(D_1 \cap D_2 = \emptyset\), então:
+                <div class="formula-block">
+                  \(\displaystyle \iint_D f\, dA = \iint_{D_1} f\, dA +
+                  \iint_{D_2} f\, dA\)
+                </div>
+              </li>
             </ul>
           </section>
 
-          <!-- Sub-Slide: Integração Iterada -->
+          <!-- Slide 4.2: Mais Propriedades -->
+          <section>
+            <h2>Mais Propriedades</h2>
+            <ul>
+              <li>
+                <strong>Positividade</strong>: Se \(f(x,y) \geq 0\) em \(D\),
+                então \(\iint_D f\, dA \geq 0\)
+              </li>
+              <li>
+                <strong>Comparação</strong>: Se \(f(x,y) \geq g(x,y)\) em \(D\),
+                então \(\iint_D f\, dA \geq \iint_D g\, dA\)
+              </li>
+              <li>
+                <strong>Valor Médio</strong>: O valor médio de \(f\) sobre \(D\)
+                é dado por:
+                <div class="formula-block">
+                  \(\displaystyle f_{avg} = \frac{1}{A(D)}\iint_D f\, dA\)
+                </div>
+                onde \(A(D)\) é a área da região \(D\).
+              </li>
+            </ul>
+            <p>
+              Estas propriedades fornecem ferramentas poderosas para manipular e
+              estimar integrais duplas.
+            </p>
+          </section>
+
+          <!-- Slide 4.3: Integração Iterada -->
           <section>
             <h2>Integração Iterada</h2>
             <p>
+              O <strong>Teorema de Fubini</strong> permite transformar uma
+              integral dupla em integrais simples aninhadas:
+            </p>
+            <div class="formula-block">
               \(\displaystyle \iint_D f(x,y)\,dA = \int_a^b
               \left(\int_{g_1(x)}^{g_2(x)} f(x,y)\,dy\right) dx\)
-            </p>
+            </div>
             <p>
-              A integral dupla pode ser transformada em duas integrais simples,
-              resolvendo primeiro em relação a \(y\), depois em relação a \(x\),
-              ou o contrário. É a base do <em>Método de Fubini</em>.
+              Esta abordagem converte um problema bidimensional em dois
+              problemas unidimensionais sequenciais:
             </p>
-          </section>
-
-          <!-- Sub-Slide: Mudança de Coordenadas -->
-          <section>
-            <h2>Mudança de Coordenadas</h2>
-            <p>\(\displaystyle x = r\cos\theta,\quad y = r\sin\theta\)</p>
-            <p>\(\displaystyle dA = r\,dr\,d\theta\)</p>
-            <p>
-              Em outras coordenadas, é necessário considerar o Jacobiano da
-              transformação para obter o elemento de área correto.
-            </p>
-          </section>
-
-          <!-- Sub-Slide: Exemplos Práticos -->
-          <section>
-            <h2>Exemplos Práticos</h2>
-            <ul>
-              <li>\(f(x,y) = \sin(x)\cdot y^2\), região retangular</li>
-              <li>
-                \(f(r,\theta) = e^r\), região circular em coordenadas polares
-              </li>
-              <li>Exercícios com regiões triangulares e poligonais</li>
-            </ul>
-          </section>
-        </section>
-
-        <!-- Slide 5: Exemplos de Integração Dupla -->
-        <section>
-          <!-- Sub-Slide: Exemplo 1 -->
-          <section>
-            <h2>Exemplo 1</h2>
-            <p><strong>Função e Região:</strong></p>
-            <ul>
-              <li>\(\displaystyle f(x,y) = x + 2y\)</li>
-              <li>\(\displaystyle D = [0,2] \times [1,3]\)</li>
-            </ul>
-          </section>
-          <section>
-            <p><strong>Cálculo:</strong></p>
             <ol>
               <li>
-                \(\displaystyle \int_0^2 \left(\int_1^3 (x + 2y)\, dy\right)
-                dx\)
+                Para cada valor fixo de \(x\), integramos \(f(x,y)\) em relação
+                a \(y\)
               </li>
               <li>
-                Integração em \(y\): \(\displaystyle \int_1^3 (x + 2y)\, dy =
-                \left[xy + y^2\right]_{1}^{3} = x(3-1) + (3^2 - 1^2) = 2x + 8\)
-              </li>
-              <li>
-                Agora em \(x\): \(\displaystyle \int_0^2 (2x + 8)\, dx = \left[
-                x^2 + 8x \right]_0^2 = (4 + 16) - 0 = 20\)
+                Integramos o resultado em relação a \(x\) ao longo do intervalo
+                \([a,b]\)
               </li>
             </ol>
             <p>
-              <strong>Resultado:</strong> \(\displaystyle \iint_D f(x,y)\,dA =
-              20\)
+              Alternativamente, podemos integrar primeiro em relação a \(x\) e
+              depois em relação a \(y\).
+            </p>
+          </section>
+
+          <!-- Slide 4.4: Mudança de Coordenadas -->
+          <section>
+            <h2>Mudança de Coordenadas</h2>
+            <p>
+              Frequentemente, a geometria do problema sugere o uso de sistemas
+              de coordenadas alternativos.
+            </p>
+            <p>
+              Para <strong>coordenadas polares</strong>, a transformação é dada
+              por:
+            </p>
+            <div class="formula-block">
+              \(\displaystyle x = r\cos\theta,\quad y = r\sin\theta\)
+            </div>
+            <p>O elemento de área transforma-se em:</p>
+            <div class="formula-block">
+              \(\displaystyle dA = r\,dr\,d\theta\)
+            </div>
+            <p>
+              O fator \(r\) surge do
+              <strong>determinante jacobiano</strong> da transformação,
+              essencial para preservar relações de área durante a mudança de
+              variáveis.
+            </p>
+          </section>
+
+          <!-- Slide 4.5: Exemplos Práticos (Introdução) -->
+          <section>
+            <h2>Exemplos Práticos</h2>
+            <p>
+              Consideremos como as integrais duplas são aplicadas a diferentes
+              tipos de regiões:
+            </p>
+            <ul>
+              <li>
+                <strong>Regiões Retangulares</strong>: \(f(x,y) = \sin(x)\cdot
+                y^2\) sobre \([0,\pi] \times [0,2]\)
+              </li>
+              <li>
+                <strong>Regiões Circulares</strong>: \(f(r,\theta) = e^r\) sobre
+                o disco de raio 2 (usando coordenadas polares)
+              </li>
+              <li>
+                <strong>Regiões Triangulares</strong>: Delimitadas por linhas
+                retas no plano
+              </li>
+            </ul>
+            <p>
+              Cada geometria pode sugerir uma abordagem específica para a
+              resolução.
+            </p>
+          </section>
+        </section>
+
+        <!-- Seção 5: Exemplos de Integração -->
+        <section>
+          <!-- Slide 5.1: Exemplo 1 - Definição -->
+          <section>
+            <h2>Exemplo: Região Retangular</h2>
+            <p>
+              Vamos calcular a integral de uma função linear sobre uma região
+              retangular:
+            </p>
+            <div class="formula-block">
+              <p><strong>Função</strong>: \(f(x,y) = x + 2y\)</p>
+              <p><strong>Região</strong>: \(D = [0,2] \times [1,3]\)</p>
+            </div>
+            <p>
+              Esta integral representa o volume sob a superfície plana \(z = x +
+              2y\) sobre o retângulo definido.
+            </p>
+          </section>
+
+          <!-- Slide 5.2: Exemplo 1 - Solução Passo a Passo (Parte 1) -->
+          <section>
+            <h2>Solução Passo a Passo (I)</h2>
+            <p>
+              Aplicando o teorema de Fubini, transformamos a integral dupla em
+              integrais iteradas:
+            </p>
+            <ol>
+              <li>
+                Expressamos a integral dupla como:
+                <div class="formula-block">
+                  \(\displaystyle \iint_D (x + 2y)\, dA = \int_0^2 \int_1^3 (x +
+                  2y)\, dy\, dx\)
+                </div>
+              </li>
+              <li>
+                Resolvemos a integral interna em relação a \(y\), mantendo \(x\)
+                fixo:
+                <div class="formula-block">
+                  \(\displaystyle \int_1^3 (x + 2y)\, dy = x \int_1^3 dy +
+                  2\int_1^3 y\, dy\)
+                </div>
+              </li>
+            </ol>
+          </section>
+
+          <!-- Slide 5.3: Exemplo 1 - Solução Passo a Passo (Parte 2) -->
+          <section>
+            <h2>Solução Passo a Passo (II)</h2>
+            <ol start="3">
+              <li>
+                Calculamos as integrais elementares:
+                <div class="formula-block">
+                  \(\displaystyle \int_1^3 (x + 2y)\, dy = x[y]_1^3 +
+                  2[y^2/2]_1^3 = 2x + 2(9/2 - 1/2) = 2x + 8\)
+                </div>
+              </li>
+              <li>
+                Agora integramos em relação a \(x\):
+                <div class="formula-block">
+                  \(\displaystyle \int_0^2 (2x + 8)\, dx = 2\int_0^2 x\, dx +
+                  8\int_0^2 dx = 2[x^2/2]_0^2 + 8[x]_0^2 = 2 + 16 = 18\)
+                </div>
+              </li>
+            </ol>
+            <p>
+              <strong>Resultado Final</strong>: \(\displaystyle \iint_D (x +
+              2y)\, dA = 18\)
             </p>
           </section>
         </section>
       </div>
     </div>
 
-    <script src="dist/reveal.js"></script>
+    <!-- Scripts de inicialização do RevealJS -->
     <script>
-      Reveal.initialize({
-        hash: true,
-        slideNumber: true,
-        navigationMode: 'linear',
-        transition: 'slide',
-        math: {
-          mathjax:
-            'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js',
-          config: 'TeX-AMS_HTML-full',
-        },
+      document.addEventListener('DOMContentLoaded', function () {
+        // Inicialização do RevealJS
+        Reveal.initialize({
+          hash: true,
+          center: true,
+          slideNumber: true,
+          transition: 'slide',
+          navigationMode: 'default',
+          plugins: [RevealMath.MathJax3],
+          math: {
+            mathjax:
+              'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js',
+            config: 'TeX-AMS_HTML-full',
+            TeX: {
+              Macros: {},
+            },
+          },
+        });
+
+        // Configuração da visualização de Riemann
+        const riemannCanvas = document.getElementById('riemannCanvas');
+        const ctx = riemannCanvas.getContext('2d');
+        let subdivisions = 4; // Valor inicial
+        let angle = 30;
+        let scale = 120;
+        let isDragging = false;
+        let lastX = 0;
+        let lastY = 0;
+
+        // Configurar controle deslizante
+        const subdivSlider = document.getElementById('subdivSlider');
+        const subdivValue = document.getElementById('subdivValue');
+
+        // Atualizar valor do slider
+        subdivSlider.addEventListener('input', (e) => {
+          subdivisions = parseInt(e.target.value);
+          subdivValue.textContent = subdivisions;
+          drawRiemann();
+        });
+
+        // Função da superfície
+        function f(x, y) {
+          return Math.pow(x, 2) / 4 + Math.pow(y, 2) / 9;
+        }
+
+        // Conversão para coordenadas 2D isométricas
+        function to2D(x, y, z) {
+          const angleRad = (angle * Math.PI) / 180;
+          const isoX = (x - y) * Math.cos(angleRad);
+          const isoY = ((x + y) * Math.sin(angleRad)) / 2 - z * 0.7;
+          return {
+            x: isoX * scale + riemannCanvas.width / 2,
+            y: isoY * scale + riemannCanvas.height / 2,
+          };
+        }
+
+        // Desenhar a visualização
+        function drawRiemann() {
+          ctx.clearRect(0, 0, riemannCanvas.width, riemannCanvas.height);
+
+          // Desenhar eixos
+          ctx.beginPath();
+          ctx.strokeStyle = '#FF69B4'; // Rosa para eixo X
+          const xStart = to2D(-1.2, 0, 0);
+          const xEnd = to2D(1.2, 0, 0);
+          ctx.moveTo(xStart.x, xStart.y);
+          ctx.lineTo(xEnd.x, xEnd.y);
+          ctx.stroke();
+
+          ctx.beginPath();
+          ctx.strokeStyle = '#4CAF50'; // Verde para eixo Y
+          const yStart = to2D(0, -1.2, 0);
+          const yEnd = to2D(0, 1.2, 0);
+          ctx.moveTo(yStart.x, yStart.y);
+          ctx.lineTo(yEnd.x, yEnd.y);
+          ctx.stroke();
+
+          ctx.beginPath();
+          ctx.strokeStyle = '#2196F3'; // Azul para eixo Z
+          const zStart = to2D(0, 0, 0);
+          const zEnd = to2D(0, 0, 1.2);
+          ctx.moveTo(zStart.x, zStart.y);
+          ctx.lineTo(zEnd.x, zEnd.y);
+          ctx.stroke();
+
+          // Desenhar retângulos da soma de Riemann
+          const dx = 2 / subdivisions;
+          const dy = 2 / subdivisions;
+
+          for (let i = 0; i < subdivisions; i++) {
+            for (let j = 0; j < subdivisions; j++) {
+              const x = -1 + i * dx + dx / 2;
+              const y = -1 + j * dy + dy / 2;
+              const z = f(x, y);
+
+              // Calcular cor baseada na altura
+              const blue = Math.min(255, Math.floor(150 + z * 100));
+              const strokeColor = `rgba(52, 152, 219, 0.8)`;
+              const fillColor = `rgba(52, 152, ${blue}, ${0.2 + z * 0.3})`;
+
+              ctx.beginPath();
+              ctx.strokeStyle = strokeColor;
+              ctx.fillStyle = fillColor;
+              ctx.lineWidth = 1;
+
+              const points = [
+                to2D(x - dx / 2, y - dy / 2, 0),
+                to2D(x + dx / 2, y - dy / 2, 0),
+                to2D(x + dx / 2, y + dy / 2, 0),
+                to2D(x - dx / 2, y + dy / 2, 0),
+                to2D(x - dx / 2, y - dy / 2, z),
+                to2D(x + dx / 2, y - dy / 2, z),
+                to2D(x + dx / 2, y + dy / 2, z),
+                to2D(x - dx / 2, y + dy / 2, z),
+              ];
+
+              // Desenhar base
+              ctx.moveTo(points[0].x, points[0].y);
+              ctx.lineTo(points[1].x, points[1].y);
+              ctx.lineTo(points[2].x, points[2].y);
+              ctx.lineTo(points[3].x, points[3].y);
+              ctx.lineTo(points[0].x, points[0].y);
+
+              // Desenhar arestas verticais
+              for (let k = 0; k < 4; k++) {
+                ctx.moveTo(points[k].x, points[k].y);
+                ctx.lineTo(points[k + 4].x, points[k + 4].y);
+              }
+
+              // Desenhar topo
+              ctx.moveTo(points[4].x, points[4].y);
+              ctx.lineTo(points[5].x, points[5].y);
+              ctx.lineTo(points[6].x, points[6].y);
+              ctx.lineTo(points[7].x, points[7].y);
+              ctx.lineTo(points[4].x, points[4].y);
+
+              ctx.stroke();
+              ctx.fill();
+            }
+          }
+
+          updateRiemannIntegralValue();
+        }
+
+        // Calcular o valor aproximado da integral
+        function calculateRiemannApproximation() {
+          const dx = 2 / subdivisions;
+          const dy = 2 / subdivisions;
+          let sum = 0;
+
+          for (let i = 0; i < subdivisions; i++) {
+            for (let j = 0; j < subdivisions; j++) {
+              const x = -1 + i * dx + dx / 2;
+              const y = -1 + j * dy + dy / 2;
+              sum += f(x, y) * dx * dy;
+            }
+          }
+          return sum.toFixed(3);
+        }
+
+        // Atualizar o valor exibido
+        function updateRiemannIntegralValue() {
+          document.getElementById('integralValue').textContent =
+            calculateRiemannApproximation();
+        }
+
+        // Manipuladores de interação com mouse/toque
+        riemannCanvas.addEventListener('mousedown', (e) => {
+          isDragging = true;
+          lastX = e.clientX;
+          lastY = e.clientY;
+          riemannCanvas.style.cursor = 'grabbing';
+        });
+
+        document.addEventListener('mousemove', (e) => {
+          if (!isDragging) return;
+
+          const deltaX = e.clientX - lastX;
+          angle = (angle + deltaX * 0.5) % 360;
+          lastX = e.clientX;
+
+          drawRiemann();
+        });
+
+        document.addEventListener('mouseup', () => {
+          isDragging = false;
+          riemannCanvas.style.cursor = 'grab';
+        });
+
+        // Iniciar desenho da visualização de Riemann
+        drawRiemann();
+
+        // Configuração da visualização de Volume
+        const volumeCanvas = document.getElementById('volumeCanvas');
+        const volumeCtx = volumeCanvas.getContext('2d');
+
+        // Estado
+        let angleZ = 225;
+        let angleX = 30;
+        let limitSize = 1; // Valor inicial
+        let limitXMin = -limitSize;
+        let limitXMax = limitSize;
+        let limitYMin = -limitSize;
+        let limitYMax = limitSize;
+        let volumeIsDragging = false;
+        let volumeLastX = 0;
+        let volumeLastY = 0;
+
+        // Configurar controle deslizante
+        const limitRange = document.getElementById('limitRange');
+        const limitValue = document.getElementById('limitValue');
+
+        // Atualizar valor do slider
+        limitRange.addEventListener('input', (e) => {
+          const value = parseInt(e.target.value) / 5;
+          limitSize = value;
+          limitXMin = -limitSize;
+          limitXMax = limitSize;
+          limitYMin = -limitSize;
+          limitYMax = limitSize;
+          limitValue.textContent = limitSize.toFixed(1);
+          renderVolume();
+        });
+
+        // Função de conversão para coordenadas isométricas
+        function iso(x, y, z) {
+          const scale = 90;
+          const angleZRad = (angleZ * Math.PI) / 180;
+          const angleXRad = (angleX * Math.PI) / 180;
+
+          // Rotação em torno do eixo Z
+          let x1 = x * Math.cos(angleZRad) - y * Math.sin(angleZRad);
+          let y1 = x * Math.sin(angleZRad) + y * Math.cos(angleZRad);
+          let z1 = z;
+
+          // Rotação em torno do eixo X
+          let y2 = y1 * Math.cos(angleXRad) - z1 * Math.sin(angleXRad);
+          let z2 = y1 * Math.sin(angleXRad) + z1 * Math.cos(angleXRad);
+
+          return {
+            x: volumeCanvas.width / 2 + x1 * scale,
+            y: volumeCanvas.height / 2 + y2 * scale,
+          };
+        }
+
+        // Função de renderização do volume
+        function renderVolume() {
+          volumeCtx.clearRect(0, 0, volumeCanvas.width, volumeCanvas.height);
+
+          // Desenhar eixos coordenados
+          const origin = iso(0, 0, 0);
+          const axisLength = 3;
+
+          // Eixo X - Rosa
+          volumeCtx.beginPath();
+          volumeCtx.strokeStyle = '#FF69B4';
+          volumeCtx.lineWidth = 1.5;
+          const xEnd = iso(axisLength, 0, 0);
+          volumeCtx.moveTo(origin.x, origin.y);
+          volumeCtx.lineTo(xEnd.x, xEnd.y);
+          volumeCtx.stroke();
+
+          // Eixo Y - Verde
+          volumeCtx.beginPath();
+          volumeCtx.strokeStyle = '#4CAF50';
+          const yEnd = iso(0, axisLength, 0);
+          volumeCtx.moveTo(origin.x, origin.y);
+          volumeCtx.lineTo(yEnd.x, yEnd.y);
+          volumeCtx.stroke();
+
+          // Eixo Z - Azul
+          volumeCtx.beginPath();
+          volumeCtx.strokeStyle = '#2196F3';
+          const zEnd = iso(0, 0, axisLength);
+          volumeCtx.moveTo(origin.x, origin.y);
+          volumeCtx.lineTo(zEnd.x, zEnd.y);
+          volumeCtx.stroke();
+
+          // Desenhar região de integração (base)
+          volumeCtx.strokeStyle = 'rgba(255, 50, 50, 0.8)';
+          volumeCtx.lineWidth = 2;
+          volumeCtx.beginPath();
+          const r1 = iso(limitXMin, limitYMin, 0);
+          const r2 = iso(limitXMax, limitYMin, 0);
+          const r3 = iso(limitXMax, limitYMax, 0);
+          const r4 = iso(limitXMin, limitYMax, 0);
+          volumeCtx.moveTo(r1.x, r1.y);
+          volumeCtx.lineTo(r2.x, r2.y);
+          volumeCtx.lineTo(r3.x, r3.y);
+          volumeCtx.lineTo(r4.x, r4.y);
+          volumeCtx.closePath();
+          volumeCtx.stroke();
+
+          // Desenhar grade vertical (linhas da superfície até a região)
+          volumeCtx.strokeStyle = 'rgba(255,255,255,0.2)';
+          volumeCtx.lineWidth = 0.5;
+          const step = Math.max(0.5, limitSize / 4); // Ajusta a densidade da grade
+
+          for (let x = limitXMin; x <= limitXMax + 0.01; x += step) {
+            for (let y = limitYMin; y <= limitYMax + 0.01; y += step) {
+              const p1 = iso(x, y, 0);
+              const p2 = iso(x, y, f(x, y));
+              volumeCtx.beginPath();
+              volumeCtx.moveTo(p1.x, p1.y);
+              volumeCtx.lineTo(p2.x, p2.y);
+              volumeCtx.stroke();
+            }
+          }
+
+          // Desenhar superfície
+          const resolution = 15;
+          const dx = (limitXMax - limitXMin) / resolution;
+          const dy = (limitYMax - limitYMin) / resolution;
+
+          for (let i = 0; i < resolution; i++) {
+            for (let j = 0; j < resolution; j++) {
+              const x1 = limitXMin + i * dx;
+              const y1 = limitYMin + j * dy;
+              const x2 = x1 + dx;
+              const y2 = y1 + dy;
+
+              const z1 = f(x1, y1);
+              const z2 = f(x2, y1);
+              const z3 = f(x2, y2);
+              const z4 = f(x1, y2);
+
+              // Cor baseada na altura média
+              const avgZ = (z1 + z2 + z3 + z4) / 4;
+              const blue = Math.min(255, Math.floor(150 + avgZ * 70));
+
+              const p1 = iso(x1, y1, z1);
+              const p2 = iso(x2, y1, z2);
+              const p3 = iso(x2, y2, z3);
+              const p4 = iso(x1, y2, z4);
+
+              // Desenhar face preenchida
+              volumeCtx.fillStyle = `rgba(52, 152, ${blue}, 0.5)`;
+              volumeCtx.beginPath();
+              volumeCtx.moveTo(p1.x, p1.y);
+              volumeCtx.lineTo(p2.x, p2.y);
+              volumeCtx.lineTo(p3.x, p3.y);
+              volumeCtx.lineTo(p4.x, p4.y);
+              volumeCtx.closePath();
+              volumeCtx.fill();
+
+              // Desenhar contorno
+              volumeCtx.strokeStyle = `rgba(100, 180, 255, 0.7)`;
+              volumeCtx.lineWidth = 0.5;
+              volumeCtx.beginPath();
+              volumeCtx.moveTo(p1.x, p1.y);
+              volumeCtx.lineTo(p2.x, p2.y);
+              volumeCtx.lineTo(p3.x, p3.y);
+              volumeCtx.lineTo(p4.x, p4.y);
+              volumeCtx.closePath();
+              volumeCtx.stroke();
+            }
+          }
+
+          // Calcular e exibir volume
+          const volume = calculateVolume();
+          document.getElementById('volumeValue').textContent =
+            volume.toFixed(3);
+        }
+
+        // Cálculo do volume
+        function calculateVolume() {
+          const resolution = 50;
+          const dx = (limitXMax - limitXMin) / resolution;
+          const dy = (limitYMax - limitYMin) / resolution;
+          let sum = 0;
+
+          for (let i = 0; i < resolution; i++) {
+            for (let j = 0; j < resolution; j++) {
+              const x = limitXMin + (i + 0.5) * dx;
+              const y = limitYMin + (j + 0.5) * dy;
+              sum += f(x, y) * dx * dy;
+            }
+          }
+
+          return sum;
+        }
+
+        // Configurar interação de rotação
+        volumeCanvas.addEventListener('mousedown', (e) => {
+          volumeIsDragging = true;
+          volumeLastX = e.clientX;
+          volumeLastY = e.clientY;
+          volumeCanvas.style.cursor = 'grabbing';
+        });
+
+        document.addEventListener('mousemove', (e) => {
+          if (!volumeIsDragging) return;
+
+          const deltaX = e.clientX - volumeLastX;
+          const deltaY = e.clientY - volumeLastY;
+
+          angleZ = (angleZ - deltaX * 0.5) % 360;
+          angleX = Math.max(-89, Math.min(89, angleX + deltaY * 0.5));
+
+          volumeLastX = e.clientX;
+          volumeLastY = e.clientY;
+
+          renderVolume();
+        });
+
+        document.addEventListener('mouseup', () => {
+          volumeIsDragging = false;
+          volumeCanvas.style.cursor = 'grab';
+        });
+
+        // Iniciar desenho da visualização de volume
+        renderVolume();
       });
     </script>
   </body>
