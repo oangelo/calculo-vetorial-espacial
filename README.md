@@ -33,7 +33,7 @@ Cada capítulo do curso possui uma apresentação interativa disponível online.
 - Mudança de variáveis
 - Massa e centro de massa
 
-5. [Integrais triplas](https://oangelo.github.io/Calculo-Vetorial-Exploracao-Espacial/slide-decks/integrais-triplas-1.html) [**2**](https://oangelo.github.io/Calculo-Vetorial-Exploracao-Espacial/slide-decks/integrais-triplas-2.html)
+5. [Integrais triplas](https://oangelo.github.io/Calculo-Vetorial-Exploracao-Espacial/slide-decks/integrais-triplas-1.html) - [ Aplicações ](https://oangelo.github.io/Calculo-Vetorial-Exploracao-Espacial/slide-decks/integrais-triplas-2.html)
 
 - Definição e conjunto de conteúdo nulo
 - Condições de integrabilidade
