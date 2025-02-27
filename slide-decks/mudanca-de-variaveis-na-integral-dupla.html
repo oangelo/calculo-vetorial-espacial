@@ -1448,7 +1448,7 @@
           const r = Math.sqrt(dx * dx + dy * dy);
           const theta = Math.atan2(dy, dx);
 
-          // Tamanho do elemento cartesiano
+          // Tamanho base do elemento cartesiano
           const dxy = 10;
 
           // Desenhar elemento cartesiano
@@ -1457,22 +1457,31 @@
           ctx.beginPath();
           ctx.rect(mouseX - dxy / 2, mouseY - dxy / 2, dxy, dxy);
           ctx.stroke();
+          ctx.fillStyle = 'rgba(77, 171, 245, 0.2)';
+          ctx.fill();
 
           // Texto para elemento cartesiano
           ctx.fillStyle = '#4dabf5';
           ctx.font = '12px Arial';
           ctx.fillText('dxdy', mouseX - dxy / 2 - 30, mouseY);
 
-          // Calcular tamanho do elemento polar
-          const dr = dxy * 0.7;
-          const dtheta = dxy / r;
+          // Calcular dimensões proporcionais para o elemento polar
+          // Usamos uma abordagem balanceada que evita distorções extremas
 
-          // Desenhar elemento polar
-          ctx.strokeStyle = '#ff9800';
-          ctx.lineWidth = 2;
-          ctx.beginPath();
+          // Base para tamanho do elemento
+          const baseSizeRadial = 8;
+          const baseAngular = 0.15;
 
-          // Vértices do elemento polar (aproximação)
+          // Tamanho radial - aumenta com r (mas não muito rapidamente)
+          const dr = baseSizeRadial * (0.5 + 0.5 * Math.min(1, r / 100));
+
+          // Tamanho angular - diminui com r (mas não muito rapidamente)
+          const dtheta = baseAngular * (0.2 + 0.8 * Math.min(1, 50 / r));
+
+          // Calcular a área do elemento para mostrar o efeito do Jacobiano
+          const areaElement = r * dr * dtheta;
+
+          // Vértices do elemento polar
           const v1x = centerX + r * Math.cos(theta);
           const v1y = centerY + r * Math.sin(theta);
 
@@ -1485,12 +1494,17 @@
           const v4x = centerX + r * Math.cos(theta + dtheta);
           const v4y = centerY + r * Math.sin(theta + dtheta);
 
+          ctx.beginPath();
           ctx.moveTo(v1x, v1y);
           ctx.lineTo(v2x, v2y);
           ctx.lineTo(v3x, v3y);
           ctx.lineTo(v4x, v4y);
           ctx.closePath();
+          ctx.strokeStyle = '#ff9800';
+          ctx.lineWidth = 2;
           ctx.stroke();
+          ctx.fillStyle = 'rgba(255, 152, 0, 0.2)';
+          ctx.fill();
 
           // Texto para elemento polar
           ctx.fillStyle = '#ff9800';
@@ -1514,7 +1528,7 @@
           );
           ctx.fillText(`Jacobiano: |J| = ${jacobian.toFixed(1)}`, 20, 70);
           ctx.fillText(
-            `Relação: dA = |J| · dr · dθ = ${jacobian.toFixed(1)} · dr · dθ`,
+            `Área do elemento: ${areaElement.toFixed(1)} (proporcional a r)`,
             20,
             90
           );
