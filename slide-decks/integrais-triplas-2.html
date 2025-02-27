@@ -1,0 +1,580 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Apresentação Matemática</title>
+    <link rel="stylesheet" href="reveal.js/dist/reveal.css" />
+    <link rel="stylesheet" href="space-theme.css" />
+    <script src="reveal.js/dist/reveal.js"></script>
+    <script src="reveal.js/plugin/math/math.js"></script>
+    <script>
+      window.onload = function () {
+        Reveal.initialize({
+          controls: true,
+          progress: true,
+          center: true,
+          hash: true,
+          plugins: [RevealMath.MathJax3],
+        });
+      };
+    </script>
+  </head>
+  <body>
+    <div class="reveal">
+      <!-- Elementos para animação de fundo -->
+      <div class="asteroid"></div>
+      <div class="asteroid"></div>
+
+      <div class="slides">
+        <!-- Slide de título -->
+        <section>
+          <h1>Aplicações de Integrais Triplas</h1>
+          <h2>Explorando o Espaço Tridimensional</h2>
+          <p>Cálculo Vetorial &mdash; Módulo Avançado</p>
+          <p>
+            <small
+              >Guerra Fria: A Matemática por Trás da Corrida Espacial</small
+            >
+          </p>
+        </section>
+
+        <!-- Slide 1: Centro de Massa -->
+        <section>
+          <section>
+            <h2>Centro de Massa</h2>
+            <p>O ponto mágico onde todo objeto parece "se equilibrar"</p>
+            <div class="math">
+              $$\vec{r}_{CM} = \frac{1}{M}\iiint_V \rho(\vec{r})\vec{r} \, dV$$
+            </div>
+            <p>
+              Onde: $M = \iiint_V \rho(\vec{r}) \, dV$ é a massa total do objeto
+            </p>
+            <p>
+              <small
+                >↓ Deslize para baixo para entender com exemplos do dia a dia
+                ↓</small
+              >
+            </p>
+          </section>
+
+          <section>
+            <h3>O Que é Centro de Massa, Afinal?</h3>
+            <p>
+              Imagine equilibrar uma régua irregular no seu dedo. O ponto exato
+              onde ela fica em equilíbrio é o centro de massa!
+            </p>
+            <ul>
+              <li>É o "ponto de equilíbrio" de qualquer objeto</li>
+              <li>É onde toda a massa do objeto parece estar "concentrada"</li>
+              <li>
+                É o ponto que segue uma trajetória perfeitamente previsível
+                durante o movimento
+              </li>
+            </ul>
+            <p class="fragment">
+              <strong>Pense no João Bobo:</strong> Aquele brinquedo que sempre
+              volta à posição vertical quando empurrado. Por que isso acontece?
+              Porque seu centro de massa está posicionado
+              <em>estrategicamente abaixo</em> do ponto de apoio, criando um
+              momento restaurador.
+            </p>
+          </section>
+
+          <section>
+            <h3>Densidade: Não é Só Sobre Peso</h3>
+            <p>
+              Por que precisamos da função densidade $\rho(\vec{r})$ nas nossas
+              integrais?
+            </p>
+            <p>
+              Pense na clássica pergunta:
+              <em>"O que pesa mais: 1kg de chumbo ou 1kg de algodão?"</em>
+            </p>
+            <div class="fragment">
+              <p>
+                Ambos têm a mesma massa (1kg), mas volumes drasticamente
+                diferentes:
+              </p>
+              <ul>
+                <li>Chumbo: extremamente denso, ocupa pouco espaço</li>
+                <li>Algodão: pouco denso, ocupa muito espaço</li>
+              </ul>
+              <p>
+                Na engenharia espacial, cada grama importa! A distribuição da
+                massa (densidade) determina como um foguete ou satélite se
+                comportará durante o voo.
+              </p>
+            </div>
+          </section>
+
+          <section>
+            <h3>Definição Matemática em Palavras Simples</h3>
+            <div class="math">
+              $$\vec{r}_{CM} = \left( \frac{\iiint_V \rho(x,y,z)x \, dV}{M},
+              \frac{\iiint_V \rho(x,y,z)y \, dV}{M}, \frac{\iiint_V \rho(x,y,z)z
+              \, dV}{M} \right)$$
+            </div>
+            <p>
+              Em termos simples: estamos "pegando" cada pontinho do objeto,
+              multiplicando sua posição pela densidade naquele ponto, somando
+              tudo e dividindo pela massa total.
+            </p>
+            <p>
+              É como calcular uma "média ponderada" de todas as posições, onde o
+              "peso" de cada posição é determinado pela massa concentrada ali.
+            </p>
+            <p class="fragment">
+              Questão para reflexão:
+              <em
+                >Por que o centro de massa de um donut (toroide) não está em
+                nenhum ponto do material, mas no "buraco" central?</em
+              >
+            </p>
+          </section>
+
+          <section>
+            <h3>Aplicação Real: O Drama do Módulo Lunar</h3>
+            <p>
+              Durante a missão Apollo 11, Neil Armstrong enfrentou um problema
+              crítico durante o pouso na Lua:
+            </p>
+            <blockquote>
+              "Estávamos a menos de 30 segundos de combustível quando pousamos."
+              <br />— Neil Armstrong, Apollo 11
+            </blockquote>
+            <p>
+              O que poucos sabem: Armstrong teve que assumir o controle manual
+              porque o módulo lunar estava desbalanceado!
+            </p>
+            <ul>
+              <li>
+                O centro de massa <strong>não estava alinhado</strong> com os
+                propulsores
+              </li>
+              <li>
+                Isso criava um <strong>torque indesejado</strong> durante a
+                descida automática
+              </li>
+              <li>Armstrong precisou compensar manualmente esse efeito</li>
+            </ul>
+            <p class="fragment">
+              Um erro de cálculo no centro de massa quase custou a missão
+              histórica!
+            </p>
+          </section>
+        </section>
+
+        <!-- Slide 2: Momento de Inércia -->
+        <section>
+          <section>
+            <h2>Momento de Inércia</h2>
+            <p>A "relutância" de um objeto em mudar seu estado de rotação</p>
+            <div class="math">
+              $$I_{ij} = \iiint_V \rho(\vec{r})(r^2\delta_{ij} - r_i r_j) \,
+              dV$$
+            </div>
+            <p>
+              <small
+                >↓ Deslize para baixo para entender como isso afeta patinadores,
+                piões e satélites ↓</small
+              >
+            </p>
+          </section>
+
+          <section>
+            <h3>Momento de Inércia na Vida Real</h3>
+            <p>
+              Já reparou como um patinador artístico gira mais rápido quando
+              puxa os braços para perto do corpo?
+            </p>
+            <div class="fragment">
+              <p>Isso é o momento de inércia em ação!</p>
+              <ul>
+                <li>
+                  Braços esticados = maior momento de inércia = rotação mais
+                  lenta
+                </li>
+                <li>
+                  Braços junto ao corpo = menor momento de inércia = rotação
+                  mais rápida
+                </li>
+              </ul>
+              <p>
+                A <strong>conservação do momento angular</strong> faz com que a
+                velocidade angular aumente quando o momento de inércia diminui.
+              </p>
+            </div>
+            <p class="fragment">
+              O mesmo princípio é usado para estabilizar satélites no espaço!
+            </p>
+          </section>
+
+          <section>
+            <h3>O Tensor de Inércia: Uma Matriz de "Resistências"</h3>
+            <div class="math">
+              $$I = \begin{pmatrix} I_{xx} & I_{xy} & I_{xz} \\ I_{yx} & I_{yy}
+              & I_{yz} \\ I_{zx} & I_{zy} & I_{zz} \end{pmatrix}$$
+            </div>
+            <p>
+              Pense no tensor de inércia como um "mapa de resistências" à
+              rotação em diferentes direções:
+            </p>
+            <ul>
+              <li>
+                Termos diagonais ($I_{xx}$, $I_{yy}$, $I_{zz}$): resistência à
+                rotação em torno dos eixos principais
+              </li>
+              <li>
+                Termos cruzados ($I_{xy}$, etc.): tendência do objeto a
+                "desviar" para outra direção durante a rotação
+              </li>
+            </ul>
+            <p class="fragment">
+              É como dirigir um carro desalinhado: mesmo segurando o volante
+              reto, ele tende a desviar para um lado.
+            </p>
+          </section>
+
+          <section>
+            <h3>Piões, Giroscópios e a Estabilidade</h3>
+            <p>
+              Por que um pião cai quando gira devagar, mas se mantém em pé
+              quando gira rápido?
+            </p>
+            <div class="fragment">
+              <p>A estabilidade rotacional depende de dois fatores:</p>
+              <ol>
+                <li>Velocidade angular (quão rápido o objeto gira)</li>
+                <li>Momento de inércia em torno do eixo de rotação</li>
+              </ol>
+              <p>
+                Um objeto tende a girar <strong>naturalmente</strong> em torno
+                do eixo com <strong>maior</strong> momento de inércia.
+              </p>
+            </div>
+            <p class="fragment">
+              Isso é chamado de <strong>"rotação estável"</strong> e é crucial
+              para satélites!
+            </p>
+          </section>
+
+          <section>
+            <h3>O Desastre do Explorer 1: Lição Aprendida na Prática</h3>
+            <p>
+              Em 1958, os EUA lançaram o Explorer 1, seu primeiro satélite, com
+              formato de "lápis" longo e fino.
+            </p>
+            <div class="fragment">
+              <p>
+                Os engenheiros esperavam que ele girasse em torno do seu eixo
+                maior (como um lápis girando entre seus dedos).
+              </p>
+              <p>
+                O que aconteceu? O satélite começou a "cambalear" e
+                eventualmente passou a girar em torno do seu eixo menor!
+              </p>
+              <ul>
+                <li>
+                  Os engenheiros americanos não entenderam inicialmente o porquê
+                </li>
+                <li>
+                  Os soviéticos, por outro lado, usaram o formato esférico para
+                  o Sputnik, evitando esse problema
+                </li>
+              </ul>
+            </div>
+            <p class="fragment">
+              A lição: objetos alongados são instáveis quando giram em torno do
+              eixo menor momento de inércia.
+            </p>
+            <p class="fragment">
+              As futuras missões americanas passaram a usar formatos de
+              "halteres" para garantir estabilidade.
+            </p>
+          </section>
+        </section>
+
+        <!-- Slide 3: Exercícios Práticos -->
+        <section>
+          <section>
+            <h2>Exercícios Práticos</h2>
+            <p>Traduzindo a teoria para os desafios da exploração espacial</p>
+            <p>
+              <small
+                >↓ Deslize para baixo para problemas reais que a NASA e SpaceX
+                enfrentam ↓</small
+              >
+            </p>
+          </section>
+
+          <section>
+            <h3>Problema Guiado: Tanque de Combustível</h3>
+            <p>
+              O programa Saturn V usava tanques toroidais (em forma de
+              rosquinha) para armazenar propelentes.
+            </p>
+            <p>
+              Calcule o volume de combustível em um tanque com raio maior $R =
+              3m$ e raio menor $r = 1m$.
+            </p>
+            <div class="fragment">
+              <p><strong>Antes da matemática:</strong> Por que isso importa?</p>
+              <ul>
+                <li>
+                  Cada kg de combustível adicional significa menos carga útil
+                  para o espaço
+                </li>
+                <li>Subestimar o combustível = missão fracassada</li>
+                <li>Superestimar = desperdício de capacidade de carga</li>
+              </ul>
+              <p>
+                Os engenheiros da NASA precisavam calcular isso com precisão de
+                litros!
+              </p>
+            </div>
+          </section>
+
+          <section>
+            <h3>Resolvendo Passo a Passo</h3>
+            <p>
+              O segredo para resolver problemas com simetria circular é usar
+              coordenadas cilíndricas:
+            </p>
+            <div class="math">
+              \begin{align} V &= \iiint_V dV \\ &= \int_{0}^{2\pi}
+              \int_{R-r}^{R+r} \int_{-\sqrt{r^2-(s-R)^2}}^{\sqrt{r^2-(s-R)^2}} s
+              \, dz \, ds \, d\theta \end{align}
+            </div>
+            <p>O que estamos fazendo intuitivamente?</p>
+            <ol>
+              <li>
+                Girando 360° em torno do eixo central ($\int_{0}^{2\pi}d\theta$)
+              </li>
+              <li>
+                Varrendo do raio interno ao externo da rosquinha
+                ($\int_{R-r}^{R+r}ds$)
+              </li>
+              <li>
+                Para cada ponto, integrando verticalmente pela "altura" da
+                rosquinha ($\int_{-\sqrt{...}}^{\sqrt{...}}dz$)
+              </li>
+            </ol>
+            <p>
+              É como fatiar a rosquinha em anéis concêntricos, e depois
+              adicionar todas as fatias!
+            </p>
+          </section>
+
+          <section>
+            <h3>Resultado e Significado Prático</h3>
+            <p>Após resolver a integral, chegamos a:</p>
+            <div class="math">
+              $$V = 2\pi^2 r^2 R = 2\pi^2 \cdot 1^2 \cdot 3 = 6\pi^2 \approx
+              59.22 \text{ m}^3$$
+            </div>
+            <p>Em termos práticos:</p>
+            <ul>
+              <li>59.22 metros cúbicos ≈ 59,220 litros de combustível</li>
+              <li>Hidrogênio líquido: ~4,180 kg (densidade 0.07 g/cm³)</li>
+              <li>Oxigênio líquido: ~67,730 kg (densidade 1.14 g/cm³)</li>
+            </ul>
+            <p class="fragment">
+              Esse cálculo afetava diretamente a autonomia do veículo espacial e
+              a duração possível da missão!
+            </p>
+          </section>
+
+          <section>
+            <h3>Desafio Avançado: Campo Gravitacional de Asteroides</h3>
+            <p>
+              Em 2020, a sonda OSIRIS-REx coletou amostras do asteroide Bennu,
+              mas antes precisou navegar próximo a ele.
+            </p>
+            <p>O problema? Asteroides têm formatos extremamente irregulares!</p>
+            <div class="fragment">
+              <p>
+                <strong>Por que isso é desafiador?</strong> Ao contrário da
+                Terra, que pode ser aproximada como uma esfera:
+              </p>
+              <ul>
+                <li>A gravidade não aponta uniformemente para o centro</li>
+                <li>A intensidade varia irregularmente com a posição</li>
+                <li>
+                  Pequenas diferenças na densidade criam grandes variações no
+                  campo gravitacional
+                </li>
+              </ul>
+              <p>
+                Isso pode puxar a sonda para uma colisão indesejada com o
+                asteroide!
+              </p>
+            </div>
+          </section>
+
+          <section>
+            <h3>Modelando o Campo Gravitacional</h3>
+            <div class="math">
+              $$\Phi(x_0, y_0, z_0) = -G\iiint_V
+              \frac{\rho(x,y,z)}{\sqrt{(x-x_0)^2+(y-y_0)^2+(z-z_0)^2}} \, dV$$
+            </div>
+            <p>
+              Em palavras simples: cada pedacinho do asteroide "puxa" a sonda
+              com uma força proporcional à sua massa e inversamente proporcional
+              ao quadrado da distância.
+            </p>
+            <p>
+              Para resolver, dividimos o asteroide em milhares de cubinhos e
+              somamos a contribuição de cada um.
+            </p>
+            <p class="fragment">
+              Esse é um caso onde o cálculo numérico (aproximações
+              computacionais) é a única saída viável!
+            </p>
+            <p class="fragment">
+              A NASA usou supercomputadores para resolver essas integrais,
+              permitindo que a OSIRIS-REx navegasse com segurança ao redor de
+              Bennu a apenas 700 metros da superfície!
+            </p>
+          </section>
+        </section>
+
+        <!-- Slide 4: Síntese -->
+        <section>
+          <section>
+            <h2>Síntese: Da Rivalidade à Cooperação</h2>
+            <p>
+              Como o cálculo vetorial transcendeu a Guerra Fria e se tornou uma
+              linguagem universal
+            </p>
+            <p>
+              <small
+                >↓ Deslize para baixo para uma reflexão final sobre o poder
+                unificador da matemática ↓</small
+              >
+            </p>
+          </section>
+
+          <section>
+            <h3>Mapa Conceitual: Integrando Ideias</h3>
+            <p>
+              O que aprendemos sobre integrais triplas pode ser aplicado em um
+              fluxo de pensamento:
+            </p>
+            <ol>
+              <li>
+                <strong>Identificação do problema físico:</strong> Qual
+                propriedade queremos calcular?
+              </li>
+              <li>
+                <strong>Modelagem matemática:</strong> Expressar a propriedade
+                como uma integral tripla
+              </li>
+              <li>
+                <strong>Escolha estratégica de coordenadas:</strong> Baseada na
+                simetria do problema
+              </li>
+              <li>
+                <strong>Resolução da integral:</strong> Analítica ou
+                numericamente
+              </li>
+              <li>
+                <strong>Interpretação física:</strong> O que o resultado nos diz
+                sobre o mundo real?
+              </li>
+            </ol>
+            <p class="fragment">
+              Esse processo é como montar um quebra-cabeça matemático que revela
+              segredos sobre o universo físico!
+            </p>
+          </section>
+
+          <section>
+            <h3>Da Competição à Cooperação Internacional</h3>
+            <p>
+              Na década de 1960, EUA e URSS competiam ferozmente usando o mesmo
+              cálculo vetorial.
+            </p>
+            <div class="fragment">
+              <p>
+                Hoje, essas mesmas equações unem nações na Estação Espacial
+                Internacional:
+              </p>
+              <ul>
+                <li>
+                  Os módulos russos e americanos precisam ter centros de massa
+                  compatíveis
+                </li>
+                <li>
+                  Os momentos de inércia de toda a estação são calculados em
+                  conjunto
+                </li>
+                <li>
+                  O controle de atitude da ISS depende de cálculos desenvolvidos
+                  por ambos os lados
+                </li>
+              </ul>
+            </div>
+            <p class="fragment">
+              A matemática provou ser uma linguagem universal que transcende
+              rivalidades políticas!
+            </p>
+          </section>
+
+          <section>
+            <h3>Aplicações Contemporâneas: Além da Guerra Fria</h3>
+            <p>
+              As integrais triplas são a base matemática para tecnologias que
+              estão redefinindo nossa relação com o espaço:
+            </p>
+            <ul>
+              <li>
+                <strong>SpaceX e Pouso de Foguetes:</strong> Os Falcon 9
+                calculam constantemente seu centro de massa durante o voo para
+                pousos verticais precisos
+              </li>
+              <li>
+                <strong>Telescópio James Webb:</strong> O posicionamento
+                ultra-preciso dos espelhos depende de análises de momentos de
+                inércia
+              </li>
+              <li>
+                <strong>Missão DART:</strong> O desvio de asteroides por impacto
+                cinético depende da compreensão de seu campo gravitacional
+              </li>
+              <li>
+                <strong>Turismo Espacial:</strong> O conforto e segurança dos
+                passageiros depende de estabilidade rotacional controlada
+              </li>
+            </ul>
+          </section>
+
+          <section>
+            <h3>Questão Final para Reflexão</h3>
+            <blockquote>
+              "A matemática é a linguagem com a qual Deus escreveu o
+              universo."<br />— Galileu Galilei
+            </blockquote>
+            <p>
+              Durante a Guerra Fria, as integrais triplas eram armas na corrida
+              espacial. Hoje, são ferramentas de cooperação internacional.
+            </p>
+            <p class="fragment">
+              <em
+                >Como o cálculo vetorial — que nasceu da curiosidade pura de
+                matemáticos como Gauss e Green — acabou tendo papel tão central
+                na geopolítica mundial e, posteriormente, na unificação de
+                esforços globais?</em
+              >
+            </p>
+            <p class="fragment">
+              Talvez a resposta esteja na universalidade da matemática como
+              linguagem da natureza, que independe de fronteiras políticas ou
+              ideologias.
+            </p>
+          </section>
+        </section>
+      </div>
+    </div>
+  </body>
+</html>
