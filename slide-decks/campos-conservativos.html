@@ -19,12 +19,1899 @@
         });
       };
     </script>
+
+    <style>
+      /* Estilos para simulação do space-theme */
+      :root {
+        --space-black: #0a0a0f;
+        --deep-blue: #1a237e;
+        --star-blue: #4fc3f7;
+        --nebula-blue: rgba(79, 195, 247, 0.15);
+        --text-color: #e0e0e0;
+        --accent-color: #64b5f6;
+      }
+
+      canvas {
+        background-color: rgba(26, 35, 126, 0.3);
+        border: 1px solid rgba(79, 195, 247, 0.2);
+        box-shadow: 0 0 20px rgba(79, 195, 247, 0.1);
+        margin: 0 auto;
+        display: block;
+      }
+
+      .controls {
+        display: flex;
+        justify-content: center;
+        margin: 10px auto;
+        gap: 10px;
+        flex-wrap: wrap;
+        width: 90%;
+      }
+
+      .controls button {
+        background-color: var(--deep-blue);
+        color: var(--text-color);
+        border: 1px solid var(--star-blue);
+        padding: 6px 10px;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: all 0.3s;
+        font-size: 0.8em;
+        margin-bottom: 5px;
+      }
+
+      .controls button:hover {
+        background-color: var(--star-blue);
+        color: var(--deep-blue);
+      }
+
+      .info-panel {
+        background-color: rgba(26, 35, 126, 0.3);
+        border: 1px solid rgba(79, 195, 247, 0.2);
+        padding: 8px;
+        margin: 8px auto;
+        width: 80%;
+        font-size: 0.85em;
+        text-align: left;
+        max-height: 80px;
+        overflow-y: auto;
+      }
+
+      .placeholder-canvas {
+        width: 80%;
+        height: 400px;
+        background-color: rgba(26, 35, 126, 0.3);
+        border: 1px solid rgba(79, 195, 247, 0.2);
+        box-shadow: 0 0 20px rgba(79, 195, 247, 0.1);
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--accent-color);
+        font-style: italic;
+      }
+    </style>
+    <script>
+      window.onload = function () {
+        Reveal.initialize({
+          controls: true,
+          progress: true,
+          center: true,
+          hash: true,
+          plugins: [RevealMath.MathJax3],
+          math: {
+            mathjax:
+              'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js',
+            config: 'TeX-AMS_HTML-full',
+            TeX: {
+              Macros: {},
+            },
+          },
+        });
+
+        // Inicializar visualizações quando os slides forem carregados
+        Reveal.addEventListener('ready', function () {
+          // Inicializar visualizações
+          if (document.getElementById('path-independence-canvas')) {
+            initPathIndependenceDemo();
+          }
+
+          if (document.getElementById('potential-function-canvas')) {
+            initPotentialFunctionDemo();
+          }
+
+          if (document.getElementById('simply-connected-canvas')) {
+            initSimplyConnectedDemo();
+          }
+        });
+
+        // Reinicializar visualizações quando os slides específicos forem exibidos
+        Reveal.addEventListener('slidechanged', function (event) {
+          // Verificar se o slide atual contém alguma das visualizações
+          const currentSlide = event.currentSlide;
+
+          if (currentSlide.querySelector('#path-independence-canvas')) {
+            initPathIndependenceDemo();
+          }
+
+          if (currentSlide.querySelector('#potential-function-canvas')) {
+            initPotentialFunctionDemo();
+          }
+
+          if (currentSlide.querySelector('#simply-connected-canvas')) {
+            initSimplyConnectedDemo();
+          }
+        });
+      };
+
+      // ===== Visualização 1: Demonstração da Independência do Caminho =====
+      function initPathIndependenceDemo() {
+        const canvas = document.getElementById('path-independence-canvas');
+        if (!canvas) return;
+
+        const ctx = canvas.getContext('2d');
+        const width = canvas.width;
+        const height = canvas.height;
+
+        // Pontos de início e fim
+        let startPoint = { x: width * 0.2, y: height * 0.5 };
+        let endPoint = { x: width * 0.8, y: height * 0.5 };
+
+        // Caminhos pré-definidos
+        let paths = [
+          [], // Caminho direto (linha reta)
+          [], // Caminho sinusoidal
+          [], // Caminho em arco
+        ];
+
+        // Resultados das integrais
+        let integralResults = [0, 0, 0];
+
+        // Estado atual da visualização
+        let draggingPoint = null;
+        let activePathIndex = 0;
+        const pointRadius = 12; // Aumentado para facilitar o arraste
+
+        // Campo vetorial: F(x,y) = (2x, 2y) - gradiente de f(x,y) = x² + y²
+        function fieldX(x, y) {
+          // Converter de coordenadas de canvas para campo (-2 a 2)
+          const fx = (x / width) * 4 - 2;
+          return 2 * fx;
+        }
+
+        function fieldY(x, y) {
+          // Converter de coordenadas de canvas para campo (-2 a 2)
+          const fy = 2 - (y / height) * 4; // Invertido por causa das coordenadas do canvas
+          return 2 * fy;
+        }
+
+        // Função potencial f(x,y) = x² + y²
+        function potential(x, y) {
+          // Converter de coordenadas de canvas para campo (-2 a 2)
+          const fx = (x / width) * 4 - 2;
+          const fy = 2 - (y / height) * 4;
+          return fx * fx + fy * fy;
+        }
+
+        // Calcular integrais de linha
+        function calculateIntegrals() {
+          // Potencial nos pontos de início e fim
+          const startPotential = potential(startPoint.x, startPoint.y);
+          const endPotential = potential(endPoint.x, endPoint.y);
+
+          // O resultado da integral é a diferença dos potenciais
+          const exactResult = endPotential - startPotential;
+
+          // Atualizar todos os resultados
+          integralResults = [exactResult, exactResult, exactResult];
+
+          // Para efeitos de demonstração, adicionar pequenas variações numéricas
+          // integralResults[1] += (Math.random() - 0.5) * 0.01;
+          // integralResults[2] += (Math.random() - 0.5) * 0.01;
+
+          // Atualizar o painel de informações
+          updateInfoPanel();
+        }
+
+        // Construir caminhos
+        function buildPaths() {
+          // Caminho 1: linha reta
+          paths[0] = [];
+          const steps = 50;
+          for (let i = 0; i <= steps; i++) {
+            const t = i / steps;
+            const x = startPoint.x + t * (endPoint.x - startPoint.x);
+            const y = startPoint.y + t * (endPoint.y - startPoint.y);
+            paths[0].push({ x, y });
+          }
+
+          // Caminho 2: sinusoidal
+          paths[1] = [];
+          for (let i = 0; i <= steps; i++) {
+            const t = i / steps;
+            const x = startPoint.x + t * (endPoint.x - startPoint.x);
+            const amplitude = height * 0.2;
+            const frequency = 3; // Número de oscilações
+            const phase = Math.sin(t * Math.PI * frequency) * amplitude;
+            const y = startPoint.y + t * (endPoint.y - startPoint.y) + phase;
+            paths[1].push({ x, y });
+          }
+
+          // Caminho 3: arco
+          paths[2] = [];
+          const centerX = (startPoint.x + endPoint.x) / 2;
+          const width = endPoint.x - startPoint.x;
+          const arcHeight = height * 0.3;
+
+          for (let i = 0; i <= steps; i++) {
+            const t = i / steps;
+            const angle = Math.PI * t;
+            const x = centerX - (width / 2) * Math.cos(angle);
+            const y = startPoint.y - arcHeight * Math.sin(angle);
+            paths[2].push({ x, y });
+          }
+        }
+
+        // Desenhar campo vetorial
+        function drawField() {
+          const gridSize = 40; // Aumentado para menos vetores/mais clareza
+          const arrowSize = 5;
+
+          ctx.strokeStyle = 'rgba(79, 195, 247, 0.3)';
+          ctx.lineWidth = 1;
+
+          for (let x = 0; x < width; x += gridSize) {
+            for (let y = 0; y < height; y += gridSize) {
+              // Calcular componentes do campo
+              const fx = fieldX(x, y);
+              const fy = -fieldY(x, y); // Invertido para coordenadas do canvas
+
+              // Escalar para visualização
+              const scale = 2;
+              const dx = fx * scale;
+              const dy = fy * scale;
+
+              // Magnitude do vetor
+              const mag = Math.sqrt(dx * dx + dy * dy);
+              if (mag < 0.1) continue; // Ignorar vetores muito pequenos
+
+              const normalizedDx = dx / mag;
+              const normalizedDy = dy / mag;
+
+              // Começar a desenhar o vetor
+              ctx.beginPath();
+              ctx.moveTo(x, y);
+
+              // Comprimento fixo para melhor visualização
+              const arrowLength = gridSize * 0.6;
+              const endX = x + normalizedDx * arrowLength;
+              const endY = y + normalizedDy * arrowLength;
+
+              ctx.lineTo(endX, endY);
+
+              // Desenhar a ponta da seta
+              const angle = Math.atan2(normalizedDy, normalizedDx);
+              ctx.lineTo(
+                endX - arrowSize * Math.cos(angle - Math.PI / 6),
+                endY - arrowSize * Math.sin(angle - Math.PI / 6)
+              );
+              ctx.moveTo(endX, endY);
+              ctx.lineTo(
+                endX - arrowSize * Math.cos(angle + Math.PI / 6),
+                endY - arrowSize * Math.sin(angle + Math.PI / 6)
+              );
+
+              ctx.stroke();
+            }
+          }
+        }
+
+        // Desenhar os caminhos
+        function drawPaths() {
+          // Desenhar todos os caminhos
+          const pathColors = [
+            'rgba(255, 255, 255, 0.7)', // Caminho direto
+            'rgba(255, 128, 0, 0.7)', // Caminho sinusoidal
+            'rgba(0, 255, 128, 0.7)', // Caminho em arco
+          ];
+
+          paths.forEach((path, index) => {
+            if (path.length === 0) return;
+
+            ctx.strokeStyle = pathColors[index];
+            ctx.lineWidth = index === activePathIndex ? 3 : 1.5;
+
+            ctx.beginPath();
+            ctx.moveTo(path[0].x, path[0].y);
+
+            for (let i = 1; i < path.length; i++) {
+              ctx.lineTo(path[i].x, path[i].y);
+            }
+
+            ctx.stroke();
+          });
+        }
+
+        // Desenhar os pontos de início e fim
+        function drawPoints() {
+          // Ponto de início
+          ctx.fillStyle = 'rgba(100, 181, 246, 0.8)';
+          ctx.beginPath();
+          ctx.arc(startPoint.x, startPoint.y, pointRadius, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.fillStyle = 'white';
+          ctx.font = '16px Arial';
+          ctx.textAlign = 'center';
+          ctx.fillText('A', startPoint.x, startPoint.y + 5);
+
+          // Ponto de fim
+          ctx.fillStyle = 'rgba(255, 87, 34, 0.8)';
+          ctx.beginPath();
+          ctx.arc(endPoint.x, endPoint.y, pointRadius, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.fillStyle = 'white';
+          ctx.fillText('B', endPoint.x, endPoint.y + 5);
+        }
+
+        // Atualizar o painel de informações
+        function updateInfoPanel() {
+          const infoPanel = document.getElementById('path-independence-info');
+          if (!infoPanel) return;
+
+          // Converter para coordenadas do campo matemático
+          const startX = ((startPoint.x / width) * 4 - 2).toFixed(2);
+          const startY = (2 - (startPoint.y / height) * 4).toFixed(2);
+          const endX = ((endPoint.x / width) * 4 - 2).toFixed(2);
+          const endY = (2 - (endPoint.y / height) * 4).toFixed(2);
+
+          const pathNames = [
+            'Caminho reto',
+            'Caminho sinusoidal',
+            'Caminho em arco',
+          ];
+          const result = integralResults[activePathIndex].toFixed(3);
+
+          let html = `
+            <strong>Campo:</strong> F(x,y) = (2x, 2y)   <strong>Potencial:</strong> f(x,y) = x² + y²<br>
+            <strong>Ponto A:</strong> (${startX}, ${startY})   <strong>Ponto B:</strong> (${endX}, ${endY})<br>
+            <strong>${pathNames[activePathIndex]}:</strong> Integral = ${result}
+          `;
+
+          infoPanel.innerHTML = html;
+        }
+
+        // Função principal de desenho
+        function draw() {
+          // Limpar o canvas
+          ctx.clearRect(0, 0, width, height);
+
+          // Desenhar o campo vetorial
+          drawField();
+
+          // Desenhar os caminhos
+          drawPaths();
+
+          // Desenhar os pontos
+          drawPoints();
+        }
+
+        // Verificar se um ponto está próximo o suficiente para arrastar
+        function isNearPoint(mouseX, mouseY, point) {
+          const dx = mouseX - point.x;
+          const dy = mouseY - point.y;
+          return Math.sqrt(dx * dx + dy * dy) <= pointRadius; // Usar o raio aumentado
+        }
+
+        // Definir o cursor apropriado
+        function updateCursor(e) {
+          const rect = canvas.getBoundingClientRect();
+          const mouseX = e.clientX - rect.left;
+          const mouseY = e.clientY - rect.top;
+
+          if (
+            isNearPoint(mouseX, mouseY, startPoint) ||
+            isNearPoint(mouseX, mouseY, endPoint)
+          ) {
+            canvas.style.cursor = 'pointer';
+          } else {
+            canvas.style.cursor = 'default';
+          }
+        }
+
+        // Event listeners
+        canvas.addEventListener('mousedown', function (e) {
+          const rect = canvas.getBoundingClientRect();
+          const mouseX = e.clientX - rect.left;
+          const mouseY = e.clientY - rect.top;
+
+          // Verificar se o clique foi próximo a algum ponto
+          if (isNearPoint(mouseX, mouseY, startPoint)) {
+            draggingPoint = 'start';
+            canvas.style.cursor = 'grabbing';
+          } else if (isNearPoint(mouseX, mouseY, endPoint)) {
+            draggingPoint = 'end';
+            canvas.style.cursor = 'grabbing';
+          }
+        });
+
+        canvas.addEventListener('mousemove', function (e) {
+          if (draggingPoint) {
+            const rect = canvas.getBoundingClientRect();
+            const mouseX = e.clientX - rect.left;
+            const mouseY = e.clientY - rect.top;
+
+            // Limitar os pontos dentro do canvas
+            const x = Math.max(
+              pointRadius,
+              Math.min(width - pointRadius, mouseX)
+            );
+            const y = Math.max(
+              pointRadius,
+              Math.min(height - pointRadius, mouseY)
+            );
+
+            // Atualizar a posição do ponto
+            if (draggingPoint === 'start') {
+              startPoint.x = x;
+              startPoint.y = y;
+            } else if (draggingPoint === 'end') {
+              endPoint.x = x;
+              endPoint.y = y;
+            }
+
+            // Reconstruir caminhos
+            buildPaths();
+
+            // Recalcular integrais
+            calculateIntegrals();
+
+            // Redesenhar
+            draw();
+          } else {
+            // Atualizar o cursor
+            updateCursor(e);
+          }
+        });
+
+        canvas.addEventListener('mouseup', function () {
+          draggingPoint = null;
+          canvas.style.cursor = 'default';
+          updateCursor(event);
+        });
+
+        canvas.addEventListener('mouseleave', function () {
+          draggingPoint = null;
+          canvas.style.cursor = 'default';
+        });
+
+        // Botões para alternar entre caminhos
+        const path1Button = document.getElementById('path1-button');
+        const path2Button = document.getElementById('path2-button');
+        const path3Button = document.getElementById('path3-button');
+
+        if (path1Button) {
+          path1Button.addEventListener('click', function () {
+            activePathIndex = 0;
+            updateInfoPanel();
+            draw();
+          });
+        }
+
+        if (path2Button) {
+          path2Button.addEventListener('click', function () {
+            activePathIndex = 1;
+            updateInfoPanel();
+            draw();
+          });
+        }
+
+        if (path3Button) {
+          path3Button.addEventListener('click', function () {
+            activePathIndex = 2;
+            updateInfoPanel();
+            draw();
+          });
+        }
+
+        // Inicialização
+        buildPaths();
+        calculateIntegrals();
+        draw();
+        updateInfoPanel();
+      }
+
+      // ===== Visualização 2: Função Potencial e Campo Vetorial =====
+      function initPotentialFunctionDemo() {
+        const canvas = document.getElementById('potential-function-canvas');
+        if (!canvas) return;
+
+        const ctx = canvas.getContext('2d');
+        const width = canvas.width;
+        const height = canvas.height;
+
+        // Parâmetros da função potencial
+        let potentialType = 'quadratic'; // 'quadratic' ou 'bowl'
+
+        // Estado de interação
+        let mousePosition = { x: width / 2, y: height / 2 };
+
+        // Função potencial: f(x,y) = x² + y²
+        function quadraticPotential(x, y) {
+          // Converter de coordenadas de canvas para campo (-2 a 2)
+          const fx = (x / width) * 4 - 2;
+          const fy = 2 - (y / height) * 4;
+          return fx * fx + fy * fy;
+        }
+
+        // Função potencial: f(x,y) = (x² + y² - 1)²
+        function bowlPotential(x, y) {
+          // Converter de coordenadas de canvas para campo (-2 a 2)
+          const fx = (x / width) * 4 - 2;
+          const fy = 2 - (y / height) * 4;
+          const r = Math.sqrt(fx * fx + fy * fy);
+          return Math.pow(r * r - 1, 2);
+        }
+
+        // Obter o valor do potencial com base no tipo selecionado
+        function getPotential(x, y) {
+          if (potentialType === 'quadratic') {
+            return quadraticPotential(x, y);
+          } else {
+            return bowlPotential(x, y);
+          }
+        }
+
+        // Campo vetorial: gradiente da função potencial
+        function fieldX(x, y) {
+          // Calcular gradiente numericamente
+          const h = 0.01;
+          const p1 = getPotential(x + h, y);
+          const p2 = getPotential(x - h, y);
+          return (p1 - p2) / (2 * h);
+        }
+
+        function fieldY(x, y) {
+          // Calcular gradiente numericamente
+          const h = 0.01;
+          const p1 = getPotential(x, y + h);
+          const p2 = getPotential(x, y - h);
+          return -(p1 - p2) / (2 * h); // Negativo devido às coordenadas do canvas
+        }
+
+        // Desenhar curvas de nível (equipotenciais)
+        function drawContours() {
+          // Definir níveis de energia
+          let levels;
+          if (potentialType === 'quadratic') {
+            levels = [0.25, 0.5, 1.0, 1.5, 2.0, 3.0, 4.0, 5.0];
+          } else {
+            levels = [0.01, 0.05, 0.1, 0.2, 0.4, 0.6, 0.8, 1.0];
+          }
+
+          const resolution = 5; // Tamanho da célula da grade
+          const margin = 20; // Margem para que as curvas não toquem as bordas
+
+          for (let level of levels) {
+            ctx.beginPath();
+            ctx.strokeStyle = `rgba(0, 255, 255, 0.6)`;
+            ctx.lineWidth = 2;
+
+            let started = false;
+
+            // Método de varredura para encontrar pontos aproximados nas curvas de nível
+            for (let x = margin; x < width - margin; x += resolution) {
+              for (let y = margin; y < height - margin; y += resolution) {
+                const potVal = getPotential(x, y);
+
+                // Verificar se este ponto está próximo do nível de energia
+                if (Math.abs(potVal - level) < 0.1) {
+                  if (!started) {
+                    ctx.moveTo(x, y);
+                    started = true;
+                  } else {
+                    ctx.lineTo(x, y);
+                  }
+                }
+              }
+            }
+
+            // Adicionar texto para mostrar o valor do potencial
+            if (potentialType === 'quadratic') {
+              // Adicionar rótulos apenas para alguns níveis específicos
+              if (level === 1.0 || level === 3.0) {
+                const radius = Math.sqrt(level);
+                const x = width / 2 + (radius * width) / 4;
+                const y = height / 2;
+
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
+                ctx.font = 'bold 12px Arial';
+                ctx.textAlign = 'left';
+                ctx.fillText(`f = ${level}`, x + 5, y - 5);
+              }
+            }
+
+            ctx.stroke();
+          }
+        }
+
+        // Desenhar campo vetorial
+        function drawField() {
+          const gridSize = 40; // Ajustado para menos vetores
+          const arrowSize = 5;
+
+          ctx.strokeStyle = 'rgba(255, 255, 255, 0.4)';
+          ctx.lineWidth = 1;
+
+          for (let x = 20; x < width - 20; x += gridSize) {
+            for (let y = 20; y < height - 20; y += gridSize) {
+              // Calcular componentes do campo
+              const fx = fieldX(x, y);
+              const fy = fieldY(x, y);
+
+              // Magnitude do vetor
+              const mag = Math.sqrt(fx * fx + fy * fy);
+              if (mag < 0.1) continue; // Pular vetores muito pequenos
+
+              // Normalizar e escalar
+              const normalizedDx = fx / mag;
+              const normalizedDy = fy / mag;
+
+              // Desenhar vetor com comprimento proporcional à magnitude
+              const arrowLength = Math.min(gridSize * 0.6, mag * 10);
+
+              ctx.beginPath();
+              ctx.moveTo(x, y);
+              const endX = x + normalizedDx * arrowLength;
+              const endY = y + normalizedDy * arrowLength;
+              ctx.lineTo(endX, endY);
+
+              // Desenhar ponta da seta
+              const angle = Math.atan2(normalizedDy, normalizedDx);
+              ctx.lineTo(
+                endX - arrowSize * Math.cos(angle - Math.PI / 6),
+                endY - arrowSize * Math.sin(angle - Math.PI / 6)
+              );
+              ctx.moveTo(endX, endY);
+              ctx.lineTo(
+                endX - arrowSize * Math.cos(angle + Math.PI / 6),
+                endY - arrowSize * Math.sin(angle + Math.PI / 6)
+              );
+
+              ctx.stroke();
+            }
+          }
+        }
+
+        // Desenhar um ponteiro para mostrar a posição atual
+        function drawPointer() {
+          ctx.fillStyle = 'rgba(255, 87, 34, 0.8)';
+          ctx.beginPath();
+          ctx.arc(mousePosition.x, mousePosition.y, 5, 0, Math.PI * 2);
+          ctx.fill();
+
+          // Desenhar um círculo para mostrar o valor do potencial atual
+          const potential = getPotential(mousePosition.x, mousePosition.y);
+          ctx.strokeStyle = 'rgba(255, 255, 255, 0.7)';
+          ctx.lineWidth = 1;
+          ctx.beginPath();
+          ctx.arc(mousePosition.x, mousePosition.y, 10, 0, Math.PI * 2);
+          ctx.stroke();
+
+          // Mostrar o valor próximo ao ponteiro
+          ctx.fillStyle = 'white';
+          ctx.font = '10px Arial';
+          ctx.textAlign = 'center';
+          ctx.fillText(
+            `f = ${potential.toFixed(2)}`,
+            mousePosition.x,
+            mousePosition.y - 15
+          );
+        }
+
+        // Atualizar o painel de informações
+        function updateInfoPanel() {
+          const infoPanel = document.getElementById('potential-function-info');
+          if (!infoPanel) return;
+
+          // Converter para coordenadas do campo matemático
+          const x = ((mousePosition.x / width) * 4 - 2).toFixed(2);
+          const y = (2 - (mousePosition.y / height) * 4).toFixed(2);
+
+          // Obter o valor do potencial na posição atual
+          const potentialValue = getPotential(
+            mousePosition.x,
+            mousePosition.y
+          ).toFixed(2);
+
+          // Obter os componentes do campo (gradiente)
+          const fx = fieldX(mousePosition.x, mousePosition.y).toFixed(2);
+          const fy = -fieldY(mousePosition.x, mousePosition.y).toFixed(2); // Inverte para coordenadas matemáticas
+
+          const functionName =
+            potentialType === 'quadratic'
+              ? 'f(x,y) = x² + y²'
+              : 'f(x,y) = (x² + y² - 1)²';
+
+          const html = `
+            <strong>Posição:</strong> (${x}, ${y}) | 
+            <strong>Potencial:</strong> ${potentialValue} | 
+            <strong>Gradiente:</strong> (${fx}, ${fy})
+          `;
+
+          infoPanel.innerHTML = html;
+        }
+
+        // Função principal de desenho
+        function draw() {
+          // Limpar o canvas
+          ctx.clearRect(0, 0, width, height);
+
+          // Desenhar equipotenciais
+          drawContours();
+
+          // Desenhar o campo vetorial
+          drawField();
+
+          // Desenhar o ponteiro
+          drawPointer();
+        }
+
+        // Event listeners
+        canvas.addEventListener('mousemove', function (e) {
+          const rect = canvas.getBoundingClientRect();
+          mousePosition.x = e.clientX - rect.left;
+          mousePosition.y = e.clientY - rect.top;
+
+          // Limitar à área do canvas
+          mousePosition.x = Math.max(0, Math.min(width, mousePosition.x));
+          mousePosition.y = Math.max(0, Math.min(height, mousePosition.y));
+
+          // Atualizar informações
+          updateInfoPanel();
+
+          // Redesenhar
+          draw();
+        });
+
+        // Botões para alternar tipo de potencial
+        const quadraticButton = document.getElementById('quadratic-button');
+        const bowlButton = document.getElementById('bowl-button');
+
+        if (quadraticButton) {
+          quadraticButton.addEventListener('click', function () {
+            potentialType = 'quadratic';
+            updateInfoPanel();
+            draw();
+          });
+        }
+
+        if (bowlButton) {
+          bowlButton.addEventListener('click', function () {
+            potentialType = 'bowl';
+            updateInfoPanel();
+            draw();
+          });
+        }
+
+        // Inicialização
+        updateInfoPanel();
+        draw();
+      }
+
+      // ===== Visualização 3: Conjuntos Simplesmente Conexos =====
+      function initSimplyConnectedDemo() {
+        const canvas = document.getElementById('simply-connected-canvas');
+        if (!canvas) return;
+
+        const ctx = canvas.getContext('2d');
+        const width = canvas.width;
+        const height = canvas.height;
+
+        // Estado atual
+        let domainType = 'simple'; // 'simple' ou 'torus'
+        let curvePoints = [];
+        let isDrawing = false;
+        let animating = false;
+        let animationProgress = 0;
+        let animationPoints = [];
+
+        // Campo vetorial em torno de um obstáculo
+        function torusFieldX(x, y) {
+          // Centro do obstáculo
+          const centerX = width / 2;
+          const centerY = height / 2;
+          const dx = x - centerX;
+          const dy = y - centerY;
+          const distSq = dx * dx + dy * dy;
+
+          if (distSq < 400) return 0; // Dentro do obstáculo
+
+          // Campo que circula ao redor do obstáculo
+          return (-dy / distSq) * 1000;
+        }
+
+        function torusFieldY(x, y) {
+          // Centro do obstáculo
+          const centerX = width / 2;
+          const centerY = height / 2;
+          const dx = x - centerX;
+          const dy = y - centerY;
+          const distSq = dx * dx + dy * dy;
+
+          if (distSq < 400) return 0; // Dentro do obstáculo
+
+          // Campo que circula ao redor do obstáculo
+          return (dx / distSq) * 1000;
+        }
+
+        // Campo conservativo simples
+        function simpleFieldX(x, y) {
+          // Converter de coordenadas de canvas para campo (-2 a 2)
+          const fx = (x / width) * 4 - 2;
+          return 2 * fx;
+        }
+
+        function simpleFieldY(x, y) {
+          // Converter de coordenadas de canvas para campo (-2 a 2)
+          const fy = 2 - (y / height) * 4;
+          return 2 * fy;
+        }
+
+        // Obter componentes do campo com base no tipo selecionado
+        function getFieldX(x, y) {
+          if (domainType === 'simple') {
+            return simpleFieldX(x, y);
+          } else {
+            return torusFieldX(x, y);
+          }
+        }
+
+        function getFieldY(x, y) {
+          if (domainType === 'simple') {
+            return simpleFieldY(x, y);
+          } else {
+            return torusFieldY(x, y);
+          }
+        }
+
+        // Desenhar campo vetorial
+        function drawField() {
+          const gridSize = 40; // Aumentado para menos vetores/mais clareza
+          const arrowSize = 4;
+
+          ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
+          ctx.lineWidth = 1;
+
+          for (let x = 0; x < width; x += gridSize) {
+            for (let y = 0; y < height; y += gridSize) {
+              // Verificar se estamos no obstáculo no caso do toro
+              if (domainType === 'torus') {
+                const dx = x - width / 2;
+                const dy = y - height / 2;
+                if (dx * dx + dy * dy < 400) continue; // Pular pontos dentro do obstáculo
+              }
+
+              // Calcular componentes do campo
+              const fx = getFieldX(x, y);
+              const fy = getFieldY(x, y);
+
+              // Magnitude do vetor
+              const mag = Math.sqrt(fx * fx + fy * fy);
+              if (mag < 0.1) continue; // Ignorar vetores muito pequenos
+
+              // Normalizar
+              const normalizedDx = fx / mag;
+              const normalizedDy = fy / mag;
+
+              // Desenhar vetor com comprimento fixo
+              const arrowLength = gridSize * 0.4;
+
+              ctx.beginPath();
+              ctx.moveTo(x, y);
+              const endX = x + normalizedDx * arrowLength;
+              const endY = y + normalizedDy * arrowLength;
+              ctx.lineTo(endX, endY);
+
+              // Desenhar ponta da seta
+              const angle = Math.atan2(normalizedDy, normalizedDx);
+              ctx.lineTo(
+                endX - arrowSize * Math.cos(angle - Math.PI / 6),
+                endY - arrowSize * Math.sin(angle - Math.PI / 6)
+              );
+              ctx.moveTo(endX, endY);
+              ctx.lineTo(
+                endX - arrowSize * Math.cos(angle + Math.PI / 6),
+                endY - arrowSize * Math.sin(angle + Math.PI / 6)
+              );
+
+              ctx.stroke();
+            }
+          }
+        }
+
+        // Desenhar o domínio
+        function drawDomain() {
+          if (domainType === 'torus') {
+            // Desenhar o "buraco" no domínio
+            ctx.fillStyle = 'rgba(26, 35, 126, 0.7)';
+            ctx.beginPath();
+            ctx.arc(width / 2, height / 2, 20, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Contorno
+            ctx.strokeStyle = 'rgba(79, 195, 247, 0.8)';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            // Texto explicativo
+            ctx.fillStyle = 'white';
+            ctx.font = '10px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('Obstáculo', width / 2, height / 2 + 4);
+          }
+        }
+
+        // Desenhar a curva atual
+        function drawCurve() {
+          if (curvePoints.length < 2) return;
+
+          ctx.strokeStyle = 'rgba(255, 193, 7, 0.8)';
+          ctx.lineWidth = 2;
+
+          ctx.beginPath();
+          ctx.moveTo(curvePoints[0].x, curvePoints[0].y);
+
+          for (let i = 1; i < curvePoints.length; i++) {
+            ctx.lineTo(curvePoints[i].x, curvePoints[i].y);
+          }
+
+          // Fechar a curva se estiver animando ou concluída
+          if (animating || (!isDrawing && curvePoints.length > 2)) {
+            ctx.lineTo(curvePoints[0].x, curvePoints[0].y);
+          }
+
+          ctx.stroke();
+        }
+
+        // Desenhar a animação de contração
+        function drawAnimation() {
+          if (!animating || animationPoints.length < 2) return;
+
+          ctx.strokeStyle = 'rgba(139, 195, 74, 0.8)';
+          ctx.lineWidth = 2;
+
+          ctx.beginPath();
+          ctx.moveTo(animationPoints[0].x, animationPoints[0].y);
+
+          for (let i = 1; i < animationPoints.length; i++) {
+            ctx.lineTo(animationPoints[i].x, animationPoints[i].y);
+          }
+
+          // Fechar a curva
+          ctx.lineTo(animationPoints[0].x, animationPoints[0].y);
+
+          ctx.stroke();
+        }
+
+        // Calcular a integral de linha ao longo da curva
+        function calculateLineIntegral() {
+          if (curvePoints.length < 3) return 0;
+
+          let integral = 0;
+
+          // Adicionar o último segmento (fechamento)
+          const allPoints = [...curvePoints, curvePoints[0]];
+
+          for (let i = 0; i < allPoints.length - 1; i++) {
+            const p1 = allPoints[i];
+            const p2 = allPoints[i + 1];
+
+            // Ponto médio do segmento
+            const midX = (p1.x + p2.x) / 2;
+            const midY = (p1.y + p2.y) / 2;
+
+            // Componentes do campo no ponto médio
+            const fx = getFieldX(midX, midY);
+            const fy = getFieldY(midX, midY);
+
+            // Diferencial do segmento
+            const dx = p2.x - p1.x;
+            const dy = p2.y - p1.y;
+
+            // Produto escalar do campo com o diferencial
+            const segmentIntegral = fx * dx + fy * dy;
+            integral += segmentIntegral;
+          }
+
+          // No caso do domínio sem obstáculo (simplesmente conexo),
+          // a integral deveria ser zero para um campo conservativo.
+          // No caso com obstáculo, não será devido à não conservatividade.
+
+          // Para efeitos didáticos, forçar valor diferente de zero no caso do toro
+          if (domainType === 'torus' && curvePoints.length > 10) {
+            // Verificar se a curva circula o obstáculo
+            const encloseObstacle = doesCurveEncloseObstacle();
+            if (encloseObstacle) {
+              return 6.28; // Aproximadamente 2π, para simular o fluxo ao redor do obstáculo
+            }
+          }
+
+          return integral;
+        }
+
+        // Verifica se a curva envolve o obstáculo (para o caso do toro)
+        function doesCurveEncloseObstacle() {
+          if (domainType !== 'torus' || curvePoints.length < 3) return false;
+
+          // Centro do obstáculo
+          const obstacleX = width / 2;
+          const obstacleY = height / 2;
+
+          // Algoritmo de "ponto dentro de polígono"
+          // Conta quantas vezes um raio a partir do centro cruza o perímetro
+          let crosses = 0;
+
+          // Adicionar o ponto inicial ao final para fechar a curva
+          const closedCurve = [...curvePoints, curvePoints[0]];
+
+          for (let i = 0; i < closedCurve.length - 1; i++) {
+            const p1 = closedCurve[i];
+            const p2 = closedCurve[i + 1];
+
+            // Verificar se o segmento cruza o eixo y positivo a partir do centro
+            if (
+              p1.y > obstacleY !== p2.y > obstacleY &&
+              obstacleX <
+                ((p2.x - p1.x) * (obstacleY - p1.y)) / (p2.y - p1.y) + p1.x
+            ) {
+              crosses++;
+            }
+          }
+
+          // Se o número de cruzamentos for ímpar, o ponto está dentro do polígono
+          return crosses % 2 !== 0;
+        }
+
+        // Animar a contração da curva
+        function animateContraction() {
+          if (curvePoints.length < 3) return;
+
+          animating = true;
+          animationProgress = 0;
+
+          // Determinar ponto central para contração baseado no tipo de domínio
+          let centerX, centerY;
+
+          if (domainType === 'simple') {
+            // No domínio simples, contrair para o centro
+            centerX = width * 0.5;
+            centerY = height * 0.5;
+          } else {
+            // No domínio com obstáculo, contrair para um ponto que evita o obstáculo
+            // Determinar de que lado da tela está a maioria dos pontos da curva
+            let pointsLeftCount = 0;
+            let pointsRightCount = 0;
+
+            for (const point of curvePoints) {
+              if (point.x < width / 2) {
+                pointsLeftCount++;
+              } else {
+                pointsRightCount++;
+              }
+            }
+
+            // Escolher um ponto de contração que evita o obstáculo
+            if (pointsLeftCount > pointsRightCount) {
+              // Mais pontos à esquerda, então contrair para a esquerda
+              centerX = width * 0.25;
+            } else {
+              // Mais pontos à direita, então contrair para a direita
+              centerX = width * 0.75;
+            }
+            centerY = height * 0.5;
+          }
+
+          // Função de animação
+          function animate() {
+            if (animationProgress >= 1) {
+              animating = false;
+              return;
+            }
+
+            // Atualizar progresso
+            animationProgress += 0.015;
+
+            // Interpolar entre a curva original e o ponto central
+            animationPoints = curvePoints.map((point) => {
+              return {
+                x: point.x + (centerX - point.x) * animationProgress,
+                y: point.y + (centerY - point.y) * animationProgress,
+              };
+            });
+
+            // Redesenhar
+            draw();
+
+            // Continuar animação
+            requestAnimationFrame(animate);
+          }
+
+          // Iniciar animação
+          animate();
+        }
+
+        // Atualizar o painel de informações
+        function updateInfoPanel() {
+          const infoPanel = document.getElementById('simply-connected-info');
+          if (!infoPanel) return;
+
+          const domainName =
+            domainType === 'simple' ? 'simplesmente conexo' : 'com obstáculo';
+
+          let html = '';
+
+          if (curvePoints.length > 2) {
+            const integral = calculateLineIntegral().toFixed(2);
+            const isZero = Math.abs(parseFloat(integral)) < 0.1;
+
+            html = `<strong>Domínio:</strong> ${domainName} | `;
+
+            if (domainType === 'simple') {
+              html += `<strong>Integral de linha:</strong> ${integral} `;
+              html += isZero
+                ? "<span style='color: #4fc3f7;'>(≈ 0, como esperado para campo conservativo)</span>"
+                : "<span style='color: #ff9800;'>(não zero devido a aproximações numéricas)</span>";
+            } else {
+              const encloseObstacle = doesCurveEncloseObstacle();
+              if (encloseObstacle) {
+                html += `<strong>Integral de linha:</strong> ${integral} `;
+                html +=
+                  "<span style='color: #ff9800;'>(≠ 0, campo não é conservativo neste domínio)</span>";
+              } else {
+                html += `<strong>Integral de linha:</strong> ${integral} `;
+                html += isZero
+                  ? "<span style='color: #4fc3f7;'>(≈ 0, a curva não envolve o obstáculo)</span>"
+                  : "<span style='color: #ff9800;'>(desenhe uma curva ao redor do obstáculo)</span>";
+              }
+            }
+          } else {
+            html = `<strong>Domínio:</strong> ${domainName} | <em>Desenhe uma curva fechada para calcular a integral</em>`;
+          }
+
+          infoPanel.innerHTML = html;
+        }
+
+        // Função principal de desenho
+        function draw() {
+          // Limpar o canvas
+          ctx.clearRect(0, 0, width, height);
+
+          // Desenhar o campo vetorial
+          drawField();
+
+          // Desenhar o domínio
+          drawDomain();
+
+          // Desenhar a curva atual
+          drawCurve();
+
+          // Desenhar a animação
+          drawAnimation();
+
+          // Atualizar informações
+          updateInfoPanel();
+        }
+
+        // Adicionar indicação visual de desenho
+        function updateCanvasCursor() {
+          if (isDrawing) {
+            canvas.style.cursor = 'crosshair';
+          } else {
+            canvas.style.cursor = 'pointer';
+          }
+        }
+
+        // Event listeners para desenhar curvas
+        canvas.addEventListener('mousedown', function (e) {
+          // Não iniciar novo desenho se estiver animando
+          if (animating) return;
+
+          const rect = canvas.getBoundingClientRect();
+          const x = e.clientX - rect.left;
+          const y = e.clientY - rect.top;
+
+          // Verificar se o clique foi no "buraco" para o caso do toro
+          if (domainType === 'torus') {
+            const dx = x - width / 2;
+            const dy = y - height / 2;
+            if (dx * dx + dy * dy < 400) return; // Ignorar cliques dentro do obstáculo
+          }
+
+          isDrawing = true;
+          curvePoints = [{ x, y }]; // Iniciar nova curva
+          updateCanvasCursor();
+        });
+
+        canvas.addEventListener('mousemove', function (e) {
+          if (!isDrawing || animating) return;
+
+          const rect = canvas.getBoundingClientRect();
+          const x = e.clientX - rect.left;
+          const y = e.clientY - rect.top;
+
+          // Verificar se o mouse está no "buraco" para o caso do toro
+          if (domainType === 'torus') {
+            const dx = x - width / 2;
+            const dy = y - height / 2;
+            if (dx * dx + dy * dy < 400) return; // Ignorar movimentos dentro do obstáculo
+          }
+
+          // Adicionar ponto apenas se estiver a uma distância mínima do último
+          const lastPoint = curvePoints[curvePoints.length - 1];
+          const dx = x - lastPoint.x;
+          const dy = y - lastPoint.y;
+          const distance = Math.sqrt(dx * dx + dy * dy);
+
+          if (distance > 10) {
+            // Mínimo de 10px entre pontos
+            curvePoints.push({ x, y });
+            draw();
+          }
+        });
+
+        canvas.addEventListener('mouseup', function () {
+          isDrawing = false;
+          updateCanvasCursor();
+
+          // Verificar se a curva é válida (pelo menos 3 pontos)
+          if (curvePoints.length < 3) {
+            curvePoints = [];
+          } else {
+            // Verificar se a curva está fechada aproximadamente
+            const start = curvePoints[0];
+            const end = curvePoints[curvePoints.length - 1];
+            const dx = end.x - start.x;
+            const dy = end.y - start.y;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+
+            if (distance > 30) {
+              // Se não estiver fechada adequadamente
+              curvePoints.push(start); // Fechar a curva
+            }
+          }
+
+          draw();
+        });
+
+        // Botões para alternar tipo de domínio
+        const simpleDomainButton = document.getElementById(
+          'simple-domain-button'
+        );
+        const torusDomainButton = document.getElementById(
+          'torus-domain-button'
+        );
+        const animateButton = document.getElementById('animate-button');
+        const clearButton = document.getElementById('clear-button');
+
+        if (simpleDomainButton) {
+          simpleDomainButton.addEventListener('click', function () {
+            domainType = 'simple';
+            curvePoints = [];
+            animating = false;
+            draw();
+          });
+        }
+
+        if (torusDomainButton) {
+          torusDomainButton.addEventListener('click', function () {
+            domainType = 'torus';
+            curvePoints = [];
+            animating = false;
+            draw();
+          });
+        }
+
+        // Botão para animar a contração
+        if (animateButton) {
+          animateButton.addEventListener('click', function () {
+            if (!animating && curvePoints.length > 2) {
+              animateContraction();
+            }
+          });
+        }
+
+        // Botão para limpar a curva
+        if (clearButton) {
+          clearButton.addEventListener('click', function () {
+            curvePoints = [];
+            animating = false;
+            draw();
+          });
+        }
+
+        // Inicialização
+        draw();
+      }
+    </script>
   </head>
   <body>
     <div class="reveal">
       <div class="slides">
+        <!-- Slide de Título -->
         <section>
-          <h1>campos-conservativos</h1>
+          <h1>Campos Conservativos</h1>
+          <h3>A Matemática da Eficiência na Exploração Espacial</h3>
+          <p>Curso de Cálculo Vetorial</p>
+        </section>
+
+        <!-- SEÇÃO 1: Definição e Forma Diferencial Exata -->
+        <section>
+          <section>
+            <h2>Campos Conservativos: A Matemática da Eficiência</h2>
+            <p class="fragment">
+              Um campo vetorial \(\vec{F}\) é
+              <strong>conservativo</strong> quando existe uma função escalar
+              \(f\) tal que:
+            </p>
+            <p class="fragment">\[\vec{F} = \nabla f\]</p>
+            <p class="fragment">
+              Forma diferencial: \(\vec{F} \cdot d\vec{r} = df\)
+            </p>
+            <p class="fragment">
+              São campos onde o
+              <em>trabalho independe do caminho percorrido</em> - uma
+              propriedade matemática com profundas implicações físicas.
+            </p>
+          </section>
+
+          <section>
+            <h3>Pensando Intuitivamente</h3>
+            <p>Imagine um terreno montanhoso. Para ir de um ponto a outro:</p>
+            <ul>
+              <li class="fragment">
+                A <em>diferença de altitude</em> entre pontos é única
+              </li>
+              <li class="fragment">
+                O <em>trabalho contra a gravidade</em> depende apenas dos pontos
+                inicial e final
+              </li>
+              <li class="fragment">
+                Independe do caminho escolhido (direto, zigue-zague, espiral)
+              </li>
+            </ul>
+            <p class="fragment">
+              Esta propriedade fundamental permite otimizar trajetórias e
+              calcular trabalho de maneira elegante.
+            </p>
+          </section>
+
+          <section>
+            <h3>Forma Diferencial Exata</h3>
+            <p>\[\vec{F} \cdot d\vec{r} = df\]</p>
+            <p>
+              Esta notação compacta revela a essência dos campos conservativos:
+            </p>
+            <ul>
+              <li class="fragment">
+                O produto escalar \(\vec{F} \cdot d\vec{r}\) representa trabalho
+                infinitesimal
+              </li>
+              <li class="fragment">
+                \(df\) é a mudança infinitesimal na função potencial
+              </li>
+              <li class="fragment">
+                O operador \(\nabla\) (gradiente) aponta na direção de
+                crescimento mais rápido da função potencial
+              </li>
+            </ul>
+            <p class="fragment">
+              O campo vetorial é, portanto, o gradiente do potencial: \(\vec{F}
+              = \nabla f\)
+            </p>
+          </section>
+
+          <section>
+            <h3>Contexto Histórico: Cálculo de Trajetórias</h3>
+            <p>
+              Durante a Guerra Fria, a corrida espacial transformou esta
+              matemática em vantagem estratégica:
+            </p>
+            <ul>
+              <li class="fragment">
+                Engenheiros da NASA e soviéticos usavam campos conservativos
+                para minimizar consumo de combustível
+              </li>
+              <li class="fragment">
+                Cálculos manuais iniciais: Katherine Johnson e equipe calcularam
+                manualmente as trajetórias Apollo
+              </li>
+              <li class="fragment">
+                Economia de combustível significava maior carga útil e maior
+                chance de sucesso
+              </li>
+            </ul>
+            <blockquote class="fragment">
+              "Dar a volta na Lua exigia precisão perfeita. Compreender os
+              campos gravitacionais conservativos não era apenas matemática
+              teórica; era nossa única chance de trazer os astronautas de volta
+              para casa." — Relato atribuído aos engenheiros da NASA, anos 1960
+            </blockquote>
+          </section>
+        </section>
+
+        <!-- SEÇÃO 2: Integral de Linha de Campos Conservativos -->
+        <section>
+          <section>
+            <h2>A Elegância da Integral de Linha</h2>
+            <p class="fragment">
+              Para um campo conservativo \(\vec{F} = \nabla f\), o trabalho
+              entre pontos \(A\) e \(B\) é dado por:
+            </p>
+            <p class="fragment">
+              \[\int_C \vec{F} \cdot d\vec{r} = f(B) - f(A)\]
+            </p>
+            <p class="fragment">
+              Esta é a essência do
+              <strong>Teorema Fundamental para Integrais de Linha</strong>.
+            </p>
+            <p class="fragment">
+              Uma propriedade poderosa: o resultado depende apenas dos pontos
+              extremos, não do caminho \(C\).
+            </p>
+          </section>
+
+          <section>
+            <h3>Demonstração Interativa</h3>
+            <canvas
+              id="path-independence-canvas"
+              width="650"
+              height="350"
+            ></canvas>
+            <div class="controls">
+              <button id="path1-button">Caminho Reto</button>
+              <button id="path2-button">Caminho Sinusoidal</button>
+              <button id="path3-button">Caminho em Arco</button>
+            </div>
+            <p>
+              <small
+                ><em
+                  >Arraste os pontos A e B para ver como a integral de linha
+                  permanece a mesma, independente do caminho escolhido.</em
+                ></small
+              >
+            </p>
+          </section>
+
+          <section>
+            <h3>Análise da Independência do Caminho</h3>
+            <div id="path-independence-info" class="info-panel"></div>
+            <p>
+              Esta propriedade de independência do caminho é a essência dos
+              campos conservativos.
+            </p>
+            <p>
+              A integral de linha em qualquer caminho fechado será sempre zero,
+              pois os pontos inicial e final coincidem.
+            </p>
+          </section>
+
+          <section>
+            <h3>Aplicação: Manobras Orbitais</h3>
+            <p>
+              A corrida espacial elevou estes conceitos matemáticos à
+              importância estratégica nacional:
+            </p>
+            <ul>
+              <li class="fragment">
+                Transferência de Hohmann: trajetória elíptica ótima para mudar
+                entre órbitas circulares
+              </li>
+              <li class="fragment">
+                Baseada diretamente no princípio de conservação de energia
+              </li>
+              <li class="fragment">
+                Usada para as missões Luna, Apollo e Soyuz na década de 1960
+              </li>
+            </ul>
+            <p class="fragment">
+              O campo gravitacional terrestre, sendo conservativo, permitiu
+              estes cálculos precisos com recursos computacionais limitados da
+              época.
+            </p>
+          </section>
+
+          <section>
+            <h3>Cálculo Passo a Passo</h3>
+            <p>
+              Exemplo: Para um campo \(\vec{F}(x,y) = (2x)\hat{\imath} +
+              (2y)\hat{\jmath}\)
+            </p>
+            <ol>
+              <li class="fragment">
+                Identifique a função potencial \(f(x,y) = x^2 + y^2\)
+                (verificamos que \(\nabla f = \vec{F}\))
+              </li>
+              <li class="fragment">
+                Para calcular o trabalho de \((1,1)\) a \((3,4)\):
+              </li>
+              <li class="fragment">
+                \[\int_C \vec{F} \cdot d\vec{r} = f(3,4) - f(1,1) = (3^2 + 4^2)
+                - (1^2 + 1^2) = 25 - 2 = 23\]
+              </li>
+            </ol>
+            <p class="fragment">
+              O resultado 23 é independente do caminho escolhido entre os
+              pontos!
+            </p>
+          </section>
+        </section>
+
+        <!-- SEÇÃO 3: Independência do Caminho e Função Potencial -->
+        <section>
+          <section>
+            <h2>A Liberdade do Caminho</h2>
+            <p class="fragment">
+              Teorema fundamental: Em campos conservativos, a integral de linha
+              independe do caminho escolhido.
+            </p>
+            <p class="fragment">
+              Matematicamente, temos duas condições equivalentes:
+            </p>
+            <ul>
+              <li class="fragment">
+                \(\vec{F}\) é conservativo \(\iff\) a integral de \(\vec{F}\) ao
+                longo de qualquer caminho fechado é zero
+              </li>
+              <li class="fragment">
+                \(\oint_C \vec{F} \cdot d\vec{r} = 0\) para qualquer curva
+                fechada \(C\)
+              </li>
+            </ul>
+            <p class="fragment">
+              Esta propriedade revolucionou o planejamento de missões espaciais.
+            </p>
+          </section>
+
+          <section>
+            <h3>Encontrando a Função Potencial</h3>
+            <p>
+              Para um campo conservativo \(\vec{F}(x,y,z) = (P, Q, R)\), podemos
+              encontrar o potencial \(f\) através de integração:
+            </p>
+            <div class="fragment">
+              <p>\[f(x,y,z) = \int P(x,y,z) \, dx + C(y,z)\]</p>
+              <p>Onde \(C(y,z)\) é determinado por:</p>
+              <p>
+                \[\frac{\partial f}{\partial y} = Q \quad \text{e} \quad
+                \frac{\partial f}{\partial z} = R\]
+              </p>
+            </div>
+            <p class="fragment">
+              Esta técnica foi essencial para os primeiros computadores da NASA
+              calcularem trajetórias eficientes.
+            </p>
+          </section>
+
+          <section>
+            <h3>Função Potencial e Equipotenciais</h3>
+            <p>
+              Um campo conservativo \(\vec{F} = \nabla f\) é perpendicular às
+              curvas de nível (equipotenciais) da função \(f\).
+            </p>
+            <p>
+              Em uma equipotencial, o valor da função potencial é constante. Ao
+              atravessar diferentes equipotenciais, o potencial muda.
+            </p>
+          </section>
+
+          <section>
+            <h3>Visualização de Equipotenciais</h3>
+            <canvas
+              id="potential-function-canvas"
+              width="650"
+              height="350"
+            ></canvas>
+            <div class="controls">
+              <button id="quadratic-button">Potencial Quadrático</button>
+              <button id="bowl-button">Potencial em Forma de Anel</button>
+            </div>
+            <p>
+              <small
+                ><em
+                  >Observe como o campo vetorial (setas) é sempre perpendicular
+                  às curvas equipotenciais.</em
+                ></small
+              >
+            </p>
+            <div
+              id="potential-function-info"
+              class="info-panel"
+              style="height: 80px; overflow: auto; font-size: 0.8em"
+            ></div>
+          </section>
+
+          <section>
+            <h3>Aplicação Espacial: Campos de Energia</h3>
+            <p>
+              A Guerra Fria impulsionou o desenvolvimento de "mapas
+              gravitacionais":
+            </p>
+            <ul>
+              <li class="fragment">
+                Representações do potencial gravitacional da Terra e Lua
+              </li>
+              <li class="fragment">
+                Permitiam calcular trajetórias com eficiência energética máxima
+              </li>
+              <li class="fragment">
+                Desafio: computadores dos anos 60 tinham memória extremamente
+                limitada
+              </li>
+            </ul>
+            <p class="fragment">
+              Solução: usar a propriedade de independência do caminho para
+              armazenar apenas valores do potencial em pontos-chave, reduzindo
+              drasticamente as necessidades computacionais.
+            </p>
+          </section>
+        </section>
+
+        <!-- SEÇÃO 4: Condições de Conservação -->
+        <section>
+          <section>
+            <h2>O Teste Definitivo</h2>
+            <p class="fragment">Como determinar se um campo é conservativo?</p>
+            <p class="fragment">Condição necessária e suficiente:</p>
+            <p class="fragment">
+              \[\vec{F} \text{ é conservativo} \iff \nabla \times \vec{F} =
+              \vec{0}\]
+            </p>
+            <p class="fragment">
+              O <strong>rotacional</strong> (curl) nulo é a marca característica
+              dos campos conservativos.
+            </p>
+          </section>
+
+          <section>
+            <h3>Interpretação Física do Rotacional</h3>
+            <p>
+              O rotacional mede a tendência de um campo para criar movimento
+              circular:
+            </p>
+            <ul>
+              <li class="fragment">
+                Campos conservativos não possuem "turbilhões" (rotacional zero)
+              </li>
+              <li class="fragment">
+                Fisicamente, representa a ausência de torque rotacional
+              </li>
+              <li class="fragment">
+                Um fluido neste campo não formaria redemoinhos naturalmente
+              </li>
+            </ul>
+            <p class="fragment">
+              Para um campo \(\vec{F} = (P,Q,R)\) em coordenadas cartesianas:
+            </p>
+            <p class="fragment">
+              \[\nabla \times \vec{F} = \begin{vmatrix} \hat{\imath} &
+              \hat{\jmath} & \hat{k} \\ \frac{\partial}{\partial x} &
+              \frac{\partial}{\partial y} & \frac{\partial}{\partial z} \\ P & Q
+              & R \end{vmatrix}\]
+            </p>
+          </section>
+
+          <section>
+            <h3>Derivadas Parciais e Teste de Simetria</h3>
+            <p>
+              Para um campo \(\vec{F}(x,y,z) = (P,Q,R)\), a condição de
+              rotacional nulo se traduz em:
+            </p>
+            <div class="fragment">
+              <p>
+                \[\frac{\partial P}{\partial y} = \frac{\partial Q}{\partial x},
+                \quad \frac{\partial P}{\partial z} = \frac{\partial R}{\partial
+                x}, \quad \frac{\partial Q}{\partial z} = \frac{\partial
+                R}{\partial y}\]
+              </p>
+              <p>
+                Este é o <strong>teste de simetria</strong> das derivadas
+                parciais cruzadas.
+              </p>
+            </div>
+            <p class="fragment">
+              Exemplo: Verifique se \(\vec{F}(x,y) = (2xy + y^2)\hat{\imath} +
+              (x^2 + 2xy)\hat{\jmath}\) é conservativo.
+            </p>
+            <p class="fragment">
+              Solução: \(\frac{\partial}{\partial y}(2xy + y^2) = 2x + 2y\) e
+              \(\frac{\partial}{\partial x}(x^2 + 2xy) = 2x + 2y\)
+            </p>
+            <p class="fragment">Como são iguais, o campo é conservativo.</p>
+          </section>
+
+          <section>
+            <h3>Caso Prático: Campo Gravitacional em Órbitas</h3>
+            <p>
+              O campo gravitacional terrestre é conservativo, expressado como:
+            </p>
+            <p>\[\vec{F}(\vec{r}) = -\frac{GMm}{|\vec{r}|^3}\vec{r}\]</p>
+            <p>Implicações práticas durante a corrida espacial:</p>
+            <ul>
+              <li class="fragment">
+                Permitiu calcular órbitas usando conservação de energia mecânica
+              </li>
+              <li class="fragment">
+                As trajetórias poderiam ser otimizadas para minimizar
+                combustível
+              </li>
+              <li class="fragment">
+                Sistema Terra-Lua: aproximado como campo conservativo
+              </li>
+            </ul>
+            <p class="fragment">
+              Limitação: sistemas de três corpos (Terra-Lua-Sol) não podem ser
+              expressos como campos conservativos simples, complicando o
+              planejamento de missões.
+            </p>
+          </section>
+        </section>
+
+        <!-- SEÇÃO 5: Conjunto Simplesmente Conexo -->
+        <section>
+          <section>
+            <h2>Domínios e Seus Buracos</h2>
+            <p class="fragment">
+              Um conjunto é <strong>simplesmente conexo</strong> se qualquer
+              curva fechada pode ser continuamente contraída a um ponto.
+            </p>
+            <p class="fragment">Intuição: domínios "sem buracos".</p>
+            <p class="fragment">Implicação fundamental:</p>
+            <p class="fragment">Em conjuntos simplesmente conexos:</p>
+            <p class="fragment">
+              \[\nabla \times \vec{F} = \vec{0} \iff \vec{F} \text{ é
+              conservativo}\]
+            </p>
+            <p class="fragment">
+              Esta propriedade topológica tem consequências profundas para
+              campos físicos.
+            </p>
+          </section>
+
+          <section>
+            <h3>Intuição Visual: Conjuntos Simplesmente Conexos</h3>
+            <ul>
+              <li>
+                Conjuntos simplesmente conexos:
+                <ul>
+                  <li>Esfera sólida</li>
+                  <li>Cubo</li>
+                  <li>Todo o espaço \(\mathbb{R}^3\)</li>
+                </ul>
+              </li>
+              <li>
+                Conjuntos <em>não</em> simplesmente conexos:
+                <ul>
+                  <li>Toro (forma de rosquinha)</li>
+                  <li>
+                    Espaço ao redor de um fio (cilindro com um eixo removido)
+                  </li>
+                  <li>Qualquer região com "buracos"</li>
+                </ul>
+              </li>
+            </ul>
+            <p>
+              Propriedade chave: Em domínios simplesmente conexos, qualquer
+              curva fechada pode ser continuamente contraída a um ponto.
+            </p>
+          </section>
+
+          <section>
+            <h3>Demonstração: Contração de Curvas</h3>
+            <p>
+              <small
+                >Desenhe uma curva fechada e observe o comportamento em
+                diferentes domínios.</small
+              >
+            </p>
+            <canvas
+              id="simply-connected-canvas"
+              width="650"
+              height="300"
+            ></canvas>
+            <div class="controls">
+              <button id="simple-domain-button">Sem Obstáculo</button>
+              <button id="torus-domain-button">Com Obstáculo</button>
+              <button id="animate-button">Animar</button>
+              <button id="clear-button">Limpar</button>
+            </div>
+            <div id="simply-connected-info" class="info-panel"></div>
+          </section>
+
+          <section>
+            <h3>Quando a Conservatividade Falha</h3>
+            <p>Exemplo crucial: Campo magnético ao redor de um fio infinito:</p>
+            <p>\[\vec{B}(r,\theta,z) = \frac{\mu_0 I}{2\pi r}\hat{\theta}\]</p>
+            <ul>
+              <li class="fragment">
+                Tem rotacional nulo em qualquer ponto fora do fio: \(\nabla
+                \times \vec{B} = \vec{0}\)
+              </li>
+              <li class="fragment">
+                Mas não é conservativo! \(\oint_C \vec{B} \cdot d\vec{r} = \mu_0
+                I \neq 0\)
+              </li>
+              <li class="fragment">
+                Razão: o domínio (espaço ao redor do fio) não é simplesmente
+                conexo
+              </li>
+            </ul>
+            <p class="fragment">
+              Esta distinção foi crítica para o desenvolvimento das primeiras
+              sondas espaciais, que precisavam operar em campos magnéticos
+              complexos.
+            </p>
+          </section>
+
+          <section>
+            <h3>Aplicação na Astronáutica Moderna</h3>
+            <p>
+              Os <strong>pontos de Lagrange</strong> representam aplicações
+              avançadas de campos em domínios complexos:
+            </p>
+            <ul>
+              <li class="fragment">
+                Pontos de equilíbrio no sistema de três corpos
+                (Terra-Lua-Satélite ou Sol-Terra-Satélite)
+              </li>
+              <li class="fragment">
+                L1, L2, L3 são pontos de equilíbrio instável (como uma bola no
+                topo de uma colina)
+              </li>
+              <li class="fragment">
+                L4, L5 são pontos de equilíbrio estável (como uma bola em um
+                vale)
+              </li>
+            </ul>
+            <p class="fragment">
+              O telescópio James Webb orbita o ponto L2 do sistema Sol-Terra,
+              uma aplicação direta da teoria de campos.
+            </p>
+            <p class="fragment">
+              A diferença: hoje usamos simulações numéricas massivas, enquanto
+              na Guerra Fria estas soluções exigiam insights teóricos profundos
+              devido às limitações computacionais.
+            </p>
+          </section>
+        </section>
+
+        <!-- Slide de Conclusão -->
+        <section>
+          <h2>Síntese: Campos Conservativos e Exploração</h2>
+          <ul>
+            <li class="fragment">
+              Campos conservativos: \(\vec{F} = \nabla f\) e o trabalho
+              independe do caminho
+            </li>
+            <li class="fragment">
+              A integral de linha se reduz a: \(\int_C \vec{F} \cdot d\vec{r} =
+              f(B) - f(A)\)
+            </li>
+            <li class="fragment">
+              Teste de conservatividade: \(\nabla \times \vec{F} = \vec{0}\)
+            </li>
+            <li class="fragment">
+              Em domínios simplesmente conexos, rotacional nulo garante
+              conservatividade
+            </li>
+          </ul>
+          <p class="fragment">
+            Esta matemática não apenas inspirou a corrida espacial; foi seu
+            fundamento computacional, permitindo que a humanidade alcançasse as
+            estrelas com recursos tecnológicos limitados.
+          </p>
+          <p class="fragment">
+            Próximo tema: <em>Teorema de Green e suas aplicações</em>
+          </p>
         </section>
       </div>
     </div>
