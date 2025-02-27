@@ -19,12 +19,1682 @@
         });
       };
     </script>
+
+    <style>
+      /* Estilos para canvas interativos */
+      .canvas-container {
+        width: 600px;
+        height: 400px;
+        margin: 0 auto;
+        position: relative;
+        border: 1px solid rgba(79, 195, 247, 0.3);
+        box-shadow: 0 0 20px rgba(79, 195, 247, 0.2);
+        overflow: hidden;
+      }
+
+      canvas {
+        width: 100%;
+        height: 100%;
+        cursor: grab;
+      }
+
+      canvas:active {
+        cursor: grabbing;
+      }
+
+      .control-panel {
+        margin-top: 15px;
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+      }
+
+      .slider-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .slider-label {
+        font-size: 0.8em;
+        margin-bottom: 5px;
+        color: var(--accent-color);
+      }
+
+      .info-panel {
+        margin-top: 15px;
+        background: rgba(26, 35, 126, 0.3);
+        padding: 10px;
+        border-radius: 5px;
+        width: 80%;
+        margin-left: auto;
+        margin-right: auto;
+        font-size: 0.9em;
+      }
+
+      .visualization-tip {
+        font-size: 0.8em;
+        font-style: italic;
+        color: rgba(255, 255, 255, 0.7);
+        margin-top: 5px;
+      }
+
+      .historic-note {
+        font-style: italic;
+        background: rgba(26, 35, 126, 0.3);
+        border-left: 4px solid var(--accent-color);
+        padding: 10px;
+        margin: 15px auto;
+        max-width: 85%;
+        text-align: left;
+        font-size: 0.9em;
+      }
+
+      .formula-highlight {
+        color: var(--star-blue);
+        font-weight: bold;
+      }
+
+      .section-divider {
+        width: 50%;
+        margin: 20px auto;
+        border-top: 1px solid rgba(79, 195, 247, 0.3);
+      }
+
+      .exercise-box {
+        background: rgba(26, 35, 126, 0.3);
+        border: 1px solid rgba(79, 195, 247, 0.3);
+        padding: 15px;
+        margin: 15px auto;
+        max-width: 85%;
+        text-align: left;
+      }
+
+      .flux-legend {
+        font-size: 0.8em;
+        margin-top: 10px;
+      }
+    </style>
+    <script>
+      // Utilitários para manipulação 3D
+      class Matrix3D {
+        static rotateX(angle) {
+          const c = Math.cos(angle);
+          const s = Math.sin(angle);
+          return [1, 0, 0, 0, c, -s, 0, s, c];
+        }
+
+        static rotateY(angle) {
+          const c = Math.cos(angle);
+          const s = Math.sin(angle);
+          return [c, 0, s, 0, 1, 0, -s, 0, c];
+        }
+
+        static rotateZ(angle) {
+          const c = Math.cos(angle);
+          const s = Math.sin(angle);
+          return [c, -s, 0, s, c, 0, 0, 0, 1];
+        }
+
+        static multiply(m1, m2) {
+          const result = new Array(9);
+          for (let i = 0; i < 3; i++) {
+            for (let j = 0; j < 3; j++) {
+              result[i * 3 + j] = 0;
+              for (let k = 0; k < 3; k++) {
+                result[i * 3 + j] += m1[i * 3 + k] * m2[k * 3 + j];
+              }
+            }
+          }
+          return result;
+        }
+
+        static transform(matrix, point) {
+          const [x, y, z] = point;
+          return [
+            matrix[0] * x + matrix[1] * y + matrix[2] * z,
+            matrix[3] * x + matrix[4] * y + matrix[5] * z,
+            matrix[6] * x + matrix[7] * y + matrix[8] * z,
+          ];
+        }
+      }
+
+      // Função para inicializar as visualizações
+      function initVisualizations() {
+        initSurfaceViz();
+        initTangentPlaneViz();
+        initSurfaceAreaViz();
+        initFluxViz();
+      }
+
+      // Visualização 1: Superfícies Parametrizadas
+      function initSurfaceViz() {
+        const canvas = document.getElementById('surface-canvas');
+        if (!canvas) return;
+
+        const ctx = canvas.getContext('2d');
+        const width = canvas.width;
+        const height = canvas.height;
+
+        // Parâmetros da visualização
+        let uParam = 0.5;
+        let vParam = 0.5;
+        let rotationX = Math.PI / 6;
+        let rotationY = Math.PI / 4;
+        let rotationZ = 0;
+        let isDragging = false;
+        let lastX, lastY;
+
+        // Função para uma superfície de exemplo (esfera)
+        function sphere(u, v, radius = 1) {
+          const theta = u * Math.PI * 2;
+          const phi = v * Math.PI;
+          return [
+            radius * Math.sin(phi) * Math.cos(theta),
+            radius * Math.sin(phi) * Math.sin(theta),
+            radius * Math.cos(phi),
+          ];
+        }
+
+        // Função para converter coordenadas 3D para 2D
+        function project(point, scale = 1000) {
+          // Aumentado novamente em 2x (de 500 para 1000)
+          const [x, y, z] = point;
+          const perspective = 20; // Aumentado para compensar o zoom adicional
+          const zFactor = 1 / (perspective - z / 5);
+          return [
+            width / 2 + x * scale * zFactor,
+            height / 2 - y * scale * zFactor,
+          ];
+        }
+
+        // Desenhar a superfície
+        function drawSurface() {
+          ctx.clearRect(0, 0, width, height);
+
+          // Matriz de rotação combinada
+          const rotMatX = Matrix3D.rotateX(rotationX);
+          const rotMatY = Matrix3D.rotateY(rotationY);
+          const rotMatZ = Matrix3D.rotateZ(rotationZ);
+          const rotMat = Matrix3D.multiply(
+            Matrix3D.multiply(rotMatX, rotMatY),
+            rotMatZ
+          );
+
+          // Desenhar grid da superfície
+          const uSteps = 20;
+          const vSteps = 20;
+          const radius = 1.0;
+
+          // Linhas paramétricas u
+          for (let u = 0; u <= uSteps; u++) {
+            ctx.beginPath();
+            const uVal = u / uSteps;
+
+            for (let v = 0; v <= vSteps; v++) {
+              const vVal = v / vSteps;
+              const point3D = sphere(uVal, vVal, radius);
+              const rotatedPoint = Matrix3D.transform(rotMat, point3D);
+              const [x, y] = project(rotatedPoint);
+
+              if (v === 0) {
+                ctx.moveTo(x, y);
+              } else {
+                ctx.lineTo(x, y);
+              }
+            }
+
+            ctx.strokeStyle = `rgba(100, 181, 246, ${0.3 + 0.7 * Math.abs(u / uSteps - 0.5)})`;
+            ctx.stroke();
+          }
+
+          // Linhas paramétricas v
+          for (let v = 0; v <= vSteps; v++) {
+            ctx.beginPath();
+            const vVal = v / vSteps;
+
+            for (let u = 0; u <= uSteps; u++) {
+              const uVal = u / uSteps;
+              const point3D = sphere(uVal, vVal, radius);
+              const rotatedPoint = Matrix3D.transform(rotMat, point3D);
+              const [x, y] = project(rotatedPoint);
+
+              if (u === 0) {
+                ctx.moveTo(x, y);
+              } else {
+                ctx.lineTo(x, y);
+              }
+            }
+
+            ctx.strokeStyle = `rgba(100, 181, 246, ${0.3 + 0.7 * Math.abs(v / vSteps - 0.5)})`;
+            ctx.stroke();
+          }
+
+          // Destacar o ponto atual (u,v)
+          const highlightPoint = sphere(uParam, vParam, radius);
+          const rotatedHighlight = Matrix3D.transform(rotMat, highlightPoint);
+          const [hx, hy] = project(rotatedHighlight);
+
+          ctx.beginPath();
+          ctx.arc(hx, hy, 6, 0, Math.PI * 2); // Reduzido de 10 para 6
+          ctx.fillStyle = '#ff5a5f';
+          ctx.fill();
+
+          // Desenhar linhas paramétricas u e v passando pelo ponto destacado
+          // Linha u
+          ctx.beginPath();
+          for (let v = 0; v <= vSteps; v++) {
+            const vVal = v / vSteps;
+            const point3D = sphere(uParam, vVal, radius);
+            const rotatedPoint = Matrix3D.transform(rotMat, point3D);
+            const [x, y] = project(rotatedPoint);
+
+            if (v === 0) {
+              ctx.moveTo(x, y);
+            } else {
+              ctx.lineTo(x, y);
+            }
+          }
+          ctx.strokeStyle = '#ff5a5f';
+          ctx.lineWidth = 4; // Aumentado em 2x (de 2 para 4)
+          ctx.stroke();
+          ctx.lineWidth = 2; // Aumentado em 2x (de 1 para 2)
+
+          // Linha v
+          ctx.beginPath();
+          for (let u = 0; u <= uSteps; u++) {
+            const uVal = u / uSteps;
+            const point3D = sphere(uVal, vParam, radius);
+            const rotatedPoint = Matrix3D.transform(rotMat, point3D);
+            const [x, y] = project(rotatedPoint);
+
+            if (u === 0) {
+              ctx.moveTo(x, y);
+            } else {
+              ctx.lineTo(x, y);
+            }
+          }
+          ctx.strokeStyle = '#ff5a5f';
+          ctx.lineWidth = 4; // Aumentado em 2x (de 2 para 4)
+          ctx.stroke();
+          ctx.lineWidth = 2; // Aumentado em 2x (de 1 para 2)
+        }
+
+        // Event listeners para interação
+        canvas.addEventListener('mousedown', (e) => {
+          isDragging = true;
+          lastX = e.clientX;
+          lastY = e.clientY;
+        });
+
+        canvas.addEventListener('mousemove', (e) => {
+          if (isDragging) {
+            const deltaX = e.clientX - lastX;
+            const deltaY = e.clientY - lastY;
+            lastX = e.clientX;
+            lastY = e.clientY;
+
+            rotationY += deltaX * 0.01;
+            rotationX += deltaY * 0.01;
+            drawSurface();
+          }
+        });
+
+        canvas.addEventListener('mouseup', () => {
+          isDragging = false;
+        });
+
+        canvas.addEventListener('mouseleave', () => {
+          isDragging = false;
+        });
+
+        // Sliders para controlar os parâmetros u e v
+        const uSlider = document.getElementById('u-param-slider');
+        const vSlider = document.getElementById('v-param-slider');
+
+        if (uSlider) {
+          uSlider.addEventListener('input', (e) => {
+            uParam = parseFloat(e.target.value);
+            drawSurface();
+          });
+        }
+
+        if (vSlider) {
+          vSlider.addEventListener('input', (e) => {
+            vParam = parseFloat(e.target.value);
+            drawSurface();
+          });
+        }
+
+        // Iniciar a visualização
+        drawSurface();
+      }
+
+      // Visualização 2: Plano Tangente
+      function initTangentPlaneViz() {
+        const canvas = document.getElementById('tangent-plane-canvas');
+        if (!canvas) return;
+
+        const ctx = canvas.getContext('2d');
+        const width = canvas.width;
+        const height = canvas.height;
+
+        // Parâmetros da visualização
+        let posX = 0.5;
+        let posY = 0.5;
+        let rotationX = Math.PI / 6;
+        let rotationY = Math.PI / 4;
+        let isDragging = false;
+        let lastX, lastY;
+
+        // Função que define a superfície (paraboloide)
+        function surface(x, y) {
+          return 0.5 * (x * x + y * y);
+        }
+
+        // Derivadas parciais da superfície
+        function dzdx(x, y) {
+          return x;
+        }
+
+        function dzdy(x, y) {
+          return y;
+        }
+
+        // Função para converter coordenadas 3D para 2D
+        function project(point, scale = 100) {
+          const [x, y, z] = point;
+          const perspective = 5;
+          const zFactor = 1 / (perspective - z / 10);
+          return [
+            width / 2 + x * scale * zFactor,
+            height / 2 - y * scale * zFactor,
+          ];
+        }
+
+        // Desenhar a superfície e o plano tangente
+        function drawTangentPlane() {
+          ctx.clearRect(0, 0, width, height);
+
+          // Matriz de rotação combinada
+          const rotMatX = Matrix3D.rotateX(rotationX);
+          const rotMatY = Matrix3D.rotateY(rotationY);
+          const rotMat = Matrix3D.multiply(rotMatX, rotMatY);
+
+          // Transformar posição normalizada para coordenadas reais da superfície
+          const xReal = (posX - 0.5) * 2;
+          const yReal = (posY - 0.5) * 2;
+          const zReal = surface(xReal, yReal);
+
+          // Calcular plano tangente
+          const dx = dzdx(xReal, yReal);
+          const dy = dzdy(xReal, yReal);
+
+          // Função do plano tangente: z = z0 + dx*(x-x0) + dy*(y-y0)
+          function tangentPlane(x, y) {
+            return zReal + dx * (x - xReal) + dy * (y - yReal);
+          }
+
+          // Desenhar a malha da superfície
+          const gridSize = 20;
+          const step = 4 / gridSize;
+
+          // Desenhar superfície como malha
+          for (let i = 0; i <= gridSize; i++) {
+            const x = -2 + i * step;
+
+            ctx.beginPath();
+            for (let j = 0; j <= gridSize; j++) {
+              const y = -2 + j * step;
+              const z = surface(x, y);
+              const point3D = [x, y, z];
+              const rotatedPoint = Matrix3D.transform(rotMat, point3D);
+              const [px, py] = project(rotatedPoint);
+
+              if (j === 0) {
+                ctx.moveTo(px, py);
+              } else {
+                ctx.lineTo(px, py);
+              }
+            }
+            ctx.strokeStyle = 'rgba(100, 181, 246, 0.4)';
+            ctx.stroke();
+
+            ctx.beginPath();
+            for (let j = 0; j <= gridSize; j++) {
+              const y = -2 + j * step;
+              const x = -2 + i * step;
+              const z = surface(x, y);
+              const point3D = [x, y, z];
+              const rotatedPoint = Matrix3D.transform(rotMat, point3D);
+              const [px, py] = project(rotatedPoint);
+
+              if (j === 0) {
+                ctx.moveTo(px, py);
+              } else {
+                ctx.lineTo(px, py);
+              }
+            }
+            ctx.strokeStyle = 'rgba(100, 181, 246, 0.4)';
+            ctx.stroke();
+          }
+
+          // Desenhar plano tangente
+          ctx.beginPath();
+          for (let i = 0; i <= gridSize; i++) {
+            const x = -2 + i * step;
+
+            for (let j = 0; j <= gridSize; j++) {
+              const y = -2 + j * step;
+
+              // Aplicar recorte para o plano ser visível apenas em torno do ponto de tangência
+              const distance = Math.sqrt(
+                (x - xReal) * (x - xReal) + (y - yReal) * (y - yReal)
+              );
+              if (distance > 1.5) continue;
+
+              const z = tangentPlane(x, y);
+              const point3D = [x, y, z];
+              const rotatedPoint = Matrix3D.transform(rotMat, point3D);
+              const [px, py] = project(rotatedPoint);
+
+              ctx.fillStyle = 'rgba(255, 90, 95, 0.2)';
+              ctx.fillRect(px - 2, py - 2, 4, 4);
+            }
+          }
+
+          // Desenhar vetor normal
+          const normalLength = 0.5;
+          const normalVector = [dx, dy, -1];
+          // Normalizar o vetor
+          const normalMag = Math.sqrt(dx * dx + dy * dy + 1);
+          const normalizedVector = [
+            (dx / normalMag) * normalLength,
+            (dy / normalMag) * normalLength,
+            (-1 / normalMag) * normalLength,
+          ];
+
+          const startPoint = [xReal, yReal, zReal];
+          const endPoint = [
+            xReal + normalizedVector[0],
+            yReal + normalizedVector[1],
+            zReal + normalizedVector[2],
+          ];
+
+          const rotatedStart = Matrix3D.transform(rotMat, startPoint);
+          const rotatedEnd = Matrix3D.transform(rotMat, endPoint);
+
+          const [startX, startY] = project(rotatedStart);
+          const [endX, endY] = project(rotatedEnd);
+
+          // Desenhar o vetor normal
+          ctx.beginPath();
+          ctx.moveTo(startX, startY);
+          ctx.lineTo(endX, endY);
+          ctx.strokeStyle = '#ff5a5f';
+          ctx.lineWidth = 4; // Aumentado em 2x (de 2 para 4) para maior visibilidade
+          ctx.stroke();
+
+          // Desenhar ponta da seta
+          const arrowAngle = Math.atan2(endY - startY, endX - startX);
+          const arrowLength = 10;
+
+          ctx.beginPath();
+          ctx.moveTo(endX, endY);
+          ctx.lineTo(
+            endX - arrowLength * Math.cos(arrowAngle - Math.PI / 6),
+            endY - arrowLength * Math.sin(arrowAngle - Math.PI / 6)
+          );
+          ctx.lineTo(
+            endX - arrowLength * Math.cos(arrowAngle + Math.PI / 6),
+            endY - arrowLength * Math.sin(arrowAngle + Math.PI / 6)
+          );
+          ctx.closePath();
+          ctx.fillStyle = '#ff5a5f';
+          ctx.fill();
+
+          // Destacar o ponto de tangência
+          const rotatedPoint = Matrix3D.transform(rotMat, [
+            xReal,
+            yReal,
+            zReal,
+          ]);
+          const [px, py] = project(rotatedPoint);
+
+          ctx.beginPath();
+          ctx.arc(px, py, 6, 0, Math.PI * 2); // Reduzido de 10 para 6
+          ctx.fillStyle = '#ff5a5f';
+          ctx.fill();
+
+          // Atualizar rótulos com as coordenadas e informações do plano tangente
+          const pointLabel = document.getElementById('tangent-point-label');
+          if (pointLabel) {
+            pointLabel.innerHTML = `Ponto: (${xReal.toFixed(2)}, ${yReal.toFixed(2)}, ${zReal.toFixed(2)})`;
+          }
+
+          const planeLabel = document.getElementById('tangent-plane-label');
+          if (planeLabel) {
+            planeLabel.innerHTML = `Equação do plano: z = ${zReal.toFixed(2)} + ${dx.toFixed(2)}(x - ${xReal.toFixed(2)}) + ${dy.toFixed(2)}(y - ${yReal.toFixed(2)})`;
+          }
+        }
+
+        // Event listeners para interação
+        canvas.addEventListener('mousedown', (e) => {
+          isDragging = true;
+          lastX = e.clientX;
+          lastY = e.clientY;
+        });
+
+        canvas.addEventListener('mousemove', (e) => {
+          if (isDragging) {
+            const deltaX = e.clientX - lastX;
+            const deltaY = e.clientY - lastY;
+            lastX = e.clientX;
+            lastY = e.clientY;
+
+            rotationY += deltaX * 0.01;
+            rotationX += deltaY * 0.01;
+            drawTangentPlane();
+          }
+        });
+
+        canvas.addEventListener('mouseup', () => {
+          isDragging = false;
+        });
+
+        canvas.addEventListener('mouseleave', () => {
+          isDragging = false;
+        });
+
+        // Sliders para controlar a posição
+        const xSlider = document.getElementById('tangent-x-slider');
+        const ySlider = document.getElementById('tangent-y-slider');
+
+        if (xSlider) {
+          xSlider.addEventListener('input', (e) => {
+            posX = parseFloat(e.target.value);
+            drawTangentPlane();
+          });
+        }
+
+        if (ySlider) {
+          ySlider.addEventListener('input', (e) => {
+            posY = parseFloat(e.target.value);
+            drawTangentPlane();
+          });
+        }
+
+        // Iniciar a visualização
+        drawTangentPlane();
+      }
+
+      // Visualização 3: Cálculo de Área de Superfície
+      function initSurfaceAreaViz() {
+        const canvas = document.getElementById('surface-area-canvas');
+        if (!canvas) return;
+
+        const ctx = canvas.getContext('2d');
+        const width = canvas.width;
+        const height = canvas.height;
+
+        // Parâmetros da visualização
+        let subdivisions = 10;
+        let rotationX = Math.PI / 6;
+        let rotationY = Math.PI / 4;
+        let isDragging = false;
+        let lastX, lastY;
+
+        // Função para uma esfera
+        function sphere(u, v, radius = 1) {
+          const theta = u * Math.PI * 2;
+          const phi = v * Math.PI;
+          return [
+            radius * Math.sin(phi) * Math.cos(theta),
+            radius * Math.sin(phi) * Math.sin(theta),
+            radius * Math.cos(phi),
+          ];
+        }
+
+        // Função para calcular o elemento de área dS
+        function surfaceElementMagnitude(u, v, radius = 1) {
+          // Para uma esfera: |r_u × r_v| = R²sin(φ)
+          return radius * radius * Math.sin(v * Math.PI);
+        }
+
+        // Função para converter coordenadas 3D para 2D
+        function project(point, scale = 800) {
+          // Aumentado novamente em 2x (de 400 para 800)
+          const [x, y, z] = point;
+          const perspective = 24; // Aumentado para compensar o zoom adicional
+          const zFactor = 1 / (perspective - z / 10);
+          return [
+            width / 2 + x * scale * zFactor,
+            height / 2 - y * scale * zFactor,
+          ];
+        }
+
+        // Desenhar a visualização da área de superfície
+        function drawSurfaceArea() {
+          ctx.clearRect(0, 0, width, height);
+
+          // Matriz de rotação combinada
+          const rotMatX = Matrix3D.rotateX(rotationX);
+          const rotMatY = Matrix3D.rotateY(rotationY);
+          const rotMat = Matrix3D.multiply(rotMatX, rotMatY);
+
+          const radius = 1.0;
+          const maxSubdivs = parseInt(subdivisions);
+
+          // Calculando área total aproximada
+          let totalArea = 0;
+
+          // Desenhar a esfera com patches coloridos para ilustrar elementos de área
+          for (let i = 0; i < maxSubdivs; i++) {
+            const u1 = i / maxSubdivs;
+            const u2 = (i + 1) / maxSubdivs;
+
+            for (let j = 0; j < maxSubdivs; j++) {
+              const v1 = j / maxSubdivs;
+              const v2 = (j + 1) / maxSubdivs;
+
+              // Quatro cantos do patch
+              const p1 = sphere(u1, v1, radius);
+              const p2 = sphere(u2, v1, radius);
+              const p3 = sphere(u2, v2, radius);
+              const p4 = sphere(u1, v2, radius);
+
+              // Calcular área aproximada do patch
+              const uMid = (u1 + u2) / 2;
+              const vMid = (v1 + v2) / 2;
+              const elementArea =
+                surfaceElementMagnitude(uMid, vMid, radius) *
+                (u2 - u1) *
+                (v2 - v1) *
+                (2 * Math.PI) *
+                Math.PI;
+              totalArea += elementArea;
+
+              // Rotacionar os pontos
+              const rp1 = Matrix3D.transform(rotMat, p1);
+              const rp2 = Matrix3D.transform(rotMat, p2);
+              const rp3 = Matrix3D.transform(rotMat, p3);
+              const rp4 = Matrix3D.transform(rotMat, p4);
+
+              // Projetar os pontos para 2D
+              const [x1, y1] = project(rp1);
+              const [x2, y2] = project(rp2);
+              const [x3, y3] = project(rp3);
+              const [x4, y4] = project(rp4);
+
+              // Desenhar o patch
+              ctx.beginPath();
+              ctx.moveTo(x1, y1);
+              ctx.lineTo(x2, y2);
+              ctx.lineTo(x3, y3);
+              ctx.lineTo(x4, y4);
+              ctx.closePath();
+
+              // Coloração baseada na magnitude do elemento de área (mais claro = maior área)
+              const intensity = Math.min(1, elementArea * 10);
+              const colorIntensity = Math.floor(100 + intensity * 155);
+              ctx.fillStyle = `rgba(${colorIntensity}, ${colorIntensity}, 255, 0.7)`;
+              ctx.fill();
+
+              // Contorno dos patches
+              ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
+              ctx.stroke();
+            }
+          }
+
+          // Exibir área total aproximada
+          ctx.fillStyle = '#ffffff';
+          ctx.font = '18px Arial'; // Aumentado o tamanho da fonte de 14px para 18px
+          ctx.fillText(`Área aproximada: ${totalArea.toFixed(2)}`, 20, 40);
+          ctx.fillText(
+            `Valor teórico: ${(4 * Math.PI * radius * radius).toFixed(2)}`,
+            20,
+            70
+          );
+          ctx.fillText(
+            `Erro: ${((Math.abs(totalArea - 4 * Math.PI) / (4 * Math.PI)) * 100).toFixed(2)}%`,
+            20,
+            100
+          );
+
+          ctx.fillText(
+            `Subdivisões: ${maxSubdivs} × ${maxSubdivs}`,
+            20,
+            height - 40
+          );
+          ctx.fillText(
+            `Cores mais claras = maior área do elemento`,
+            20,
+            height - 15
+          );
+        }
+
+        // Event listeners para interação
+        canvas.addEventListener('mousedown', (e) => {
+          isDragging = true;
+          lastX = e.clientX;
+          lastY = e.clientY;
+        });
+
+        canvas.addEventListener('mousemove', (e) => {
+          if (isDragging) {
+            const deltaX = e.clientX - lastX;
+            const deltaY = e.clientY - lastY;
+            lastX = e.clientX;
+            lastY = e.clientY;
+
+            rotationY += deltaX * 0.01;
+            rotationX += deltaY * 0.01;
+            drawSurfaceArea();
+          }
+        });
+
+        canvas.addEventListener('mouseup', () => {
+          isDragging = false;
+        });
+
+        canvas.addEventListener('mouseleave', () => {
+          isDragging = false;
+        });
+
+        // Slider para controlar o número de subdivisões
+        const subdivSlider = document.getElementById('surface-subdiv-slider');
+        if (subdivSlider) {
+          subdivSlider.addEventListener('input', (e) => {
+            subdivisions = parseFloat(e.target.value);
+            drawSurfaceArea();
+          });
+        }
+
+        // Iniciar a visualização
+        drawSurfaceArea();
+      }
+
+      // Visualização 4: Fluxo através de Superfície
+      function initFluxViz() {
+        const canvas = document.getElementById('flux-canvas');
+        if (!canvas) return;
+
+        const ctx = canvas.getContext('2d');
+        const width = canvas.width;
+        const height = canvas.height;
+
+        // Parâmetros da visualização
+        let fieldIntensity = 1.0;
+        let orientation = 0.5;
+        let rotationX = Math.PI / 6;
+        let rotationY = Math.PI / 4;
+        let isDragging = false;
+        let lastX, lastY;
+
+        // Função para gerar uma superfície (paraboloide)
+        function paraboloid(x, y) {
+          return x * x + y * y;
+        }
+
+        // Função para o campo vetorial (radial para cima)
+        function vectorField(x, y, z) {
+          // Vetor radial orientado para cima
+          const mag = fieldIntensity;
+          const orientParam = (orientation - 0.5) * 2; // -1 a 1
+
+          return [
+            x * mag * (1 - Math.abs(orientParam)),
+            y * mag * (1 - Math.abs(orientParam)),
+            mag * (orientParam >= 0 ? orientParam : 0),
+          ];
+        }
+
+        // Vetor normal à superfície
+        function surfaceNormal(x, y) {
+          // Para z = x²+y², o vetor normal é proporcional a (-2x, -2y, 1)
+          const nx = -2 * x;
+          const ny = -2 * y;
+          const nz = 1;
+
+          // Normalizar
+          const mag = Math.sqrt(nx * nx + ny * ny + nz * nz);
+          return [nx / mag, ny / mag, nz / mag];
+        }
+
+        // Função para converter coordenadas 3D para 2D
+        function project(point, scale = 700) {
+          // Aumentado novamente em 2x (de 350 para 700)
+          const [x, y, z] = point;
+          const perspective = 24; // Aumentado para compensar o zoom adicional
+          const zFactor = 1 / (perspective - z / 10);
+          return [
+            width / 2 + x * scale * zFactor,
+            height / 2 - y * scale * zFactor,
+          ];
+        }
+
+        // Desenhar a visualização do fluxo
+        function drawFlux() {
+          ctx.clearRect(0, 0, width, height);
+
+          // Matriz de rotação combinada
+          const rotMatX = Matrix3D.rotateX(rotationX);
+          const rotMatY = Matrix3D.rotateY(rotationY);
+          const rotMat = Matrix3D.multiply(rotMatX, rotMatY);
+
+          // Limites da superfície
+          const gridSize = 20;
+          const step = 2.0 / gridSize;
+          const limit = 1.0;
+
+          // Desenhar a superfície como malha
+          for (let i = 0; i <= gridSize; i++) {
+            const x = -limit + i * step;
+
+            ctx.beginPath();
+            for (let j = 0; j <= gridSize; j++) {
+              const y = -limit + j * step;
+              if (x * x + y * y > limit * limit) continue; // Manter formato circular
+
+              const z = paraboloid(x, y);
+              const point3D = [x, y, z];
+              const rotatedPoint = Matrix3D.transform(rotMat, point3D);
+              const [px, py] = project(rotatedPoint);
+
+              if (j === 0 || x * x + y * y > (limit - step) * (limit - step)) {
+                ctx.moveTo(px, py);
+              } else {
+                ctx.lineTo(px, py);
+              }
+            }
+            ctx.strokeStyle = 'rgba(100, 181, 246, 0.5)';
+            ctx.stroke();
+          }
+
+          for (let j = 0; j <= gridSize; j++) {
+            const y = -limit + j * step;
+
+            ctx.beginPath();
+            for (let i = 0; i <= gridSize; i++) {
+              const x = -limit + i * step;
+              if (x * x + y * y > limit * limit) continue; // Manter formato circular
+
+              const z = paraboloid(x, y);
+              const point3D = [x, y, z];
+              const rotatedPoint = Matrix3D.transform(rotMat, point3D);
+              const [px, py] = project(rotatedPoint);
+
+              if (i === 0 || x * x + y * y > (limit - step) * (limit - step)) {
+                ctx.moveTo(px, py);
+              } else {
+                ctx.lineTo(px, py);
+              }
+            }
+            ctx.strokeStyle = 'rgba(100, 181, 246, 0.5)';
+            ctx.stroke();
+          }
+
+          // Desenhar vetores do campo
+          const vectorDensity = 5;
+          const vectorStep = (2 * limit) / vectorDensity;
+
+          let totalFlux = 0;
+          let totalArea = 0;
+
+          for (let i = 0; i <= vectorDensity; i++) {
+            const x = -limit + i * vectorStep;
+
+            for (let j = 0; j <= vectorDensity; j++) {
+              const y = -limit + j * vectorStep;
+              if (x * x + y * y > limit * limit) continue; // Manter formato circular
+
+              const z = paraboloid(x, y);
+              const point3D = [x, y, z];
+
+              // Calcular vetor do campo neste ponto
+              const fieldVector = vectorField(x, y, z);
+
+              // Calcular vetor normal à superfície
+              const normal = surfaceNormal(x, y);
+
+              // Calcular produto escalar para determinar fluxo
+              const dotProduct =
+                fieldVector[0] * normal[0] +
+                fieldVector[1] * normal[1] +
+                fieldVector[2] * normal[2];
+
+              // Somente desenhar se o fluxo não for aproximadamente zero
+              const fluxoSignificativo = Math.abs(dotProduct) > 0.05;
+
+              // Estimar área deste elemento da superfície
+              const elementArea =
+                (Math.PI * limit * limit) / (vectorDensity * vectorDensity);
+
+              // Somar ao fluxo total (F·n)*dS
+              totalFlux += dotProduct * elementArea;
+              totalArea += elementArea;
+
+              // Pular o desenho se o fluxo for muito próximo de zero
+              if (!fluxoSignificativo) continue;
+
+              // Definir a escala do vetor
+              const vectorScale = 0.4;
+
+              // Ponto final do vetor de campo
+              const endPoint = [
+                x + fieldVector[0] * vectorScale,
+                y + fieldVector[1] * vectorScale,
+                z + fieldVector[2] * vectorScale,
+              ];
+
+              // Rotacionar pontos
+              const rotatedStart = Matrix3D.transform(rotMat, point3D);
+              const rotatedEnd = Matrix3D.transform(rotMat, endPoint);
+
+              // Projetar pontos
+              const [startX, startY] = project(rotatedStart);
+              const [endX, endY] = project(rotatedEnd);
+
+              // Desenhar vetor
+              ctx.beginPath();
+              ctx.moveTo(startX, startY);
+              ctx.lineTo(endX, endY);
+
+              // Colorir baseado no fluxo local (produto escalar)
+              const colorValue = Math.min(
+                255,
+                Math.max(0, Math.floor(128 + dotProduct * 128))
+              );
+              if (dotProduct >= 0) {
+                // Fluxo positivo (saindo): azul para ciano
+                ctx.strokeStyle = `rgb(0, ${colorValue}, 255)`;
+              } else {
+                // Fluxo negativo (entrando): verde para amarelo
+                ctx.strokeStyle = `rgb(${colorValue}, 255, 0)`;
+              }
+
+              ctx.lineWidth = 4; // Aumentado em 2x (de 2 para 4)
+              ctx.stroke();
+              ctx.lineWidth = 2; // Aumentado em 2x (de 1 para 2)
+
+              // Desenhar ponta da seta
+              const arrowSize = 10; // Aumentado em 2x (de 5 para 10) para pontas de seta mais visíveis
+              const arrowAngle = Math.atan2(endY - startY, endX - startX);
+
+              ctx.beginPath();
+              ctx.moveTo(endX, endY);
+              ctx.lineTo(
+                endX - arrowSize * Math.cos(arrowAngle - Math.PI / 6),
+                endY - arrowSize * Math.sin(arrowAngle - Math.PI / 6)
+              );
+              ctx.lineTo(
+                endX - arrowSize * Math.cos(arrowAngle + Math.PI / 6),
+                endY - arrowSize * Math.sin(arrowAngle + Math.PI / 6)
+              );
+              ctx.closePath();
+
+              if (dotProduct >= 0) {
+                ctx.fillStyle = `rgb(0, ${colorValue}, 255)`;
+              } else {
+                ctx.fillStyle = `rgb(${colorValue}, 255, 0)`;
+              }
+
+              ctx.fill();
+            }
+          }
+
+          // Exibir fluxo total aproximado
+          ctx.fillStyle = '#ffffff';
+          ctx.font = '18px Arial'; // Aumentado o tamanho da fonte de 14px para 18px
+          ctx.fillText(
+            `Fluxo total aproximado: ${totalFlux.toFixed(2)}`,
+            20,
+            40
+          );
+          ctx.fillText(
+            `Área total aproximada: ${totalArea.toFixed(2)}`,
+            20,
+            70
+          );
+          ctx.fillText(
+            `Fluxo médio por unidade de área: ${(totalFlux / totalArea).toFixed(2)}`,
+            20,
+            100
+          );
+        }
+
+        // Event listeners para interação
+        canvas.addEventListener('mousedown', (e) => {
+          isDragging = true;
+          lastX = e.clientX;
+          lastY = e.clientY;
+        });
+
+        canvas.addEventListener('mousemove', (e) => {
+          if (isDragging) {
+            const deltaX = e.clientX - lastX;
+            const deltaY = e.clientY - lastY;
+            lastX = e.clientX;
+            lastY = e.clientY;
+
+            rotationY += deltaX * 0.01;
+            rotationX += deltaY * 0.01;
+            drawFlux();
+          }
+        });
+
+        canvas.addEventListener('mouseup', () => {
+          isDragging = false;
+        });
+
+        canvas.addEventListener('mouseleave', () => {
+          isDragging = false;
+        });
+
+        // Sliders para controlar o campo vetorial
+        const intensitySlider = document.getElementById(
+          'field-intensity-slider'
+        );
+        const orientationSlider = document.getElementById(
+          'field-orientation-slider'
+        );
+
+        if (intensitySlider) {
+          intensitySlider.addEventListener('input', (e) => {
+            fieldIntensity = parseFloat(e.target.value);
+            drawFlux();
+          });
+        }
+
+        if (orientationSlider) {
+          orientationSlider.addEventListener('input', (e) => {
+            orientation = parseFloat(e.target.value);
+            drawFlux();
+          });
+        }
+
+        // Iniciar a visualização
+        drawFlux();
+      }
+
+      window.onload = function () {
+        Reveal.initialize({
+          controls: true,
+          progress: true,
+          center: true,
+          hash: true,
+          plugins: [RevealMath.MathJax3],
+          math: {
+            mathjax:
+              'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js',
+            config: 'TeX-AMS_HTML-full',
+            TeX: {
+              Macros: {
+                R: '\\mathbb{R}',
+              },
+            },
+          },
+        });
+
+        // Inicializar as visualizações quando os slides forem carregados
+        Reveal.addEventListener('ready', function () {
+          setTimeout(initVisualizations, 500);
+        });
+
+        // Reinicializar visualizações quando slide de visualização estiver ativo
+        Reveal.addEventListener('slidechanged', function (event) {
+          // Verificar se o slide atual contém um canvas
+          if (event.currentSlide.querySelector('canvas')) {
+            setTimeout(initVisualizations, 500);
+          }
+        });
+      };
+    </script>
   </head>
   <body>
     <div class="reveal">
       <div class="slides">
+        <!-- Slide de Abertura -->
         <section>
-          <h1>area-e-integral-de-superficie</h1>
+          <h1>Área e Integral de Superfície</h1>
+          <h3>Uma jornada matemática através da exploração espacial</h3>
+          <p>Cálculo Vetorial</p>
+          <div class="asteroid"></div>
+          <div class="asteroid"></div>
+        </section>
+
+        <!-- SUPERFÍCIES -->
+        <section>
+          <section>
+            <h2>Superfícies Parametrizadas</h2>
+            <p>Uma superfície parametrizada é uma função vetorial:</p>
+            <p>$$\vec{r}(u,v) = (x(u,v), y(u,v), z(u,v))$$</p>
+            <p>onde $(u,v)$ percorre uma região $D$ do plano $\mathbb{R}^2$</p>
+          </section>
+
+          <section>
+            <h2>Compreendendo Superfícies</h2>
+            <p>
+              Pense em uma superfície como uma "pele" matemática estendida no
+              espaço tridimensional
+            </p>
+            <ul>
+              <li>
+                Cada ponto da superfície é <em>mapeado</em> a partir de
+                coordenadas $(u,v)$
+              </li>
+              <li>
+                Os parâmetros $u$ e $v$ funcionam como "coordenadas intrínsecas"
+                da superfície
+              </li>
+              <li>
+                Esta parametrização nos permite <em>navegar</em> ao longo da
+                superfície
+              </li>
+            </ul>
+          </section>
+
+          <section>
+            <h2>Exemplos de Superfícies Parametrizadas</h2>
+            <p>Esfera de raio $R$:</p>
+            <p>
+              $$\vec{r}(\theta, \phi) = (R\sin\phi\cos\theta,
+              R\sin\phi\sin\theta, R\cos\phi)$$
+            </p>
+            <p>onde $0 \leq \theta < 2\pi$ e $0 \leq \phi \leq \pi$</p>
+            <div class="historic-note">
+              Durante a Guerra Fria, o cálculo preciso de superfícies esféricas
+              foi fundamental para o desenvolvimento das primeiras cápsulas
+              espaciais como a Vostok soviética e a Mercury americana.
+            </div>
+          </section>
+
+          <section>
+            <h2>Visualização: Superfícies Parametrizadas</h2>
+            <div class="canvas-container">
+              <canvas id="surface-canvas" width="600" height="400"></canvas>
+            </div>
+            <div class="control-panel">
+              <div class="slider-container">
+                <span class="slider-label">Parâmetro u</span>
+                <input
+                  type="range"
+                  min="0"
+                  max="1"
+                  step="0.01"
+                  value="0.5"
+                  id="u-param-slider"
+                />
+              </div>
+              <div class="slider-container">
+                <span class="slider-label">Parâmetro v</span>
+                <input
+                  type="range"
+                  min="0"
+                  max="1"
+                  step="0.01"
+                  value="0.5"
+                  id="v-param-slider"
+                />
+              </div>
+            </div>
+            <p class="visualization-tip">
+              Arraste para rotacionar a superfície. Ajuste os sliders para mover
+              o ponto destacado.
+            </p>
+          </section>
+        </section>
+
+        <!-- PLANO TANGENTE -->
+        <section>
+          <section>
+            <h2>Plano Tangente</h2>
+            <p>
+              O plano tangente a uma superfície em um ponto $P$ é determinado
+              pelos vetores tangentes:
+            </p>
+            <p>
+              $$\vec{r}_u = \frac{\partial \vec{r}}{\partial u} \quad \text{e}
+              \quad \vec{r}_v = \frac{\partial \vec{r}}{\partial v}$$
+            </p>
+            <p>
+              O vetor normal à superfície é dado por: $\vec{n} = \vec{r}_u
+              \times \vec{r}_v$
+            </p>
+          </section>
+
+          <section>
+            <h2>Significado Geométrico</h2>
+            <p>
+              O plano tangente é uma <em>aproximação linear</em> da superfície
+              em um ponto específico
+            </p>
+            <ul>
+              <li>
+                Fornece a melhor aproximação "plana" para a superfície naquele
+                ponto
+              </li>
+              <li>
+                Essencial para calcular direções de movimento e forças em
+                superfícies curvas
+              </li>
+              <li>
+                A normal à superfície define a direção perpendicular ao plano
+                tangente
+              </li>
+            </ul>
+          </section>
+
+          <section>
+            <h2>Aplicação Espacial: Reentrada Atmosférica</h2>
+            <p>
+              Durante a reentrada atmosférica, o cálculo dos planos tangentes à
+              superfície da nave espacial é crucial para:
+            </p>
+            <ul>
+              <li>
+                Determinar a <em>distribuição de calor</em> na superfície do
+                veículo
+              </li>
+              <li>
+                Calcular as <em>forças aerodinâmicas</em> atuando em cada ponto
+              </li>
+              <li>
+                Otimizar o <em>ângulo de reentrada</em> para minimizar o
+                aquecimento
+              </li>
+            </ul>
+            <div class="historic-note">
+              O desastre do ônibus espacial Columbia em 2003 foi causado por
+              danos ao sistema de proteção térmica, demonstrando a importância
+              crítica do estudo de superfícies e distribuição de calor.
+            </div>
+          </section>
+
+          <section>
+            <h2>Visualização: Plano Tangente</h2>
+            <div class="canvas-container">
+              <canvas
+                id="tangent-plane-canvas"
+                width="600"
+                height="400"
+              ></canvas>
+            </div>
+            <div class="control-panel">
+              <div class="slider-container">
+                <span class="slider-label">Posição X</span>
+                <input
+                  type="range"
+                  min="0"
+                  max="1"
+                  step="0.01"
+                  value="0.5"
+                  id="tangent-x-slider"
+                />
+              </div>
+              <div class="slider-container">
+                <span class="slider-label">Posição Y</span>
+                <input
+                  type="range"
+                  min="0"
+                  max="1"
+                  step="0.01"
+                  value="0.5"
+                  id="tangent-y-slider"
+                />
+              </div>
+            </div>
+            <div class="info-panel">
+              <p id="tangent-point-label">Ponto: (0.00, 0.00, 0.00)</p>
+              <p id="tangent-plane-label">
+                Equação do plano: z = 0.00 + 0.00(x - 0.00) + 0.00(y - 0.00)
+              </p>
+            </div>
+            <p class="visualization-tip">
+              Arraste para rotacionar a visualização. Use os sliders para mover
+              o ponto de tangência.
+            </p>
+          </section>
+        </section>
+
+        <!-- ÁREA DE SUPERFÍCIE -->
+        <section>
+          <section>
+            <h2>Área de Superfície</h2>
+            <p>A área de uma superfície parametrizada é dada pela integral:</p>
+            <p>$$A = \iint_D |\vec{r}_u \times \vec{r}_v| \, du \, dv$$</p>
+            <p>
+              onde $|\vec{r}_u \times \vec{r}_v|$ é a magnitude do produto
+              vetorial
+            </p>
+          </section>
+
+          <section>
+            <h2>Elemento de Área</h2>
+            <p>O elemento de área $dS$ pode ser expresso como:</p>
+            <p>$$dS = |\vec{r}_u \times \vec{r}_v| \, du \, dv$$</p>
+            <p>
+              Isso representa a "área infinitesimal" em torno de um ponto na
+              superfície
+            </p>
+            <div class="historic-note">
+              O cálculo preciso das áreas de superfície foi fundamental no
+              projeto dos primeiros satélites como o Sputnik (1957) e o Explorer
+              1 (1958), especialmente para determinar a exposição à radiação
+              solar e o dimensionamento dos painéis solares.
+            </div>
+          </section>
+
+          <section>
+            <h2>Exemplo: Área de uma Esfera</h2>
+            <p>
+              Para uma esfera de raio $R$ parametrizada como vimos
+              anteriormente:
+            </p>
+            <p>
+              $$\begin{align} \vec{r}_\theta &= (-R\sin\phi\sin\theta,
+              R\sin\phi\cos\theta, 0) \\ \vec{r}_\phi &= (R\cos\phi\cos\theta,
+              R\cos\phi\sin\theta, -R\sin\phi) \end{align}$$
+            </p>
+            <p>$$|\vec{r}_\theta \times \vec{r}_\phi| = R^2\sin\phi$$</p>
+            <p>
+              $$A = \int_0^\pi \int_0^{2\pi} R^2\sin\phi \, d\theta \, d\phi =
+              4\pi R^2$$
+            </p>
+          </section>
+
+          <section>
+            <h2>Visualização: Cálculo de Área de Superfície</h2>
+            <div class="canvas-container">
+              <canvas
+                id="surface-area-canvas"
+                width="600"
+                height="400"
+              ></canvas>
+            </div>
+            <div class="control-panel">
+              <div class="slider-container">
+                <span class="slider-label">Número de subdivisões</span>
+                <input
+                  type="range"
+                  min="4"
+                  max="50"
+                  step="1"
+                  value="10"
+                  id="surface-subdiv-slider"
+                />
+              </div>
+            </div>
+            <p class="visualization-tip">
+              Arraste para rotacionar a esfera. Ajuste o slider para ver como o
+              refinamento da malha afeta a precisão do cálculo da área.
+            </p>
+          </section>
+        </section>
+
+        <!-- INTEGRAL DE SUPERFÍCIE -->
+        <section>
+          <section>
+            <h2>Integral de Superfície</h2>
+            <p>
+              Uma integral de superfície de um campo escalar $f(x,y,z)$ é
+              definida como:
+            </p>
+            <p>
+              $$\iint_S f(x,y,z) \, dS = \iint_D f(\vec{r}(u,v)) \, |\vec{r}_u
+              \times \vec{r}_v| \, du \, dv$$
+            </p>
+            <p>
+              Isso nos permite calcular quantidades físicas distribuídas sobre
+              superfícies
+            </p>
+          </section>
+
+          <section>
+            <h2>Integral de Superfície de Campos Vetoriais</h2>
+            <p>Para um campo vetorial $\vec{F}(x,y,z)$, definimos:</p>
+            <p>
+              $$\iint_S \vec{F} \cdot \vec{n} \, dS = \iint_S \vec{F} \cdot
+              d\vec{S}$$
+            </p>
+            <p>Onde $\vec{n}$ é o vetor unitário normal à superfície</p>
+            <p>
+              Esta integral é conhecida como <em>fluxo</em> do campo através da
+              superfície
+            </p>
+          </section>
+
+          <section>
+            <h2>Aplicações na Exploração Espacial</h2>
+            <p>As integrais de superfície são fundamentais para:</p>
+            <ul>
+              <li>
+                <em>Análise aerodinâmica</em>: Cálculo de forças de arrasto e
+                sustentação
+              </li>
+              <li>
+                <em>Transferência de calor</em>: Fluxo de calor através da
+                superfície da nave
+              </li>
+              <li>
+                <em>Estudos de radiação</em>: Quantidade de radiação absorvida
+                por satélites
+              </li>
+            </ul>
+            <div class="historic-note">
+              Durante o programa Apollo (1961-1972), as integrais de superfície
+              foram utilizadas para calcular com precisão o fluxo de calor
+              durante a reentrada, garantindo que o escudo térmico pudesse
+              suportar temperaturas de até 2.700°C.
+            </div>
+          </section>
+
+          <section>
+            <h2>Visualização: Fluxo através de Superfície</h2>
+            <div class="canvas-container">
+              <canvas id="flux-canvas" width="600" height="400"></canvas>
+            </div>
+            <div class="control-panel">
+              <div class="slider-container">
+                <span class="slider-label">Intensidade do campo</span>
+                <input
+                  type="range"
+                  min="0"
+                  max="2"
+                  step="0.1"
+                  value="1"
+                  id="field-intensity-slider"
+                />
+              </div>
+              <div class="slider-container">
+                <span class="slider-label">Orientação</span>
+                <input
+                  type="range"
+                  min="0"
+                  max="1"
+                  step="0.01"
+                  value="0.5"
+                  id="field-orientation-slider"
+                />
+              </div>
+            </div>
+            <div class="flux-legend">
+              <div
+                style="
+                  display: flex;
+                  justify-content: center;
+                  gap: 20px;
+                  margin-top: 10px;
+                "
+              >
+                <div style="display: flex; align-items: center">
+                  <div
+                    style="
+                      width: 20px;
+                      height: 10px;
+                      background: linear-gradient(
+                        to right,
+                        rgb(0, 0, 255),
+                        rgb(0, 255, 255)
+                      );
+                      margin-right: 5px;
+                    "
+                  ></div>
+                  <span>Fluxo positivo (saindo)</span>
+                </div>
+                <div style="display: flex; align-items: center">
+                  <div
+                    style="
+                      width: 20px;
+                      height: 10px;
+                      background: linear-gradient(
+                        to right,
+                        rgb(0, 255, 0),
+                        rgb(255, 255, 0)
+                      );
+                      margin-right: 5px;
+                    "
+                  ></div>
+                  <span>Fluxo negativo (entrando)</span>
+                </div>
+              </div>
+              <p style="font-size: 0.8em; margin-top: 5px">
+                Vetores não são mostrados onde o fluxo é aproximadamente zero
+              </p>
+            </div>
+          </section>
+        </section>
+
+        <!-- EXERCÍCIOS PRÁTICOS -->
+        <section>
+          <section>
+            <h2>Exercício Guiado</h2>
+            <div class="exercise-box">
+              <p>
+                Calcule o fluxo do campo vetorial $\vec{F}(x,y,z) = (x, y, z)$
+                através da porção do paraboloide $z = x^2 + y^2$ para $0 \leq z
+                \leq 1$, com orientação para cima.
+              </p>
+            </div>
+            <p>Vamos resolver passo a passo:</p>
+            <ol>
+              <li>Parametrizar a superfície</li>
+              <li>Calcular os vetores tangentes</li>
+              <li>Determinar o vetor normal</li>
+              <li>Calcular a integral do fluxo</li>
+            </ol>
+          </section>
+
+          <section>
+            <h2>Solução - Passo 1</h2>
+            <p>Parametrizando a superfície usando coordenadas polares:</p>
+            <p>
+              $$\begin{align} x &= r\cos\theta \\ y &= r\sin\theta \\ z &= r^2
+              \end{align}$$
+            </p>
+            <p>onde $0 \leq r \leq 1$ e $0 \leq \theta < 2\pi$</p>
+            <p>Assim, $\vec{r}(r,\theta) = (r\cos\theta, r\sin\theta, r^2)$</p>
+          </section>
+
+          <section>
+            <h2>Solução - Passos 2 e 3</h2>
+            <p>Calculando os vetores tangentes:</p>
+            <p>
+              $$\begin{align} \vec{r}_r &= (\cos\theta, \sin\theta, 2r) \\
+              \vec{r}_\theta &= (-r\sin\theta, r\cos\theta, 0) \end{align}$$
+            </p>
+            <p>O vetor normal não-unitário é:</p>
+            <p>
+              $$\begin{align} \vec{n} = \vec{r}_r \times \vec{r}_\theta &=
+              \begin{vmatrix} \vec{i} & \vec{j} & \vec{k} \\ \cos\theta &
+              \sin\theta & 2r \\ -r\sin\theta & r\cos\theta & 0 \end{vmatrix} \\
+              &= (2r^2\cos\theta, 2r^2\sin\theta, r) \end{align}$$
+            </p>
+          </section>
+
+          <section>
+            <h2>Solução - Passo 4</h2>
+            <p>Calculando o fluxo:</p>
+            <p>
+              $$\begin{align} \iint_S \vec{F} \cdot \vec{n} \, dS &= \iint_D
+              \vec{F}(\vec{r}(r,\theta)) \cdot \vec{n} \, dr \, d\theta \\ &=
+              \iint_D (r\cos\theta, r\sin\theta, r^2) \cdot (2r^2\cos\theta,
+              2r^2\sin\theta, r) \, dr \, d\theta \\ &= \iint_D
+              (2r^3\cos^2\theta + 2r^3\sin^2\theta + r^3) \, dr \, d\theta \\ &=
+              \iint_D (2r^3 + r^3) \, dr \, d\theta \\ &= \int_0^{2\pi} \int_0^1
+              3r^3 \, dr \, d\theta \\ &= \int_0^{2\pi} \left[ \frac{3r^4}{4}
+              \right]_0^1 \, d\theta \\ &= \int_0^{2\pi} \frac{3}{4} \, d\theta
+              = \frac{3}{4} \cdot 2\pi = \frac{3\pi}{2} \end{align}$$
+            </p>
+          </section>
+
+          <section>
+            <h2>Exercício para Prática</h2>
+            <div class="exercise-box">
+              <p>
+                A cápsula espacial Apollo tinha um escudo térmico
+                aproximadamente no formato de um cone truncado. Considere um
+                modelo simplificado onde o escudo é representado pela
+                superfície:
+              </p>
+              <p>$$z = 1 - \sqrt{x^2 + y^2}$$, para $0 \leq z \leq 1$</p>
+              <p>
+                Se o fluxo de calor durante a reentrada pode ser modelado pelo
+                campo vetorial $\vec{F}(x,y,z) = (0, 0, x^2 + y^2)$, calcule o
+                fluxo total de calor através do escudo.
+              </p>
+            </div>
+          </section>
+        </section>
+
+        <!-- FECHAMENTO -->
+        <section>
+          <h2>Síntese: Área e Integral de Superfície</h2>
+          <p>Vimos como:</p>
+          <ul>
+            <li>
+              As superfícies paramétrizadas nos permitem representar objetos
+              tridimensionais matematicamente
+            </li>
+            <li>
+              O plano tangente aproxima localmente uma superfície e é essencial
+              para análises físicas
+            </li>
+            <li>
+              A área de superfície quantifica o "tamanho" de uma superfície no
+              espaço
+            </li>
+            <li>
+              As integrais de superfície nos permitem calcular fluxos de campos
+              através de superfícies
+            </li>
+          </ul>
+          <p>
+            Estes conceitos formam a base para o estudo do
+            <strong>Teorema de Stokes</strong> e do
+            <strong>Teorema da Divergência</strong>, que veremos nas próximas
+            aulas.
+          </p>
+        </section>
+
+        <!-- REFERÊNCIAS -->
+        <section>
+          <h2>Referências e Leituras Complementares</h2>
+          <ul>
+            <li>Stewart, J. (2015). <em>Cálculo</em>, Volume 2, 7ª ed.</li>
+            <li>
+              Marsden, J. E., & Tromba, A. J. (2011). <em>Vector Calculus</em>,
+              6ª ed.
+            </li>
+            <li>
+              Thompson, L. (2018).
+              <em>Engineering Mathematics in Spacecraft Design</em>
+            </li>
+            <li>
+              NASA Technical Report 1228:
+              <em>Heat Shields for Atmospheric Reentry</em>
+            </li>
+          </ul>
         </section>
       </div>
     </div>
