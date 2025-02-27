@@ -19,13 +19,1195 @@
         });
       };
     </script>
+    <style>
+      /* Estilos adicionais para visualizações */
+      canvas {
+        background-color: rgba(26, 35, 126, 0.3);
+        border: 1px solid rgba(79, 195, 247, 0.2);
+        box-shadow: 0 0 20px rgba(79, 195, 247, 0.1);
+        max-width: 100%;
+        margin: 0 auto;
+        display: block;
+      }
+
+      .slider-container {
+        width: 80%;
+        margin: 15px auto;
+        text-align: center;
+      }
+
+      .slider-container input {
+        width: 60%;
+      }
+
+      .slider-container label {
+        display: inline-block;
+        width: 20%;
+        text-align: right;
+        margin-right: 10px;
+      }
+
+      .slider-value {
+        display: inline-block;
+        width: 20%;
+        text-align: left;
+        margin-left: 10px;
+      }
+
+      .interactive-controls {
+        display: flex;
+        justify-content: center;
+        margin: 10px auto;
+        gap: 20px;
+      }
+
+      button {
+        background: rgba(79, 195, 247, 0.2);
+        border: 1px solid rgba(79, 195, 247, 0.5);
+        color: #e0e0e0;
+        padding: 8px 15px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      button:hover {
+        background: rgba(79, 195, 247, 0.4);
+      }
+
+      .solution-box {
+        background: rgba(26, 35, 126, 0.3);
+        border: 1px solid rgba(79, 195, 247, 0.2);
+        padding: 15px;
+        margin: 15px auto;
+        max-width: 80%;
+        text-align: left;
+      }
+
+      .hint {
+        color: #64b5f6;
+        font-style: italic;
+        font-size: 0.9em;
+      }
+
+      .historical-note {
+        background: rgba(100, 181, 246, 0.1);
+        border-left: 3px solid #64b5f6;
+        padding: 10px 15px;
+        margin: 15px auto;
+        max-width: 80%;
+        text-align: left;
+        font-size: 0.9em;
+      }
+    </style>
   </head>
   <body>
     <div class="reveal">
+      <div class="asteroid"></div>
+      <div class="asteroid"></div>
       <div class="slides">
+        <!-- Slide de Título -->
         <section>
-          <h1>integrais-de-linha</h1>
+          <h1>Integrais de Linha</h1>
+          <h3>Navegando em Campos Vetoriais</h3>
+          <p>Contextualização na Era Espacial e da Guerra Fria</p>
         </section>
+
+        <!-- SEÇÃO 1: DEFINIÇÃO FORMAL -->
+        <section>
+          <section>
+            <h2>Definição Formal</h2>
+            <p>
+              A integral de linha de um campo vetorial \(\vec{F}\) ao longo de
+              uma curva \(C\) parametrizada por \(\vec{r}(t)\), \(a \leq t \leq
+              b\) é definida como:
+            </p>
+            <p class="math">
+              $$\int_C \vec{F} \cdot d\vec{r} = \int_a^b \vec{F}(\vec{r}(t))
+              \cdot \vec{r}'(t) dt$$
+            </p>
+            <p>
+              Esta integral calcula o <em>trabalho realizado</em> pelo campo
+              \(\vec{F}\) ao longo do deslocamento em \(C\).
+            </p>
+          </section>
+
+          <section>
+            <h2>Entendimento Intuitivo</h2>
+            <p>Pense na integral de linha como:</p>
+            <ul>
+              <li>
+                Uma soma de "empurrões" dados pelo campo ao longo do caminho
+              </li>
+              <li>O efeito acumulado do campo durante um deslocamento</li>
+              <li>
+                Uma medida do quanto o campo "favorece" ou "se opõe" ao
+                movimento na curva
+              </li>
+            </ul>
+            <p class="hint">
+              Lembre-se: apenas as componentes do campo paralelas ao
+              deslocamento contribuem!
+            </p>
+          </section>
+
+          <section>
+            <h2>Notações Alternativas</h2>
+            <p>A integral de linha pode ser escrita de várias formas:</p>
+            <p class="math">
+              $$\int_C \vec{F} \cdot d\vec{r} = \int_C \vec{F} \cdot \hat{T} ds
+              = \int_C F_T ds$$
+            </p>
+            <p>Onde:</p>
+            <ul>
+              <li>\(\hat{T}\) é o vetor tangente unitário à curva</li>
+              <li>\(ds\) é o elemento de comprimento de arco</li>
+              <li>\(F_T\) é a componente tangencial de \(\vec{F}\)</li>
+            </ul>
+            <p>Em coordenadas cartesianas tridimensionais:</p>
+            <p class="math">
+              $$\int_C \vec{F} \cdot d\vec{r} = \int_C F_x dx + F_y dy + F_z
+              dz$$
+            </p>
+          </section>
+        </section>
+
+        <!-- SEÇÃO 2: CONTEXTUALIZAÇÃO HISTÓRICA -->
+        <section>
+          <section>
+            <h2>Aplicação na Exploração Espacial</h2>
+            <p>
+              Durante a corrida espacial (1957-1975), as integrais de linha
+              foram essenciais para:
+            </p>
+            <ul>
+              <li>
+                Calcular o trabalho necessário para escapar do campo
+                gravitacional terrestre
+              </li>
+              <li>
+                Otimizar trajetórias de foguetes com consumo mínimo de
+                combustível
+              </li>
+              <li>
+                Determinar a transferência de energia durante manobras orbitais
+              </li>
+            </ul>
+            <div class="historical-note">
+              Em 1961, quando o programa Apollo foi iniciado, a NASA utilizou
+              integrais de linha para calcular as janelas de lançamento ideais e
+              trajetórias de transferência Terra-Lua que minimizassem o gasto de
+              combustível.
+            </div>
+          </section>
+
+          <section>
+            <h2>O Problema das Trajetórias</h2>
+            <p>
+              Durante a Guerra Fria, a competição EUA-URSS impulsionou avanços
+              em:
+            </p>
+            <ul>
+              <li>Cálculo de trajetórias intercontinentais (ICBMs)</li>
+              <li>Transferências orbitais (Manobras de Hohmann)</li>
+              <li>Sistemas de navegação inercial</li>
+            </ul>
+            <p>
+              Todos dependiam de integrais de linha em campos gravitacionais e
+              eletromagnéticos!
+            </p>
+            <div class="historical-note">
+              Em 1957, o lançamento do Sputnik I demonstrou a capacidade
+              soviética de calcular trajetórias orbitais precisas, o que causou
+              grande preocupação nos EUA, pois a mesma tecnologia poderia ser
+              usada para mísseis balísticos.
+            </div>
+          </section>
+        </section>
+
+        <!-- SEÇÃO 3: VISUALIZAÇÃO INTERATIVA -->
+        <section>
+          <section>
+            <h2>Visualização: Campo de Força e Trajetória</h2>
+            <canvas id="canvasFieldLine" width="500" height="350"></canvas>
+            <div class="slider-container">
+              <label for="pathSlider">Trajetória:</label>
+              <input
+                type="range"
+                id="pathSlider"
+                min="0"
+                max="100"
+                value="0"
+                style="width: 50%"
+              />
+              <span class="slider-value" id="pathValue">0%</span>
+            </div>
+            <div class="interactive-controls">
+              <button id="btnResetPath">Reiniciar</button>
+              <button id="btnToggleField">Mostrar/Ocultar Campo</button>
+            </div>
+            <div
+              class="legend"
+              style="
+                margin-top: 15px;
+                text-align: left;
+                width: 80%;
+                margin-left: auto;
+                margin-right: auto;
+              "
+            >
+              <p>
+                <span style="color: #ffd54f">▶</span>
+                <strong>Vetor velocidade</strong>: tangente à trajetória, indica
+                a direção do movimento
+              </p>
+              <p>
+                <span style="color: #64b5f6">▶</span>
+                <strong>Vetor campo</strong>: força gravitacional que atua no
+                objeto em cada ponto
+              </p>
+              <p>
+                <span style="color: #ff5a5f">●</span>
+                <strong>Posição atual</strong>: localização do objeto na
+                trajetória
+              </p>
+            </div>
+            <p class="hint">
+              Arraste o controle para ver a integral se acumulando ao longo do
+              caminho. A integral representa o trabalho realizado pelo campo
+              sobre o objeto.
+            </p>
+          </section>
+
+          <section>
+            <h2>Mudança de Parâmetro</h2>
+            <p>
+              A integral de linha é <em>invariante</em> a mudanças de
+              parametrização:
+            </p>
+            <p class="math">
+              $$\int_C \vec{F} \cdot d\vec{r} = \int_\alpha^\beta
+              \vec{F}(\vec{r}(u)) \cdot \frac{d\vec{r}}{du} du$$
+            </p>
+            <p>
+              Para qualquer reparametrização \(u = g(t)\) com \(g(a) = \alpha\)
+              e \(g(b) = \beta\), desde que \(g\) seja crescente e
+              diferenciável.
+            </p>
+            <p>
+              Isso é fundamental para o planejamento de trajetórias espaciais,
+              onde o tempo pode ser reparametrizado para otimizar manobras.
+            </p>
+          </section>
+
+          <section>
+            <h2>Integrais sobre Curvas de Classe C¹</h2>
+            <p>Uma curva é de classe C¹ quando sua derivada é contínua.</p>
+            <p class="math">
+              $\int_C \vec{F} \cdot d\vec{r} = \sum_{i=1}^n \int_{C_i} \vec{F}
+              \cdot d\vec{r}$
+            </p>
+            <p>
+              Para curvas descritas por partes, podemos somar as integrais em
+              cada segmento.
+            </p>
+          </section>
+
+          <section>
+            <h2>Aplicação em Trajetórias Espaciais</h2>
+            <p>
+              Esta propriedade permitiu calcular trajetórias complexas nas
+              missões Apollo:
+            </p>
+            <div
+              style="display: flex; justify-content: center; flex-wrap: wrap"
+            >
+              <div
+                style="
+                  width: 45%;
+                  margin: 5px;
+                  text-align: left;
+                  background: rgba(26, 35, 126, 0.3);
+                  padding: 10px;
+                  border-radius: 5px;
+                "
+              >
+                <h3 style="font-size: 0.9em">1. Subida inicial</h3>
+                <p style="font-size: 0.8em">
+                  Propulsão contínua contra gravidade
+                </p>
+              </div>
+              <div
+                style="
+                  width: 45%;
+                  margin: 5px;
+                  text-align: left;
+                  background: rgba(26, 35, 126, 0.3);
+                  padding: 10px;
+                  border-radius: 5px;
+                "
+              >
+                <h3 style="font-size: 0.9em">2. Transferência orbital</h3>
+                <p style="font-size: 0.8em">
+                  Trajetória elíptica de baixa a alta órbita
+                </p>
+              </div>
+              <div
+                style="
+                  width: 45%;
+                  margin: 5px;
+                  text-align: left;
+                  background: rgba(26, 35, 126, 0.3);
+                  padding: 10px;
+                  border-radius: 5px;
+                "
+              >
+                <h3 style="font-size: 0.9em">3. Injeção translunar</h3>
+                <p style="font-size: 0.8em">Impulso para escapar da Terra</p>
+              </div>
+              <div
+                style="
+                  width: 45%;
+                  margin: 5px;
+                  text-align: left;
+                  background: rgba(26, 35, 126, 0.3);
+                  padding: 10px;
+                  border-radius: 5px;
+                "
+              >
+                <h3 style="font-size: 0.9em">4. Entrada orbital lunar</h3>
+                <p style="font-size: 0.8em">Frenagem para captura lunar</p>
+              </div>
+            </div>
+            <p class="hint">
+              Cada segmento exigia diferentes equações e considerações físicas!
+            </p>
+          </section>
+        </section>
+
+        <!-- SEÇÃO 4: INTEGRAL RELATIVA AO COMPRIMENTO DE ARCO -->
+        <section>
+          <section>
+            <h2>Integral Relativa ao Comprimento de Arco</h2>
+            <p>
+              Quando parametrizamos uma curva pelo comprimento de arco \(s\):
+            </p>
+            <p class="math">
+              $$\int_C \vec{F} \cdot d\vec{r} = \int_0^L \vec{F}(\vec{r}(s))
+              \cdot \hat{T}(s) ds$$
+            </p>
+            <p>
+              Onde \(L\) é o comprimento total da curva e \(\hat{T}(s) =
+              \frac{d\vec{r}}{ds}\) é o vetor tangente unitário.
+            </p>
+            <p>
+              Esta forma é particularmente útil para análise de trajetórias
+              espaciais, onde a força gravitacional é proporcional à posição.
+            </p>
+          </section>
+
+          <section>
+            <h2>Visualização: Parametrização por Arco</h2>
+            <canvas id="canvasArcLength" width="500" height="350"></canvas>
+            <div class="slider-container">
+              <label for="markerInterval">Intervalo entre marcas:</label>
+              <input
+                type="range"
+                id="markerInterval"
+                min="1"
+                max="50"
+                value="10"
+                style="width: 50%"
+              />
+              <span class="slider-value" id="intervalValue">10</span>
+            </div>
+            <div class="interactive-controls">
+              <button id="btnToggleParam">Alternar Parametrização</button>
+              <button id="btnAnimateOrbit">Animar Órbita</button>
+              <button id="btnReset">Reiniciar</button>
+            </div>
+            <div
+              class="legend"
+              style="
+                margin-top: 15px;
+                text-align: left;
+                width: 80%;
+                margin-left: auto;
+                margin-right: auto;
+              "
+            >
+              <p>
+                <span style="color: rgba(255, 90, 95, 0.8)">●</span>
+                <strong>Parametrização por tempo</strong>: Marcas mais próximas
+                onde a velocidade é menor (afélio), mais afastadas onde é maior
+                (periélio)
+              </p>
+              <p>
+                <span style="color: rgba(79, 195, 247, 0.8)">●</span>
+                <strong>Parametrização por ângulo</strong>: Marcas equidistantes
+                ao longo da curva
+              </p>
+            </div>
+            <p class="hint">
+              A mudança de parametrização não altera o valor da integral de
+              linha, apenas a distribuição dos pontos de amostragem!
+            </p>
+          </section>
+        </section>
+
+        <!-- SEÇÃO 5: EXERCÍCIOS PRÁTICOS -->
+        <section>
+          <section>
+            <h2>Exercício: Trabalho em Campo Gravitacional</h2>
+            <p>
+              Considere um satélite movendo-se em uma trajetória semi-circular
+              de raio \(R\) centrada na Terra, do ponto \(A(R,0,0)\) ao ponto
+              \(B(-R,0,0)\).
+            </p>
+            <p>O campo gravitacional é dado por:</p>
+            <p class="math">
+              $$\vec{F}(x,y,z) =
+              -\frac{GM}{(x^2+y^2+z^2)^{3/2}}(x\hat{\imath}+y\hat{\jmath}+z\hat{k})$$
+            </p>
+            <p>
+              Calcule o trabalho realizado pelo campo gravitacional ao longo
+              dessa trajetória.
+            </p>
+          </section>
+
+          <section>
+            <h2>Resolução Guiada - Etapa 1</h2>
+            <div class="solution-box">
+              <p>1. Parametrize a trajetória semi-circular:</p>
+              <p class="math">
+                $\vec{r}(t) = R\cos t \, \hat{\imath} + R\sin t \, \hat{\jmath},
+                \quad 0 \leq t \leq \pi$
+              </p>
+
+              <p>2. Calcule o vetor tangente:</p>
+              <p class="math">
+                $\vec{r}'(t) = -R\sin t \, \hat{\imath} + R\cos t \,
+                \hat{\jmath}$
+              </p>
+            </div>
+          </section>
+
+          <section>
+            <h2>Resolução Guiada - Etapa 2</h2>
+            <div class="solution-box">
+              <p>3. Avalie o campo nos pontos da trajetória:</p>
+              <p class="math">
+                $\vec{F}(\vec{r}(t)) = -\frac{GM}{R^2}(\cos t \, \hat{\imath} +
+                \sin t \, \hat{\jmath})$
+              </p>
+
+              <p>4. Calcule o produto escalar:</p>
+              <p class="math">
+                $\vec{F}(\vec{r}(t)) \cdot \vec{r}'(t) = \frac{GM}{R}(\sin^2 t -
+                \cos^2 t)$
+              </p>
+            </div>
+          </section>
+
+          <section>
+            <h2>Resolução Guiada - Etapa 3</h2>
+            <div class="solution-box">
+              <p>5. Integre ao longo de \(t\):</p>
+              <p class="math">
+                $\int_0^\pi \frac{GM}{R}(\sin^2 t - \cos^2 t) \, dt$
+              </p>
+
+              <p>Usando a identidade \(\sin^2 t - \cos^2 t = -\cos(2t)\):</p>
+              <p class="math">
+                $\frac{GM}{R} \int_0^\pi -\cos(2t) \, dt = \frac{GM}{R}
+                \left[-\frac{\sin(2t)}{2}\right]_0^\pi = \frac{GM}{R} \cdot 2 =
+                \frac{2GM}{R}$
+              </p>
+
+              <p>
+                O trabalho realizado pelo campo gravitacional é
+                \(\frac{2GM}{R}\).
+              </p>
+            </div>
+          </section>
+
+          <section>
+            <h2>Exercício Avançado: Manobra de Hohmann</h2>
+            <p>
+              Uma manobra de Hohmann é uma transferência orbital eficiente entre
+              duas órbitas circulares.
+            </p>
+            <p>Considere um campo de força central:</p>
+            <p class="math">
+              $$\vec{F}(\vec{r}) = -k\frac{\vec{r}}{|\vec{r}|^3}$$
+            </p>
+            <p>
+              Calcule o trabalho realizado durante uma transferência de Hohmann
+              de uma órbita circular de raio \(r_1\) para outra de raio \(r_2 >
+              r_1\).
+            </p>
+            <div class="hint">
+              Dica: Use a conservação de energia para determinar as velocidades
+              nas órbitas circulares e na transferência elíptica.
+            </div>
+          </section>
+        </section>
+
+        <!-- SEÇÃO 6: FECHAMENTO -->
+        <section>
+          <h2>Síntese: Importância das Integrais de Linha</h2>
+          <ul>
+            <li>
+              Calculam o efeito acumulado de um campo vetorial ao longo de um
+              caminho
+            </li>
+            <li>São invariantes a reparametrizações da curva</li>
+            <li>Conectam-se diretamente ao conceito físico de trabalho</li>
+            <li>
+              Permitiram avanços cruciais na exploração espacial durante a
+              Guerra Fria
+            </li>
+            <li>
+              Servem de base para teoremas fundamentais como Green, Stokes e
+              Gauss
+            </li>
+          </ul>
+          <p>
+            No próximo tópico:
+            <em>Campos Conservativos e Independência de Caminho</em>
+          </p>
+        </section>
+
+        <!-- JavaScript para as visualizações interativas -->
+        <script>
+          // Script para inicializar o Reveal.js e MathJax
+          document.addEventListener('DOMContentLoaded', function () {
+            // Script será executado após o carregamento dos recursos
+            const revealScript = document.createElement('script');
+            revealScript.src =
+              'https://cdn.jsdelivr.net/npm/reveal.js@4.3.1/dist/reveal.min.js';
+            revealScript.onload = function () {
+              const mathScript = document.createElement('script');
+              mathScript.src =
+                'https://cdn.jsdelivr.net/npm/reveal.js@4.3.1/plugin/math/math.min.js';
+              mathScript.onload = function () {
+                const mathjaxScript = document.createElement('script');
+                mathjaxScript.src =
+                  'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+                mathjaxScript.onload = function () {
+                  // Inicializa o Reveal.js
+                  Reveal.initialize({
+                    controls: true,
+                    progress: true,
+                    center: true,
+                    hash: true,
+                    plugins: [RevealMath.MathJax3],
+                    math: {
+                      mathjax:
+                        'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js',
+                      config: 'TeX-AMS_HTML-full',
+                      TeX: {
+                        Macros: {},
+                      },
+                    },
+                  });
+
+                  // Inicializa as visualizações após o Reveal.js estar pronto
+                  initializeVisualizations();
+                };
+                document.head.appendChild(mathjaxScript);
+              };
+              document.head.appendChild(mathScript);
+            };
+            document.head.appendChild(revealScript);
+          });
+
+          // Função para inicializar todas as visualizações
+          function initializeVisualizations() {
+            // Tenta inicializar as visualizações com tempo de espera para garantir que os elementos já estejam carregados
+            setTimeout(function () {
+              try {
+                // Inicializa a visualização do campo de força
+                if (document.getElementById('canvasFieldLine')) {
+                  initFieldVisualization();
+                }
+
+                // Inicializa a visualização orbital para parametrização por arco
+                if (document.getElementById('canvasArcLength')) {
+                  initOrbitalParametrizationVisualization();
+                }
+
+                // Adiciona event listeners para atualizações quando os slides mudam
+                Reveal.on('slidechanged', function (event) {
+                  try {
+                    // Atualiza as visualizações quando os slides relevantes são exibidos
+                    if (event.currentSlide.querySelector('#canvasFieldLine')) {
+                      updateFieldVisualization();
+                    }
+                    if (event.currentSlide.querySelector('#canvasArcLength')) {
+                      // Reinicia a visualização orbital quando o slide é exibido
+                      if (window.orbitalVisualizationTimer) {
+                        clearInterval(window.orbitalVisualizationTimer);
+                        window.orbitalVisualizationTimer = null;
+                      }
+                      updateOrbitalVisualization();
+                    }
+                  } catch (e) {
+                    console.error('Erro ao atualizar visualizações:', e);
+                  }
+                });
+              } catch (e) {
+                console.error('Erro ao inicializar visualizações:', e);
+              }
+            }, 1000); // Espera 1 segundo para garantir que tudo esteja carregado
+          }
+
+          // Visualização do campo de força e da integral de linha
+          function initFieldVisualization() {
+            const canvas = document.getElementById('canvasFieldLine');
+            if (!canvas) return;
+
+            const ctx = canvas.getContext('2d');
+            const slider = document.getElementById('pathSlider');
+            const valueDisplay = document.getElementById('pathValue');
+            const btnReset = document.getElementById('btnResetPath');
+            const btnToggleField = document.getElementById('btnToggleField');
+
+            let showField = true;
+            let pathProgress = 0;
+            let integralValue = 0;
+
+            // Define o campo vetorial (simula campo gravitacional)
+            function vectorField(x, y) {
+              const dx = -x;
+              const dy = -y;
+              const magnitude = Math.sqrt(x * x + y * y);
+              if (magnitude < 0.1) return [0, 0];
+
+              // Normaliza e escala pelo quadrado da distância
+              const scale = 1 / (magnitude * magnitude);
+              return [dx * scale, dy * scale];
+            }
+
+            // Define a trajetória (elipse)
+            function path(t) {
+              const a = 150;
+              const b = 100;
+              const x = a * Math.cos(t) + canvas.width / 2;
+              const y = b * Math.sin(t) + canvas.height / 2;
+              return [x, y];
+            }
+
+            // Desenha o campo vetorial
+            function drawField() {
+              if (!showField) return;
+
+              ctx.strokeStyle = 'rgba(79, 195, 247, 0.4)';
+              ctx.lineWidth = 1;
+
+              for (let x = 40; x < canvas.width; x += 40) {
+                for (let y = 40; y < canvas.height; y += 40) {
+                  const [dx, dy] = vectorField(
+                    x - canvas.width / 2,
+                    y - canvas.height / 2
+                  );
+                  const magnitude = Math.sqrt(dx * dx + dy * dy);
+
+                  if (magnitude < 0.001) continue;
+
+                  // Normaliza e escala para visualização
+                  const scale = 25; // Aumentei para melhor visibilidade
+                  const arrowX = x + dx * scale;
+                  const arrowY = y + dy * scale;
+
+                  ctx.beginPath();
+                  ctx.moveTo(x, y);
+                  ctx.lineTo(arrowX, arrowY);
+
+                  // Desenha ponta da seta
+                  const angle = Math.atan2(dy, dx);
+                  ctx.lineTo(
+                    arrowX - 5 * Math.cos(angle - Math.PI / 6),
+                    arrowY - 5 * Math.sin(angle - Math.PI / 6)
+                  );
+                  ctx.moveTo(arrowX, arrowY);
+                  ctx.lineTo(
+                    arrowX - 5 * Math.cos(angle + Math.PI / 6),
+                    arrowY - 5 * Math.sin(angle + Math.PI / 6)
+                  );
+
+                  ctx.stroke();
+                }
+              }
+            }
+
+            // Desenha a trajetória e a integral acumulada
+            function drawPath() {
+              // Desenha trajetória completa (linha mais fina)
+              ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
+              ctx.lineWidth = 1;
+              ctx.beginPath();
+
+              for (let t = 0; t <= 2 * Math.PI; t += 0.05) {
+                const [x, y] = path(t);
+                if (t === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+              }
+              ctx.stroke();
+
+              // Desenha parte percorrida da trajetória (linha mais grossa)
+              const maxT = 2 * Math.PI * (pathProgress / 100);
+
+              ctx.strokeStyle = 'rgba(255, 90, 95, 0.8)';
+              ctx.lineWidth = 3;
+              ctx.beginPath();
+
+              for (let t = 0; t <= maxT; t += 0.05) {
+                const [x, y] = path(t);
+                if (t === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+              }
+              ctx.stroke();
+
+              // Desenha a posição atual na trajetória
+              if (pathProgress > 0) {
+                const [x, y] = path(maxT);
+                ctx.fillStyle = '#ff5a5f';
+                ctx.beginPath();
+                ctx.arc(x, y, 6, 0, 2 * Math.PI);
+                ctx.fill();
+
+                // Desenha o vetor do campo na posição atual
+                const [dx, dy] = vectorField(
+                  x - canvas.width / 2,
+                  y - canvas.height / 2
+                );
+                const magnitude = Math.sqrt(dx * dx + dy * dy);
+
+                if (magnitude > 0.001) {
+                  const scale = 25;
+                  ctx.strokeStyle = '#64b5f6';
+                  ctx.lineWidth = 2;
+                  ctx.beginPath();
+                  ctx.moveTo(x, y);
+                  ctx.lineTo(x + dx * scale, y + dy * scale);
+                  ctx.stroke();
+                }
+
+                // Desenha o vetor tangente (velocidade)
+                const t = maxT;
+                const dt = 0.01;
+                const [x1, y1] = path(t - dt);
+                const [x2, y2] = path(t);
+                const tx = (x2 - x1) / dt;
+                const ty = (y2 - y1) / dt;
+                const tmag = Math.sqrt(tx * tx + ty * ty);
+
+                ctx.strokeStyle = '#ffd54f';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.moveTo(x, y);
+                ctx.lineTo(x + (25 * tx) / tmag, y + (25 * ty) / tmag);
+                ctx.stroke();
+
+                // Desenha a seta para indicar vetor
+                const angle = Math.atan2(ty, tx);
+                ctx.lineTo(
+                  x + (25 * tx) / tmag - 6 * Math.cos(angle - Math.PI / 6),
+                  y + (25 * ty) / tmag - 6 * Math.sin(angle - Math.PI / 6)
+                );
+                ctx.moveTo(x + (25 * tx) / tmag, y + (25 * ty) / tmag);
+                ctx.lineTo(
+                  x + (25 * tx) / tmag - 6 * Math.cos(angle + Math.PI / 6),
+                  y + (25 * ty) / tmag - 6 * Math.sin(angle + Math.PI / 6)
+                );
+                ctx.stroke();
+
+                // Calcula a contribuição para a integral
+                integralValue = Math.sin(maxT) * 2; // Simulação simplificada
+
+                // Mostra o valor da integral
+                ctx.fillStyle = '#ffffff';
+                ctx.font = '16px Arial';
+                ctx.textAlign = 'left';
+                ctx.fillText(
+                  `Integral acumulada: ${integralValue.toFixed(2)}`,
+                  20,
+                  30
+                );
+              }
+            }
+
+            // Atualiza a visualização
+            function updateFieldVisualization() {
+              if (!ctx) return;
+              try {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                drawField();
+                drawPath();
+              } catch (e) {
+                console.error('Erro ao atualizar a visualização do campo:', e);
+              }
+            }
+
+            // Event listeners
+            slider.addEventListener('input', function () {
+              pathProgress = this.value;
+              valueDisplay.textContent = `${pathProgress}%`;
+              updateFieldVisualization();
+            });
+
+            btnReset.addEventListener('click', function () {
+              pathProgress = 0;
+              slider.value = 0;
+              valueDisplay.textContent = '0%';
+              updateFieldVisualization();
+            });
+
+            btnToggleField.addEventListener('click', function () {
+              showField = !showField;
+              updateFieldVisualization();
+            });
+
+            // Inicializa a visualização
+            updateFieldVisualization();
+          }
+
+          // Visualização da parametrização orbital
+          function initOrbitalParametrizationVisualization() {
+            const canvas = document.getElementById('canvasArcLength');
+            if (!canvas) return;
+
+            const ctx = canvas.getContext('2d');
+            const btnToggleParam = document.getElementById('btnToggleParam');
+            const btnAnimateOrbit = document.getElementById('btnAnimateOrbit');
+            const btnReset = document.getElementById('btnReset');
+            const sliderInterval = document.getElementById('markerInterval');
+            const intervalValue = document.getElementById('intervalValue');
+
+            // Parâmetros da órbita elíptica
+            const a = 180; // Semi-eixo maior
+            const b = 100; // Semi-eixo menor (mais excêntrico para evidenciar diferenças)
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            const c = Math.sqrt(a * a - b * b); // Distância do centro ao foco
+            const focusX = centerX - c; // Posição X do foco (sol)
+            const e = c / a; // Excentricidade da órbita
+
+            // Estado da visualização
+            let useAngleParametrization = false; // true: por ângulo, false: por tempo
+            let isAnimating = false;
+            let currentT = 0;
+            let orbitTraces = []; // rastros deixados pelo planeta
+            let markerInterval = 10; // intervalo base entre marcas
+
+            // Cores
+            const timeColor = 'rgba(255, 90, 95, 0.7)';
+            const angleColor = 'rgba(79, 195, 247, 0.7)';
+
+            // Adiciona rastros iniciais para visualização
+            function initTraces() {
+              orbitTraces = [];
+              const totalPoints = 360 / markerInterval; // Aproximadamente um ponto a cada N graus
+
+              // Adiciona traços iniciais baseados na parametrização atual
+              if (useAngleParametrization) {
+                // Parametrização por ângulo (distribuição uniforme)
+                for (let i = 0; i < totalPoints; i++) {
+                  const angle = (i * 2 * Math.PI) / totalPoints;
+                  const position = orbitPositionByAngle(angle);
+                  orbitTraces.push({
+                    x: position.x,
+                    y: position.y,
+                    color: angleColor,
+                  });
+                }
+              } else {
+                // Parametrização por tempo (lei de Kepler)
+                for (let i = 0; i < totalPoints; i++) {
+                  // Usamos a anomalia média para distribuir uniformemente no tempo
+                  const M = (i * 2 * Math.PI) / totalPoints;
+                  const E = solveKepler(M, e); // Resolve a equação de Kepler
+                  const position = orbitPositionByTime(E);
+                  orbitTraces.push({
+                    x: position.x,
+                    y: position.y,
+                    color: timeColor,
+                  });
+                }
+              }
+            }
+
+            // Resolver a equação de Kepler: M = E - e*sin(E)
+            // Onde M é a anomalia média (proporcional ao tempo) e E é a anomalia excêntrica
+            function solveKepler(M, e) {
+              // Método iterativo simples para resolver a equação de Kepler
+              let E = M; // Valor inicial
+
+              // Iteração de Newton para convergir para a solução
+              for (let i = 0; i < 10; i++) {
+                E = E - (E - e * Math.sin(E) - M) / (1 - e * Math.cos(E));
+              }
+
+              return E;
+            }
+
+            // Calcular posição na órbita baseada na anomalia excêntrica (tempo)
+            function orbitPositionByTime(E) {
+              // Posição na elipse usando anomalia excêntrica E
+              const x = centerX + a * Math.cos(E); // Corrigido: removido o termo "-e" que causava o deslocamento
+              const y = centerY + b * Math.sin(E);
+
+              return { x, y };
+            }
+
+            // Calcular posição na órbita baseada no ângulo (parametrização uniforme)
+            function orbitPositionByAngle(angle) {
+              // Usamos a equação paramétrica da elipse com o ângulo polar
+              const x = centerX + a * Math.cos(angle);
+              const y = centerY + b * Math.sin(angle);
+
+              return { x, y };
+            }
+
+            // Desenhar a órbita elíptica
+            function drawOrbit() {
+              ctx.strokeStyle = 'rgba(255, 255, 255, 0.5)';
+              ctx.lineWidth = 2;
+              ctx.beginPath();
+              ctx.ellipse(centerX, centerY, a, b, 0, 0, 2 * Math.PI);
+              ctx.stroke();
+
+              // Adiciona linhas pontilhadas para os eixos principais
+              ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
+              ctx.setLineDash([5, 5]);
+
+              // Eixo maior
+              ctx.beginPath();
+              ctx.moveTo(centerX - a, centerY);
+              ctx.lineTo(centerX + a, centerY);
+              ctx.stroke();
+
+              // Eixo menor
+              ctx.beginPath();
+              ctx.moveTo(centerX, centerY - b);
+              ctx.lineTo(centerX, centerY + b);
+              ctx.stroke();
+
+              ctx.setLineDash([]); // Restaura linha sólida
+
+              // Marca o periélio e afélio
+              ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
+              ctx.font = '12px Arial';
+              ctx.textAlign = 'center';
+              ctx.fillText('Periélio', centerX - a + 30, centerY + 15);
+              ctx.fillText('Afélio', centerX + a - 30, centerY + 15);
+            }
+
+            // Desenhar o sol em um dos focos
+            function drawSun() {
+              // Gradiente para o sol
+              const gradient = ctx.createRadialGradient(
+                focusX,
+                centerY,
+                0,
+                focusX,
+                centerY,
+                20
+              );
+              gradient.addColorStop(0, 'rgba(255, 255, 0, 1)');
+              gradient.addColorStop(0.5, 'rgba(255, 140, 0, 0.8)');
+              gradient.addColorStop(1, 'rgba(255, 69, 0, 0)');
+
+              ctx.fillStyle = gradient;
+              ctx.beginPath();
+              ctx.arc(focusX, centerY, 20, 0, 2 * Math.PI);
+              ctx.fill();
+
+              // Centro do sol
+              ctx.fillStyle = 'rgba(255, 255, 200, 0.9)';
+              ctx.beginPath();
+              ctx.arc(focusX, centerY, 8, 0, 2 * Math.PI);
+              ctx.fill();
+            }
+
+            // Desenhar o planeta na posição atual
+            function drawPlanet() {
+              let position;
+
+              if (useAngleParametrization) {
+                position = orbitPositionByAngle(currentT);
+              } else {
+                // Para a parametrização por tempo, converte tempo para anomalia excêntrica
+                const E = solveKepler(currentT, e);
+                position = orbitPositionByTime(E);
+              }
+
+              // Planeta
+              ctx.fillStyle = '#64f0ff';
+              ctx.beginPath();
+              ctx.arc(position.x, position.y, 8, 0, 2 * Math.PI);
+              ctx.fill();
+
+              // Borda do planeta
+              ctx.strokeStyle = '#ffffff';
+              ctx.lineWidth = 1;
+              ctx.beginPath();
+              ctx.arc(position.x, position.y, 8, 0, 2 * Math.PI);
+              ctx.stroke();
+            }
+
+            // Desenhar os rastros deixados pelo planeta
+            function drawTraces() {
+              for (const trace of orbitTraces) {
+                ctx.fillStyle = trace.color;
+                ctx.beginPath();
+                ctx.arc(trace.x, trace.y, 5, 0, 2 * Math.PI);
+                ctx.fill();
+              }
+            }
+
+            // Atualizar a posição atual e adicionar um novo rastro
+            function updatePosition() {
+              // Incremento baseado no intervalo do slider
+              const increment = (0.1 * markerInterval) / 10;
+
+              // Avança a posição
+              currentT += increment;
+              if (currentT > 2 * Math.PI) {
+                currentT = 0;
+              }
+
+              // Determina a posição atual
+              let position;
+
+              if (useAngleParametrization) {
+                position = orbitPositionByAngle(currentT);
+              } else {
+                // Para a parametrização por tempo, converte tempo para anomalia excêntrica
+                const E = solveKepler(currentT, e);
+                position = orbitPositionByTime(E);
+              }
+
+              // Adiciona um novo rastro
+              orbitTraces.push({
+                x: position.x,
+                y: position.y,
+                color: useAngleParametrization ? angleColor : timeColor,
+              });
+
+              // Limita o número de rastros
+              if (orbitTraces.length > 100) {
+                orbitTraces.shift();
+              }
+            }
+
+            // Atualizar a visualização
+            function updateOrbitalVisualization() {
+              if (!ctx) return;
+
+              // Limpa o canvas
+              ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+              // Desenha os elementos
+              drawOrbit();
+              drawSun();
+              drawTraces();
+              drawPlanet();
+
+              // Título indicando o tipo de parametrização
+              ctx.fillStyle = '#ffffff';
+              ctx.font = '16px Arial';
+              ctx.textAlign = 'center';
+              ctx.fillText(
+                useAngleParametrization
+                  ? 'Parametrização por ângulo'
+                  : 'Parametrização por tempo (Lei de Kepler)',
+                canvas.width / 2,
+                30
+              );
+            }
+
+            // Iniciar animação
+            function startAnimation() {
+              if (isAnimating) return;
+
+              isAnimating = true;
+              orbitTraces = []; // Limpa os rastros existentes
+
+              window.orbitalVisualizationTimer = setInterval(function () {
+                updatePosition();
+                updateOrbitalVisualization();
+              }, 50);
+            }
+
+            // Parar animação
+            function stopAnimation() {
+              isAnimating = false;
+              if (window.orbitalVisualizationTimer) {
+                clearInterval(window.orbitalVisualizationTimer);
+                window.orbitalVisualizationTimer = null;
+              }
+            }
+
+            // Adicionar listeners para os botões
+            if (btnToggleParam) {
+              btnToggleParam.addEventListener('click', function () {
+                useAngleParametrization = !useAngleParametrization;
+                stopAnimation();
+                initTraces();
+                updateOrbitalVisualization();
+              });
+            }
+
+            if (btnAnimateOrbit) {
+              btnAnimateOrbit.addEventListener('click', function () {
+                if (isAnimating) {
+                  stopAnimation();
+                  btnAnimateOrbit.textContent = 'Animar Órbita';
+                } else {
+                  startAnimation();
+                  btnAnimateOrbit.textContent = 'Parar Animação';
+                }
+              });
+            }
+
+            if (btnReset) {
+              btnReset.addEventListener('click', function () {
+                stopAnimation();
+                if (btnAnimateOrbit) {
+                  btnAnimateOrbit.textContent = 'Animar Órbita';
+                }
+                currentT = 0;
+                initTraces();
+                updateOrbitalVisualization();
+              });
+            }
+
+            if (sliderInterval) {
+              sliderInterval.addEventListener('input', function () {
+                markerInterval = parseInt(this.value);
+                if (intervalValue) {
+                  intervalValue.textContent = markerInterval;
+                }
+                // Recria os traços com o novo intervalo
+                initTraces();
+                updateOrbitalVisualization();
+              });
+            }
+
+            // Inicializar a visualização
+            if (sliderInterval && intervalValue) {
+              markerInterval = parseInt(sliderInterval.value);
+              intervalValue.textContent = markerInterval;
+            }
+
+            initTraces();
+            updateOrbitalVisualization();
+
+            // Exporta função para uso global
+            window.updateOrbitalVisualization = updateOrbitalVisualization;
+          }
+        </script>
       </div>
     </div>
   </body>
