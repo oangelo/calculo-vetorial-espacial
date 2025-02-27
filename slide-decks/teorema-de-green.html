@@ -19,12 +19,2505 @@
         });
       };
     </script>
+
+    <style>
+      /* Estilos básicos para simulação do space-theme durante desenvolvimento */
+      :root {
+        --background-color: #0a1128;
+        --text-color: #e9ecef;
+        --accent-color: #ff5a5f;
+        --link-color: #00b4d8;
+      }
+      body {
+        background-color: var(--background-color);
+        color: var(--text-color);
+      }
+      .reveal h1,
+      .reveal h2,
+      .reveal h3 {
+        color: var(--accent-color);
+      }
+      .historical-note {
+        background-color: rgba(255, 90, 95, 0.2);
+        border-left: 4px solid var(--accent-color);
+        padding: 10px;
+        font-style: italic;
+        margin: 20px auto;
+        max-width: 85%;
+      }
+      .math-box {
+        background-color: rgba(0, 180, 216, 0.1);
+        border: 1px solid rgba(0, 180, 216, 0.3);
+        padding: 15px;
+        margin: 20px auto;
+        max-width: 90%;
+      }
+      .spacer {
+        height: 30px;
+      }
+
+      /* Estilos para visualizações */
+      .visualization-container {
+        width: 500px;
+        height: 300px;
+        margin: 0 auto;
+        position: relative;
+        background-color: rgba(10, 17, 40, 0.6);
+        border: 1px solid rgba(79, 195, 247, 0.3);
+        box-shadow: 0 0 20px rgba(79, 195, 247, 0.2);
+        border-radius: 8px;
+        overflow: hidden;
+      }
+
+      canvas {
+        display: block;
+        margin: 0 auto;
+      }
+
+      .controls {
+        display: flex;
+        justify-content: center;
+        margin-top: 10px;
+        gap: 8px;
+        flex-wrap: wrap; /* Permitir quebra de linha em telas menores */
+        max-width: 500px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .control-group {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background-color: rgba(26, 35, 126, 0.2);
+        border-radius: 4px;
+        padding: 5px;
+        min-width: 120px;
+      }
+
+      .control-label {
+        margin-bottom: 3px;
+        font-size: 0.8em;
+        color: var(--accent-color);
+      }
+
+      .slider-container {
+        display: flex;
+        align-items: center;
+        width: 100%;
+      }
+
+      .slider {
+        flex-grow: 1;
+        margin: 0 3px;
+      }
+
+      .slider-value {
+        min-width: 25px;
+        text-align: center;
+        font-size: 0.7em;
+      }
+
+      button {
+        background-color: rgba(26, 35, 126, 0.5);
+        color: var(--text-color);
+        border: 1px solid rgba(79, 195, 247, 0.5);
+        border-radius: 4px;
+        padding: 4px 8px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        margin: 3px;
+        font-size: 0.8em;
+      }
+
+      button:hover {
+        background-color: rgba(79, 195, 247, 0.3);
+      }
+
+      .horizontal-buttons {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        max-width: 500px;
+        margin: 10px auto;
+      }
+
+      .results-display {
+        background-color: rgba(26, 35, 126, 0.3);
+        border: 1px solid rgba(79, 195, 247, 0.3);
+        border-radius: 4px;
+        padding: 5px 8px;
+        margin-top: 10px;
+        width: 80%;
+        max-width: 500px;
+        margin-left: auto;
+        margin-right: auto;
+        font-family: monospace;
+        font-size: 0.7em;
+      }
+
+      .results-title {
+        color: var(--accent-color);
+        font-weight: bold;
+        margin-bottom: 3px;
+        font-size: 0.8em;
+      }
+
+      .results-row {
+        display: flex;
+        justify-content: space-between;
+        margin: 2px 0;
+      }
+
+      .results-label {
+        color: var(--link-color);
+      }
+    </style>
+    <script>
+      window.onload = function () {
+        Reveal.initialize({
+          controls: true,
+          progress: true,
+          center: true,
+          hash: true,
+          plugins: [RevealMath.MathJax3],
+          math: {
+            mathjax:
+              'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js',
+            config: 'TeX-AMS_HTML-full',
+            TeX: {
+              Macros: {
+                // Macros personalizados aqui, se necessário
+              },
+            },
+          },
+        });
+
+        // Inicializar as visualizações quando os slides forem carregados
+        initializeVisualizations();
+      };
+
+      // Função para inicializar todas as visualizações
+      function initializeVisualizations() {
+        Reveal.on('slidechanged', function (event) {
+          // Verificar se o slide atual contém uma visualização
+          const currentSlide = event.currentSlide;
+
+          // Teorema de Green - Campo Vetorial
+          if (currentSlide.querySelector('#greenTheoremCanvas')) {
+            initGreenTheoremVisualization();
+          }
+
+          // Fronteiras C¹
+          if (currentSlide.querySelector('#c1BoundaryCanvas')) {
+            initC1BoundaryVisualization();
+          }
+
+          // Campos Conservativos vs. Rotativos
+          if (currentSlide.querySelector('#vectorFieldCanvas')) {
+            initVectorFieldVisualization();
+          }
+
+          // Fontes e Sumidouros
+          if (currentSlide.querySelector('#divergenceCanvas')) {
+            initDivergenceVisualization();
+          }
+        });
+
+        // Inicializar a primeira visualização se estiver visível
+        if (Reveal.getCurrentSlide().querySelector('#greenTheoremCanvas')) {
+          initGreenTheoremVisualization();
+        }
+      }
+
+      // Visualização 1: Teorema de Green básico
+      function initGreenTheoremVisualization() {
+        const canvas = document.getElementById('greenTheoremCanvas');
+        if (!canvas || canvas.initialized) return;
+        canvas.initialized = true;
+
+        const ctx = canvas.getContext('2d');
+        const width = canvas.width;
+        const height = canvas.height;
+
+        // Configuração inicial
+        let aValue = 2;
+        let bValue = 1;
+        let pathType = 'circle';
+        let isDrawing = false;
+        let userPath = [];
+        let pathClosed = false;
+
+        // Variáveis para o campo vetorial
+        const field = {
+          // P(x,y) = -by, Q(x,y) = ax
+          P: (x, y) => -bValue * y,
+          Q: (x, y) => aValue * x,
+          // Rotacional (∂Q/∂x - ∂P/∂y)
+          curl: () => aValue + bValue,
+        };
+
+        // Função para desenhar o campo vetorial
+        function drawVectorField() {
+          ctx.clearRect(0, 0, width, height);
+
+          // Escala e deslocamento para centralizar o campo
+          const scale = 40;
+          const offsetX = width / 2;
+          const offsetY = height / 2;
+
+          // Desenhar eixos
+          ctx.strokeStyle = 'rgba(150, 150, 150, 0.5)';
+          ctx.lineWidth = 1;
+          ctx.beginPath();
+          ctx.moveTo(0, offsetY);
+          ctx.lineTo(width, offsetY);
+          ctx.moveTo(offsetX, 0);
+          ctx.lineTo(offsetX, height);
+          ctx.stroke();
+
+          // Desenhar o campo vetorial
+          ctx.strokeStyle = 'rgba(100, 181, 246, 0.8)';
+          ctx.fillStyle = 'rgba(100, 181, 246, 0.8)';
+
+          const gridSize = 20;
+          for (let i = 0; i <= width; i += gridSize) {
+            for (let j = 0; j <= height; j += gridSize) {
+              const x = (i - offsetX) / scale;
+              const y = (offsetY - j) / scale;
+
+              const vx = field.P(x, y);
+              const vy = field.Q(x, y);
+
+              // Normalizar para visualização
+              const mag = Math.sqrt(vx * vx + vy * vy);
+              const normalizedLength = mag ? gridSize * 0.7 : 0;
+
+              if (mag > 0) {
+                const nx = (vx / mag) * normalizedLength;
+                const ny = (-vy / mag) * normalizedLength;
+
+                ctx.beginPath();
+                ctx.moveTo(i, j);
+                ctx.lineTo(i + nx, j + ny);
+                ctx.stroke();
+
+                // Seta na ponta do vetor
+                const angle = Math.atan2(ny, nx);
+                ctx.beginPath();
+                ctx.moveTo(i + nx, j + ny);
+                ctx.lineTo(
+                  i + nx - 3 * Math.cos(angle - Math.PI / 6),
+                  j + ny - 3 * Math.sin(angle - Math.PI / 6)
+                );
+                ctx.lineTo(
+                  i + nx - 3 * Math.cos(angle + Math.PI / 6),
+                  j + ny - 3 * Math.sin(angle + Math.PI / 6)
+                );
+                ctx.closePath();
+                ctx.fill();
+              }
+            }
+          }
+
+          // Desenhar o caminho (círculo ou definido pelo usuário)
+          if (pathType === 'circle') {
+            const radius = 100;
+            drawCirclePath(radius);
+            updateResults(radius);
+          } else if (pathType === 'user' && userPath.length > 0) {
+            drawUserPath();
+            if (pathClosed) {
+              calculateUserPathResults();
+            }
+          }
+        }
+
+        // Desenhar caminho circular
+        function drawCirclePath(radius) {
+          ctx.strokeStyle = 'rgba(255, 90, 95, 0.8)';
+          ctx.lineWidth = 2;
+          ctx.beginPath();
+          ctx.arc(width / 2, height / 2, radius, 0, 2 * Math.PI);
+          ctx.stroke();
+        }
+
+        // Desenhar caminho definido pelo usuário
+        function drawUserPath() {
+          if (userPath.length < 2) return;
+
+          ctx.strokeStyle = 'rgba(255, 90, 95, 0.8)';
+          ctx.lineWidth = 2;
+          ctx.beginPath();
+          ctx.moveTo(userPath[0].x, userPath[0].y);
+
+          for (let i = 1; i < userPath.length; i++) {
+            ctx.lineTo(userPath[i].x, userPath[i].y);
+          }
+
+          if (pathClosed) {
+            ctx.closePath();
+          }
+
+          ctx.stroke();
+
+          // Destacar ponto inicial
+          ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+          ctx.beginPath();
+          ctx.arc(userPath[0].x, userPath[0].y, 5, 0, 2 * Math.PI);
+          ctx.fill();
+        }
+
+        // Calcular os resultados para o caminho circular
+        function updateResults(radius) {
+          const scale = 40;
+          const r = radius / scale;
+
+          // Para o campo vetorial definido, o resultado exato é:
+          // ∮ (-by dx + ax dy) = ∮ F·dr = πr²(a+b)
+          const lineIntegral = Math.PI * r * r * (aValue + bValue);
+
+          // A integral dupla do rotacional é:
+          // ∬ (∂Q/∂x - ∂P/∂y) dA = ∬ (a+b) dA = (a+b)·πr²
+          const doubleIntegral = (aValue + bValue) * Math.PI * r * r;
+
+          document.getElementById('lineIntegralValue').textContent =
+            lineIntegral.toFixed(4);
+          document.getElementById('doubleIntegralValue').textContent =
+            doubleIntegral.toFixed(4);
+          document.getElementById('curlValue').textContent = field
+            .curl()
+            .toFixed(4);
+        }
+
+        // Calcular resultados para o caminho definido pelo usuário
+        function calculateUserPathResults() {
+          if (userPath.length < 3 || !pathClosed) return;
+
+          // Calcular a área do polígono usando a fórmula do determinante
+          let area = 0;
+          for (let i = 0; i < userPath.length; i++) {
+            const j = (i + 1) % userPath.length;
+            area += userPath[i].x * userPath[j].y;
+            area -= userPath[j].x * userPath[i].y;
+          }
+          area = Math.abs(area) / 2;
+
+          // Converter para unidades do campo vetorial
+          const scale = 40;
+          const offsetX = width / 2;
+          const offsetY = height / 2;
+
+          // Para esse campo específico, a integral de linha é (a+b) * área
+          const doubleIntegral = (field.curl() * area) / (scale * scale);
+
+          document.getElementById('lineIntegralValue').textContent =
+            doubleIntegral.toFixed(4);
+          document.getElementById('doubleIntegralValue').textContent =
+            doubleIntegral.toFixed(4);
+          document.getElementById('curlValue').textContent = field
+            .curl()
+            .toFixed(4);
+        }
+
+        // Manipuladores de evento para interação com o canvas
+        canvas.addEventListener('mousedown', function (e) {
+          if (pathType !== 'user') return;
+
+          const rect = canvas.getBoundingClientRect();
+          const x = e.clientX - rect.left;
+          const y = e.clientY - rect.top;
+
+          // Verificar se estamos próximos ao ponto inicial para fechar o caminho
+          if (userPath.length > 2) {
+            const dx = x - userPath[0].x;
+            const dy = y - userPath[0].y;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+
+            if (distance < 15) {
+              pathClosed = true;
+              drawVectorField();
+              return;
+            }
+          }
+
+          if (!pathClosed) {
+            isDrawing = true;
+            userPath = [{ x, y }];
+          }
+        });
+
+        canvas.addEventListener('mousemove', function (e) {
+          if (!isDrawing || pathType !== 'user' || pathClosed) return;
+
+          const rect = canvas.getBoundingClientRect();
+          const x = e.clientX - rect.left;
+          const y = e.clientY - rect.top;
+
+          // Adicionar ponto apenas se estiver a uma distância mínima do último
+          if (userPath.length > 0) {
+            const lastPoint = userPath[userPath.length - 1];
+            const dx = x - lastPoint.x;
+            const dy = y - lastPoint.y;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+
+            if (distance > 10) {
+              userPath.push({ x, y });
+              drawVectorField();
+            }
+          }
+        });
+
+        canvas.addEventListener('mouseup', function () {
+          isDrawing = false;
+        });
+
+        // Manipuladores de eventos para controles
+        document
+          .getElementById('aSlider')
+          .addEventListener('input', function (e) {
+            aValue = parseFloat(e.target.value);
+            document.getElementById('aValue').textContent = aValue.toFixed(1);
+            drawVectorField();
+          });
+
+        document
+          .getElementById('bSlider')
+          .addEventListener('input', function (e) {
+            bValue = parseFloat(e.target.value);
+            document.getElementById('bValue').textContent = bValue.toFixed(1);
+            drawVectorField();
+          });
+
+        document
+          .getElementById('circlePathBtn')
+          .addEventListener('click', function () {
+            pathType = 'circle';
+            userPath = [];
+            pathClosed = false;
+            drawVectorField();
+          });
+
+        document
+          .getElementById('userPathBtn')
+          .addEventListener('click', function () {
+            pathType = 'user';
+            userPath = [];
+            pathClosed = false;
+            drawVectorField();
+          });
+
+        document
+          .getElementById('resetPathBtn')
+          .addEventListener('click', function () {
+            userPath = [];
+            pathClosed = false;
+            drawVectorField();
+          });
+
+        // Desenhar a visualização inicial
+        drawVectorField();
+      }
+
+      // Visualização 2: Fronteiras C¹
+      function initC1BoundaryVisualization() {
+        const canvas = document.getElementById('c1BoundaryCanvas');
+        if (!canvas || canvas.initialized) return;
+        canvas.initialized = true;
+
+        const ctx = canvas.getContext('2d');
+        const width = canvas.width;
+        const height = canvas.height;
+
+        // Configuração inicial
+        const center = { x: width / 2, y: height / 2 };
+        let aValue = 4;
+        let bValue = 3;
+        let rotation = 0;
+        let controlPoints = [];
+        let boundaryType = 'ellipse';
+
+        // Configuração do campo vetorial
+        const field = {
+          // Campo: F(x,y) = (y², x²)
+          P: (x, y) => y * y,
+          Q: (x, y) => x * x,
+          // Rotacional: ∂Q/∂x - ∂P/∂y
+          curl: (x, y) => 2 * x - 2 * y,
+        };
+
+        // Inicializar pontos de controle para curva personalizada
+        function initControlPoints() {
+          controlPoints = [];
+          const angleStep = Math.PI / 6;
+          for (let angle = 0; angle < 2 * Math.PI; angle += angleStep) {
+            const x = center.x + 120 * Math.cos(angle);
+            const y = center.y + 120 * Math.sin(angle);
+            controlPoints.push({ x, y, angle });
+          }
+        }
+
+        // Função para desenhar a visualização
+        function drawVisualization() {
+          ctx.clearRect(0, 0, width, height);
+
+          // Escala e deslocamento para centralizar
+          const scale = 50;
+
+          // Desenhar eixos
+          ctx.strokeStyle = 'rgba(150, 150, 150, 0.5)';
+          ctx.lineWidth = 1;
+          ctx.beginPath();
+          ctx.moveTo(0, center.y);
+          ctx.lineTo(width, center.y);
+          ctx.moveTo(center.x, 0);
+          ctx.lineTo(center.x, height);
+          ctx.stroke();
+
+          // Desenhar grade para referência
+          ctx.strokeStyle = 'rgba(100, 100, 100, 0.2)';
+          ctx.beginPath();
+          for (let i = 0; i < width; i += scale) {
+            ctx.moveTo(i, 0);
+            ctx.lineTo(i, height);
+          }
+          for (let j = 0; j < height; j += scale) {
+            ctx.moveTo(0, j);
+            ctx.lineTo(width, j);
+          }
+          ctx.stroke();
+
+          // Desenhar campo vetorial
+          ctx.strokeStyle = 'rgba(100, 181, 246, 0.7)';
+          ctx.fillStyle = 'rgba(100, 181, 246, 0.7)';
+
+          const gridSize = 50;
+          for (let i = 0; i <= width; i += gridSize) {
+            for (let j = 0; j <= height; j += gridSize) {
+              const x = (i - center.x) / scale;
+              const y = (center.y - j) / scale;
+
+              const vx = field.P(x, y);
+              const vy = field.Q(x, y);
+
+              // Normalizar para visualização
+              const mag = Math.sqrt(vx * vx + vy * vy);
+              const normalizedLength = mag ? gridSize * 0.3 : 0;
+
+              if (mag > 0) {
+                const nx = (vx / mag) * normalizedLength;
+                const ny = (-vy / mag) * normalizedLength;
+
+                ctx.beginPath();
+                ctx.moveTo(i, j);
+                ctx.lineTo(i + nx, j + ny);
+                ctx.stroke();
+
+                // Seta na ponta do vetor
+                const angle = Math.atan2(ny, nx);
+                ctx.beginPath();
+                ctx.moveTo(i + nx, j + ny);
+                ctx.lineTo(
+                  i + nx - 3 * Math.cos(angle - Math.PI / 6),
+                  j + ny - 3 * Math.sin(angle - Math.PI / 6)
+                );
+                ctx.lineTo(
+                  i + nx - 3 * Math.cos(angle + Math.PI / 6),
+                  j + ny - 3 * Math.sin(angle + Math.PI / 6)
+                );
+                ctx.closePath();
+                ctx.fill();
+              }
+            }
+          }
+
+          // Desenhar a fronteira
+          if (boundaryType === 'ellipse') {
+            drawEllipse();
+            calculateEllipseResults();
+          } else if (boundaryType === 'custom') {
+            drawCustomBoundary();
+            calculateCustomResults();
+          }
+        }
+
+        // Desenhar elipse
+        function drawEllipse() {
+          const a = aValue * 50;
+          const b = bValue * 50;
+
+          ctx.strokeStyle = 'rgba(255, 90, 95, 0.8)';
+          ctx.lineWidth = 2;
+          ctx.beginPath();
+
+          for (let angle = 0; angle <= 2 * Math.PI; angle += 0.01) {
+            const rotatedAngle = angle + rotation;
+            const x = center.x + a * Math.cos(rotatedAngle);
+            const y = center.y + b * Math.sin(rotatedAngle);
+
+            if (angle === 0) {
+              ctx.moveTo(x, y);
+            } else {
+              ctx.lineTo(x, y);
+            }
+          }
+
+          ctx.closePath();
+          ctx.stroke();
+        }
+
+        // Desenhar fronteira personalizada usando pontos de controle
+        function drawCustomBoundary() {
+          if (controlPoints.length < 3) return;
+
+          ctx.strokeStyle = 'rgba(255, 90, 95, 0.8)';
+          ctx.lineWidth = 2;
+          ctx.beginPath();
+
+          // Usar curva fechada suave passando pelos pontos de controle
+          ctx.moveTo(controlPoints[0].x, controlPoints[0].y);
+
+          for (let i = 0; i <= controlPoints.length; i++) {
+            const p0 = controlPoints[i % controlPoints.length];
+            const p1 = controlPoints[(i + 1) % controlPoints.length];
+
+            ctx.lineTo(p1.x, p1.y);
+          }
+
+          ctx.stroke();
+
+          // Desenhar pontos de controle
+          ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+          for (const point of controlPoints) {
+            ctx.beginPath();
+            ctx.arc(point.x, point.y, 5, 0, 2 * Math.PI);
+            ctx.fill();
+          }
+        }
+
+        // Calcular resultados para a elipse
+        function calculateEllipseResults() {
+          const a = aValue;
+          const b = bValue;
+
+          // Para este campo, podemos calcular a integral analiticamente
+          // A área da elipse é π·a·b
+          const area = Math.PI * a * b;
+
+          // Atualizar resultados na interface
+          document.getElementById('boundaryArea').textContent = area.toFixed(4);
+          document.getElementById('boundarySmooth').textContent = 'Sim (C∞)';
+
+          // Para este campo específico, podemos calcular a integral de linha
+          const lineIntegral = Math.PI * a * a * b;
+          document.getElementById('boundaryLineIntegral').textContent =
+            lineIntegral.toFixed(4);
+        }
+
+        // Calcular resultados para a fronteira personalizada
+        function calculateCustomResults() {
+          if (controlPoints.length < 3) return;
+
+          // Calcular área aproximada usando soma de triângulos
+          let area = 0;
+          for (let i = 0; i < controlPoints.length; i++) {
+            const j = (i + 1) % controlPoints.length;
+            area += controlPoints[i].x * controlPoints[j].y;
+            area -= controlPoints[j].x * controlPoints[i].y;
+          }
+          area = Math.abs(area) / 2;
+
+          // Converter para unidades do campo
+          const scale = 50;
+          area = area / (scale * scale);
+
+          // Verificar se a curva é suave (C¹)
+          let isSmooth = true;
+          for (let i = 0; i < controlPoints.length; i++) {
+            const prev =
+              controlPoints[
+                (i - 1 + controlPoints.length) % controlPoints.length
+              ];
+            const curr = controlPoints[i];
+            const next = controlPoints[(i + 1) % controlPoints.length];
+
+            // Calcular vetores entre pontos
+            const v1 = { x: curr.x - prev.x, y: curr.y - prev.y };
+            const v2 = { x: next.x - curr.x, y: next.y - curr.y };
+
+            // Normalizar vetores
+            const mag1 = Math.sqrt(v1.x * v1.x + v1.y * v1.y);
+            const mag2 = Math.sqrt(v2.x * v2.x + v2.y * v2.y);
+
+            if (mag1 > 0 && mag2 > 0) {
+              const dot = (v1.x * v2.x + v1.y * v2.y) / (mag1 * mag2);
+
+              // Se o ângulo for muito acentuado, a curva não é suave
+              if (dot < 0) {
+                isSmooth = false;
+                break;
+              }
+            }
+          }
+
+          // Atualizar resultados na interface
+          document.getElementById('boundaryArea').textContent = area.toFixed(4);
+          document.getElementById('boundarySmooth').textContent = isSmooth
+            ? 'Sim (aproximadamente)'
+            : 'Não (tem cantos)';
+
+          // Estimativa da integral de linha (aproximação)
+          const lineIntegral = area * 2; // Simplificação para este campo específico
+          document.getElementById('boundaryLineIntegral').textContent =
+            lineIntegral.toFixed(4);
+        }
+
+        // Manipuladores de eventos para controles
+        document
+          .getElementById('aParamSlider')
+          .addEventListener('input', function (e) {
+            aValue = parseFloat(e.target.value);
+            document.getElementById('aParamValue').textContent =
+              aValue.toFixed(1);
+            drawVisualization();
+          });
+
+        document
+          .getElementById('bParamSlider')
+          .addEventListener('input', function (e) {
+            bValue = parseFloat(e.target.value);
+            document.getElementById('bParamValue').textContent =
+              bValue.toFixed(1);
+            drawVisualization();
+          });
+
+        document
+          .getElementById('rotationSlider')
+          .addEventListener('input', function (e) {
+            rotation = (parseFloat(e.target.value) * Math.PI) / 180;
+            document.getElementById('rotationValue').textContent =
+              e.target.value + '°';
+            drawVisualization();
+          });
+
+        document
+          .getElementById('ellipseBoundaryBtn')
+          .addEventListener('click', function () {
+            boundaryType = 'ellipse';
+            drawVisualization();
+          });
+
+        document
+          .getElementById('customBoundaryBtn')
+          .addEventListener('click', function () {
+            boundaryType = 'custom';
+            initControlPoints();
+            drawVisualization();
+          });
+
+        // Eventos para manipular pontos de controle
+        let draggedPointIndex = -1;
+
+        canvas.addEventListener('mousedown', function (e) {
+          if (boundaryType !== 'custom') return;
+
+          const rect = canvas.getBoundingClientRect();
+          const mouseX = e.clientX - rect.left;
+          const mouseY = e.clientY - rect.top;
+
+          // Verificar se clicou em algum ponto de controle
+          for (let i = 0; i < controlPoints.length; i++) {
+            const dx = mouseX - controlPoints[i].x;
+            const dy = mouseY - controlPoints[i].y;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+
+            if (distance < 10) {
+              draggedPointIndex = i;
+              break;
+            }
+          }
+        });
+
+        canvas.addEventListener('mousemove', function (e) {
+          if (draggedPointIndex === -1 || boundaryType !== 'custom') return;
+
+          const rect = canvas.getBoundingClientRect();
+          const mouseX = e.clientX - rect.left;
+          const mouseY = e.clientY - rect.top;
+
+          // Atualizar posição do ponto arrastado
+          controlPoints[draggedPointIndex].x = mouseX;
+          controlPoints[draggedPointIndex].y = mouseY;
+
+          drawVisualization();
+        });
+
+        canvas.addEventListener('mouseup', function () {
+          draggedPointIndex = -1;
+        });
+
+        // Inicializar pontos de controle e desenhar visualização inicial
+        initControlPoints();
+        drawVisualization();
+      }
+
+      // Visualização 3: Campos Conservativos vs. Rotativos
+      function initVectorFieldVisualization() {
+        const canvas = document.getElementById('vectorFieldCanvas');
+        if (!canvas || canvas.initialized) return;
+        canvas.initialized = true;
+
+        const ctx = canvas.getContext('2d');
+        const width = canvas.width;
+        const height = canvas.height;
+
+        // Configuração inicial
+        const center = { x: width / 2, y: height / 2 };
+        let fieldType = 'rotational';
+        let particlesVisible = true;
+        let particles = [];
+
+        // Definição dos campos vetoriais
+        const fields = {
+          conservative: {
+            // Campo conservativo: F(x,y) = (x, y) = ∇(x²/2 + y²/2)
+            P: (x, y) => x,
+            Q: (x, y) => y,
+            potential: (x, y) => (x * x + y * y) / 2,
+            curl: () => 0,
+          },
+          rotational: {
+            // Campo rotacional: F(x,y) = (-y, x)
+            P: (x, y) => -y,
+            Q: (x, y) => x,
+            curl: () => 2,
+          },
+        };
+
+        // Inicializar partículas
+        function initParticles(count = 50) {
+          particles = [];
+          for (let i = 0; i < count; i++) {
+            // Distribuir as partículas em círculo
+            const angle = Math.random() * 2 * Math.PI;
+            const radius = 20 + Math.random() * 80;
+
+            particles.push({
+              x: center.x + radius * Math.cos(angle),
+              y: center.y + radius * Math.sin(angle),
+              life: 0,
+              maxLife: 200 + Math.round(Math.random() * 100),
+            });
+          }
+        }
+
+        // Função principal de renderização
+        function drawVisualization() {
+          ctx.clearRect(0, 0, width, height);
+
+          // Escala e deslocamento
+          const scale = 40;
+
+          // Desenhar eixos
+          ctx.strokeStyle = 'rgba(150, 150, 150, 0.5)';
+          ctx.lineWidth = 1;
+          ctx.beginPath();
+          ctx.moveTo(0, center.y);
+          ctx.lineTo(width, center.y);
+          ctx.moveTo(center.x, 0);
+          ctx.lineTo(center.x, height);
+          ctx.stroke();
+
+          // Selecionar o campo ativo
+          const field = fields[fieldType];
+
+          // Desenhar campo de potencial apenas para campo conservativo
+          if (fieldType === 'conservative') {
+            drawPotentialField(field);
+          }
+
+          // Desenhar campo vetorial
+          drawVectorField(field);
+
+          // Desenhar e atualizar partículas
+          if (particlesVisible) {
+            updateAndDrawParticles(field);
+          }
+
+          // Desenhar caminho de integração
+          drawIntegrationPath();
+
+          // Atualizar resultados
+          updateResults(field);
+        }
+
+        // Desenhar o campo de potencial (apenas para campo conservativo)
+        function drawPotentialField(field) {
+          // Desenhar contornos de potencial
+          const levels = 5;
+          const maxRadius = 120;
+
+          ctx.strokeStyle = 'rgba(100, 181, 246, 0.3)';
+          ctx.lineWidth = 1;
+
+          for (let i = 1; i <= levels; i++) {
+            const radius = (i / levels) * maxRadius;
+
+            ctx.beginPath();
+            ctx.arc(center.x, center.y, radius, 0, 2 * Math.PI);
+            ctx.stroke();
+          }
+        }
+
+        // Desenhar o campo vetorial
+        function drawVectorField(field) {
+          ctx.strokeStyle = 'rgba(100, 181, 246, 0.8)';
+          ctx.fillStyle = 'rgba(100, 181, 246, 0.8)';
+
+          const gridSize = 40;
+          const scale = 40;
+
+          for (let i = 0; i <= width; i += gridSize) {
+            for (let j = 0; j <= height; j += gridSize) {
+              const x = (i - center.x) / scale;
+              const y = (center.y - j) / scale;
+
+              const vx = field.P(x, y);
+              const vy = field.Q(x, y);
+
+              // Normalizar para visualização
+              const mag = Math.sqrt(vx * vx + vy * vy);
+              const normalizedLength = mag ? gridSize * 0.7 : 0;
+
+              if (mag > 0) {
+                const nx = (vx / mag) * normalizedLength;
+                const ny = (-vy / mag) * normalizedLength;
+
+                ctx.beginPath();
+                ctx.moveTo(i, j);
+                ctx.lineTo(i + nx, j + ny);
+                ctx.stroke();
+
+                // Seta na ponta do vetor
+                const angle = Math.atan2(ny, nx);
+                ctx.beginPath();
+                ctx.moveTo(i + nx, j + ny);
+                ctx.lineTo(
+                  i + nx - 3 * Math.cos(angle - Math.PI / 6),
+                  j + ny - 3 * Math.sin(angle - Math.PI / 6)
+                );
+                ctx.lineTo(
+                  i + nx - 3 * Math.cos(angle + Math.PI / 6),
+                  j + ny - 3 * Math.sin(angle + Math.PI / 6)
+                );
+                ctx.closePath();
+                ctx.fill();
+              }
+            }
+          }
+        }
+
+        // Atualizar e desenhar partículas
+        function updateAndDrawParticles(field) {
+          const scale = 40;
+          const dt = 0.1;
+
+          ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+
+          for (let i = 0; i < particles.length; i++) {
+            const p = particles[i];
+
+            // Coordenadas no sistema do campo
+            const x = (p.x - center.x) / scale;
+            const y = (center.y - p.y) / scale;
+
+            // Obter velocidade do campo
+            const vx = field.P(x, y);
+            const vy = field.Q(x, y);
+
+            // Atualizar posição
+            p.x += vx * dt * scale;
+            p.y -= vy * dt * scale;
+
+            // Incrementar vida da partícula
+            p.life += 1;
+
+            // Desenhar partícula
+            const alpha = 1 - p.life / p.maxLife;
+            ctx.globalAlpha = alpha;
+
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, 2, 0, 2 * Math.PI);
+            ctx.fill();
+
+            // Resetar partícula se saiu do canvas ou expirou
+            if (
+              p.x < 0 ||
+              p.x > width ||
+              p.y < 0 ||
+              p.y > height ||
+              p.life >= p.maxLife
+            ) {
+              // Reposicionar em um círculo ao redor do centro
+              const angle = Math.random() * 2 * Math.PI;
+              const radius = 20 + Math.random() * 80;
+
+              p.x = center.x + radius * Math.cos(angle);
+              p.y = center.y + radius * Math.sin(angle);
+              p.life = 0;
+            }
+          }
+
+          ctx.globalAlpha = 1.0;
+        }
+
+        // Desenhar caminhos de integração
+        function drawIntegrationPath() {
+          ctx.strokeStyle = 'rgba(255, 90, 95, 0.8)';
+          ctx.lineWidth = 2;
+
+          // Desenhar dois caminhos fechados diferentes
+          const pathRadius = 80;
+
+          // Caminho 1: Círculo
+          ctx.beginPath();
+          ctx.arc(center.x, center.y, pathRadius, 0, 2 * Math.PI);
+          ctx.stroke();
+
+          // Caminho 2: Retângulo
+          const rectSize = pathRadius * 1.2;
+          ctx.beginPath();
+          ctx.rect(
+            center.x - rectSize / 2,
+            center.y - rectSize / 2,
+            rectSize,
+            rectSize
+          );
+          ctx.stroke();
+
+          // Indicar direção de integração com setas
+          ctx.fillStyle = 'rgba(255, 90, 95, 0.8)';
+
+          // Seta no círculo
+          const arrowAngle = Math.PI / 4;
+          const arrowX = center.x + pathRadius * Math.cos(arrowAngle);
+          const arrowY = center.y + pathRadius * Math.sin(arrowAngle);
+
+          ctx.beginPath();
+          ctx.moveTo(arrowX, arrowY);
+          ctx.lineTo(arrowX + 8, arrowY - 4);
+          ctx.lineTo(arrowX + 8, arrowY + 4);
+          ctx.closePath();
+          ctx.fill();
+
+          // Seta no retângulo
+          ctx.beginPath();
+          ctx.moveTo(center.x + rectSize / 2 - 20, center.y - rectSize / 2);
+          ctx.lineTo(center.x + rectSize / 2 - 12, center.y - rectSize / 2 - 4);
+          ctx.lineTo(center.x + rectSize / 2 - 12, center.y - rectSize / 2 + 4);
+          ctx.closePath();
+          ctx.fill();
+        }
+
+        // Atualizar resultados
+        function updateResults(field) {
+          // Para o campo rotacional, a integral de linha não é zero
+          // Para o campo conservativo, a integral de linha é zero
+
+          const isConservative = fieldType === 'conservative';
+          const circleRadius = 80 / 40; // Raio em unidades do campo
+
+          document.getElementById('fieldCurl').textContent = field
+            .curl()
+            .toFixed(2);
+          document.getElementById('fieldType').textContent = isConservative
+            ? 'Conservativo'
+            : 'Rotacional';
+
+          // Calcular integral de linha para o círculo
+          let circleIntegral;
+          if (isConservative) {
+            circleIntegral = 0;
+          } else {
+            // Para o campo rotacional (-y, x), a integral é 2πr²
+            circleIntegral = 2 * Math.PI * circleRadius * circleRadius;
+          }
+
+          // Calcular integral de linha para o retângulo
+          let rectIntegral;
+          if (isConservative) {
+            rectIntegral = 0;
+          } else {
+            // Para o campo rotacional, é a área do retângulo * curl
+            const rectSize = circleRadius * 1.2;
+            rectIntegral = rectSize * rectSize * 2;
+          }
+
+          document.getElementById('pathCircleIntegral').textContent =
+            circleIntegral.toFixed(4);
+          document.getElementById('pathRectIntegral').textContent =
+            rectIntegral.toFixed(4);
+        }
+
+        // Manipuladores de eventos para controles
+        document
+          .getElementById('conservativeFieldBtn')
+          .addEventListener('click', function () {
+            fieldType = 'conservative';
+            drawVisualization();
+          });
+
+        document
+          .getElementById('rotationalFieldBtn')
+          .addEventListener('click', function () {
+            fieldType = 'rotational';
+            drawVisualization();
+          });
+
+        document
+          .getElementById('toggleParticlesBtn')
+          .addEventListener('click', function () {
+            particlesVisible = !particlesVisible;
+            this.textContent = particlesVisible
+              ? 'Ocultar Partículas'
+              : 'Mostrar Partículas';
+            drawVisualization();
+          });
+
+        document
+          .getElementById('resetParticlesBtn')
+          .addEventListener('click', function () {
+            initParticles();
+            drawVisualization();
+          });
+
+        // Inicializar partículas e começar visualização
+        initParticles();
+        drawVisualization();
+
+        // Animar partículas
+        function animate() {
+          if (particlesVisible) {
+            drawVisualization();
+          }
+          requestAnimationFrame(animate);
+        }
+
+        animate();
+      }
+
+      // Visualização 4: Fontes e Sumidouros (Divergência)
+      function initDivergenceVisualization() {
+        const canvas = document.getElementById('divergenceCanvas');
+        if (!canvas || canvas.initialized) return;
+        canvas.initialized = true;
+
+        const ctx = canvas.getContext('2d');
+        const width = canvas.width;
+        const height = canvas.height;
+
+        // Configuração inicial
+        const center = { x: width / 2, y: height / 2 };
+        let sourceStrength = 1.0;
+        let sinkStrength = 1.0;
+        let particles = [];
+        let showDivergence = true;
+
+        // Posições das fontes e sumidouros
+        const sourcePosition = { x: center.x - 100, y: center.y };
+        const sinkPosition = { x: center.x + 100, y: center.y };
+
+        // Função que define o campo vetorial
+        function fieldVector(x, y) {
+          // Converter para coordenadas do campo
+          const fx = (x - center.x) / 40;
+          const fy = (center.y - y) / 40;
+
+          // Posições das fontes e sumidouros no sistema do campo
+          const sourceX = (sourcePosition.x - center.x) / 40;
+          const sourceY = (center.y - sourcePosition.y) / 40;
+          const sinkX = (sinkPosition.x - center.x) / 40;
+          const sinkY = (center.y - sinkPosition.y) / 40;
+
+          // Calcular vetor da fonte (radiação para fora)
+          const sourceDistX = fx - sourceX;
+          const sourceDistY = fy - sourceY;
+          const sourceDistSq =
+            sourceDistX * sourceDistX + sourceDistY * sourceDistY;
+          const sourceDist = Math.sqrt(sourceDistSq);
+
+          // Calcular vetor do sumidouro (radiação para dentro)
+          const sinkDistX = fx - sinkX;
+          const sinkDistY = fy - sinkY;
+          const sinkDistSq = sinkDistX * sinkDistX + sinkDistY * sinkDistY;
+          const sinkDist = Math.sqrt(sinkDistSq);
+
+          // Combinar efeitos (fonte + sumidouro)
+          let vx = 0,
+            vy = 0;
+
+          if (sourceDist > 0.1) {
+            vx += (sourceStrength * sourceDistX) / sourceDistSq;
+            vy += (sourceStrength * sourceDistY) / sourceDistSq;
+          }
+
+          if (sinkDist > 0.1) {
+            vx -= (sinkStrength * sinkDistX) / sinkDistSq;
+            vy -= (sinkStrength * sinkDistY) / sinkDistSq;
+          }
+
+          return { vx, vy };
+        }
+
+        // Calcular divergência no ponto (x, y)
+        function calculateDivergence(x, y) {
+          const h = 0.1; // Passo para derivada numérica
+
+          // Campo nos pontos deslocados
+          const pRight = fieldVector(x + h, y);
+          const pLeft = fieldVector(x - h, y);
+          const pUp = fieldVector(x, y - h);
+          const pDown = fieldVector(x, y + h);
+
+          // Derivadas parciais aproximadas
+          const dFx_dx = (pRight.vx - pLeft.vx) / (2 * h);
+          const dFy_dy = (pDown.vy - pUp.vy) / (2 * h);
+
+          // Divergência
+          return dFx_dx + dFy_dy;
+        }
+
+        // Inicializar partículas
+        function initParticles(count = 200) {
+          particles = [];
+          for (let i = 0; i < count; i++) {
+            // Distribuir as partículas pelo canvas
+            const x = Math.random() * width;
+            const y = Math.random() * height;
+
+            particles.push({
+              x: x,
+              y: y,
+              age: 0,
+              maxAge: 100 + Math.round(Math.random() * 100),
+            });
+          }
+        }
+
+        // Função principal de renderização
+        function drawVisualization() {
+          ctx.clearRect(0, 0, width, height);
+
+          // Desenhar mapa de divergência
+          if (showDivergence) {
+            drawDivergenceMap();
+          }
+
+          // Desenhar campo vetorial
+          drawVectorField();
+
+          // Desenhar e atualizar partículas
+          updateAndDrawParticles();
+
+          // Desenhar fontes e sumidouros
+          drawSourcesAndSinks();
+
+          // Desenhar caminho de integração
+          drawIntegrationPath();
+
+          // Atualizar resultados
+          updateResults();
+        }
+
+        // Desenhar mapa de divergência
+        function drawDivergenceMap() {
+          const gridSize = 20;
+
+          for (let i = 0; i < width; i += gridSize) {
+            for (let j = 0; j < height; j += gridSize) {
+              const div = calculateDivergence(i, j);
+
+              // Mapear divergência para cor
+              let r = 0,
+                g = 0,
+                b = 0,
+                a = 0.3;
+
+              if (div > 0) {
+                // Fonte: vermelho
+                r = Math.min(255, Math.round(div * 200));
+                a = Math.min(0.5, 0.1 + div * 0.2);
+              } else if (div < 0) {
+                // Sumidouro: azul
+                b = Math.min(255, Math.round(-div * 200));
+                a = Math.min(0.5, 0.1 - div * 0.2);
+              }
+
+              ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${a})`;
+              ctx.fillRect(i, j, gridSize, gridSize);
+            }
+          }
+        }
+
+        // Desenhar campo vetorial
+        function drawVectorField() {
+          ctx.strokeStyle = 'rgba(200, 200, 200, 0.7)';
+          ctx.fillStyle = 'rgba(200, 200, 200, 0.7)';
+
+          const gridSize = 30;
+
+          for (let i = 0; i <= width; i += gridSize) {
+            for (let j = 0; j <= height; j += gridSize) {
+              const field = fieldVector(i, j);
+              const { vx, vy } = field;
+
+              // Normalizar para visualização
+              const mag = Math.sqrt(vx * vx + vy * vy);
+              const normalizedLength = Math.min(gridSize * 0.8, mag * 10);
+
+              if (mag > 0.01) {
+                const nx = (vx / mag) * normalizedLength;
+                const ny = (vy / mag) * normalizedLength;
+
+                ctx.beginPath();
+                ctx.moveTo(i, j);
+                ctx.lineTo(i + nx, j + ny);
+                ctx.stroke();
+
+                // Seta na ponta do vetor
+                const angle = Math.atan2(ny, nx);
+                ctx.beginPath();
+                ctx.moveTo(i + nx, j + ny);
+                ctx.lineTo(
+                  i + nx - 3 * Math.cos(angle - Math.PI / 6),
+                  j + ny - 3 * Math.sin(angle - Math.PI / 6)
+                );
+                ctx.lineTo(
+                  i + nx - 3 * Math.cos(angle + Math.PI / 6),
+                  j + ny - 3 * Math.sin(angle + Math.PI / 6)
+                );
+                ctx.closePath();
+                ctx.fill();
+              }
+            }
+          }
+        }
+
+        // Atualizar e desenhar partículas
+        function updateAndDrawParticles() {
+          const dt = 0.5;
+
+          for (let i = 0; i < particles.length; i++) {
+            const p = particles[i];
+
+            // Obter campo no ponto
+            const field = fieldVector(p.x, p.y);
+            const { vx, vy } = field;
+
+            // Atualizar posição
+            p.x += vx * dt * 5;
+            p.y += vy * dt * 5;
+
+            // Incrementar idade
+            p.age += 1;
+
+            // Desenhar partícula com opacidade baseada na idade
+            const alpha = 1 - p.age / p.maxAge;
+
+            ctx.fillStyle = `rgba(255, 255, 255, ${alpha})`;
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, 1.5, 0, 2 * Math.PI);
+            ctx.fill();
+
+            // Resetar partícula se saiu do canvas ou envelheceu demais
+            if (
+              p.x < 0 ||
+              p.x > width ||
+              p.y < 0 ||
+              p.y > height ||
+              p.age >= p.maxAge
+            ) {
+              // Nova posição aleatória
+              p.x = Math.random() * width;
+              p.y = Math.random() * height;
+              p.age = 0;
+            }
+          }
+        }
+
+        // Desenhar fontes e sumidouros
+        function drawSourcesAndSinks() {
+          // Desenhar fonte (vermelho)
+          ctx.fillStyle = `rgba(255, 50, 50, ${0.6 + 0.4 * (sourceStrength / 2)})`;
+          ctx.beginPath();
+          ctx.arc(sourcePosition.x, sourcePosition.y, 15, 0, 2 * Math.PI);
+          ctx.fill();
+
+          // Desenhar sumidouro (azul)
+          ctx.fillStyle = `rgba(50, 50, 255, ${0.6 + 0.4 * (sinkStrength / 2)})`;
+          ctx.beginPath();
+          ctx.arc(sinkPosition.x, sinkPosition.y, 15, 0, 2 * Math.PI);
+          ctx.fill();
+
+          // Adicionar símbolos
+          ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+          ctx.font = '20px Arial';
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+
+          ctx.fillText('+', sourcePosition.x, sourcePosition.y);
+          ctx.fillText('-', sinkPosition.x, sinkPosition.y);
+        }
+
+        // Desenhar caminho de integração
+        function drawIntegrationPath() {
+          ctx.strokeStyle = 'rgba(255, 255, 100, 0.8)';
+          ctx.lineWidth = 2;
+
+          // Desenhar círculo ao redor das fontes e sumidouros
+          ctx.beginPath();
+          ctx.arc(center.x, center.y, 150, 0, 2 * Math.PI);
+          ctx.stroke();
+
+          // Indicar direção de integração com seta
+          ctx.fillStyle = 'rgba(255, 255, 100, 0.8)';
+
+          const arrowAngle = Math.PI / 4;
+          const arrowX = center.x + 150 * Math.cos(arrowAngle);
+          const arrowY = center.y + 150 * Math.sin(arrowAngle);
+
+          ctx.beginPath();
+          ctx.moveTo(arrowX, arrowY);
+          ctx.lineTo(arrowX + 10, arrowY);
+          ctx.lineTo(arrowX + 7, arrowY - 7);
+          ctx.closePath();
+          ctx.fill();
+        }
+
+        // Atualizar resultados
+        function updateResults() {
+          // Calcular fluxo total através da fronteira
+          // Para o caso de uma fonte e um sumidouro, o fluxo será proporcional à diferença
+          const totalFlux = 2 * Math.PI * (sourceStrength - sinkStrength);
+
+          // Calcular a divergência nos pontos das fontes e sumidouros
+          const sourceDiv = 2 * Math.PI * sourceStrength;
+          const sinkDiv = -2 * Math.PI * sinkStrength;
+
+          document.getElementById('sourceStrengthValue').textContent =
+            sourceStrength.toFixed(2);
+          document.getElementById('sinkStrengthValue').textContent =
+            sinkStrength.toFixed(2);
+          document.getElementById('totalFluxValue').textContent =
+            totalFlux.toFixed(4);
+          document.getElementById('sourceDivValue').textContent =
+            sourceDiv.toFixed(4);
+          document.getElementById('sinkDivValue').textContent =
+            sinkDiv.toFixed(4);
+        }
+
+        // Manipuladores de eventos para controles
+        document
+          .getElementById('sourceSlider')
+          .addEventListener('input', function (e) {
+            sourceStrength = parseFloat(e.target.value);
+            document.getElementById('sourceValue').textContent =
+              sourceStrength.toFixed(1);
+            drawVisualization();
+          });
+
+        document
+          .getElementById('sinkSlider')
+          .addEventListener('input', function (e) {
+            sinkStrength = parseFloat(e.target.value);
+            document.getElementById('sinkValue').textContent =
+              sinkStrength.toFixed(1);
+            drawVisualization();
+          });
+
+        document
+          .getElementById('toggleDivergenceBtn')
+          .addEventListener('click', function () {
+            showDivergence = !showDivergence;
+            this.textContent = showDivergence
+              ? 'Ocultar Mapa de Divergência'
+              : 'Mostrar Mapa de Divergência';
+            drawVisualization();
+          });
+
+        document
+          .getElementById('resetParticlesBtn2')
+          .addEventListener('click', function () {
+            initParticles();
+            drawVisualization();
+          });
+
+        // Inicializar partículas e começar visualização
+        initParticles();
+        drawVisualization();
+
+        // Animar a visualização
+        function animate() {
+          drawVisualization();
+          requestAnimationFrame(animate);
+        }
+
+        animate();
+      }
+    </script>
   </head>
   <body>
     <div class="reveal">
       <div class="slides">
+        <!-- Slide de título principal -->
         <section>
-          <h1>teorema-de-green</h1>
+          <h1>Teorema de Green</h1>
+          <h3>Uma ponte entre cálculo de linha e cálculo de área</h3>
+          <p>Cálculo Vetorial na Era da Exploração Espacial</p>
+        </section>
+
+        <!-- 1. INTRODUÇÃO AO TEOREMA DE GREEN -->
+        <section>
+          <section>
+            <h2>Teorema de Green: Definição Formal</h2>
+            <div class="math-box">
+              <p>
+                Seja $D$ uma região plana limitada por uma curva simples,
+                fechada e suave orientada positivamente $C$. Se $P$ e $Q$ têm
+                derivadas parciais contínuas em uma região aberta contendo $D$,
+                então:
+              </p>
+              <p>
+                $$\oint_C (P\,dx + Q\,dy) = \iint_D \left(\frac{\partial
+                Q}{\partial x} - \frac{\partial P}{\partial y}\right)\,dA$$
+              </p>
+            </div>
+            <p>
+              O teorema estabelece uma conexão profunda entre integrais de linha
+              e integrais duplas sobre uma região.
+            </p>
+          </section>
+
+          <section>
+            <h2>Interpretação Geométrica</h2>
+            <p>O Teorema de Green revela uma relação fascinante entre:</p>
+            <ul>
+              <li>
+                O trabalho realizado ao longo de um caminho fechado (integral de
+                linha)
+              </li>
+              <li>
+                A soma do "redemoinho" ou rotação dentro da região (integral
+                dupla)
+              </li>
+            </ul>
+            <p>
+              Esta dualidade entre percurso e área é uma manifestação do
+              princípio mais geral de que <em>propriedades globais</em> de um
+              sistema podem estar codificadas em suas <em>fronteiras</em>.
+            </p>
+          </section>
+
+          <!-- Visualização em slide separado -->
+          <section>
+            <h2>Visualização: Teorema de Green</h2>
+            <p>
+              Explore a relação entre a integral de linha e a integral de área
+            </p>
+
+            <div class="visualization-container">
+              <canvas id="greenTheoremCanvas" width="500" height="300"></canvas>
+            </div>
+
+            <div class="controls">
+              <div class="control-group">
+                <span class="control-label">Parâmetro a</span>
+                <div class="slider-container">
+                  <input
+                    type="range"
+                    id="aSlider"
+                    class="slider"
+                    min="0"
+                    max="4"
+                    step="0.1"
+                    value="2"
+                  />
+                  <span id="aValue" class="slider-value">2.0</span>
+                </div>
+              </div>
+
+              <div class="control-group">
+                <span class="control-label">Parâmetro b</span>
+                <div class="slider-container">
+                  <input
+                    type="range"
+                    id="bSlider"
+                    class="slider"
+                    min="0"
+                    max="4"
+                    step="0.1"
+                    value="1"
+                  />
+                  <span id="bValue" class="slider-value">1.0</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="horizontal-buttons">
+              <button id="circlePathBtn">Caminho Circular</button>
+              <button id="userPathBtn">Desenhar Caminho</button>
+              <button id="resetPathBtn">Reiniciar</button>
+            </div>
+
+            <div class="results-display">
+              <div class="results-title">Resultados da Integração</div>
+              <div class="results-row">
+                <span class="results-label">Rotacional (∂Q/∂x - ∂P/∂y):</span>
+                <span id="curlValue">3.0000</span>
+              </div>
+              <div class="results-row">
+                <span class="results-label">Integral de Linha:</span>
+                <span id="lineIntegralValue">0.0000</span>
+              </div>
+              <div class="results-row">
+                <span class="results-label">Integral Dupla:</span>
+                <span id="doubleIntegralValue">0.0000</span>
+              </div>
+            </div>
+          </section>
+
+          <section>
+            <h2>Significado Físico</h2>
+            <p>Em termos físicos, o Teorema de Green conecta:</p>
+            <ul>
+              <li>
+                <strong>Circulação</strong>: A tendência de um campo vetorial
+                girar ao longo de um caminho fechado
+              </li>
+              <li>
+                <strong>Rotacional</strong>: A medida local de rotação em cada
+                ponto do campo
+              </li>
+            </ul>
+            <p>
+              Quando um campo vetorial representa força, a integral de linha
+              mede o <em>trabalho</em> realizado ao longo do caminho, enquanto a
+              integral dupla quantifica o <em>momento angular</em> distribuído
+              pela região.
+            </p>
+          </section>
+
+          <section>
+            <h2>Contexto Histórico: Corrida Espacial</h2>
+            <div class="historical-note">
+              <p>
+                Durante a década de 1960, tanto engenheiros soviéticos quanto
+                americanos enfrentavam um desafio comum: calcular trajetórias
+                precisas com recursos computacionais limitados.
+              </p>
+              <p>
+                As equipes da NASA utilizavam o Teorema de Green para
+                simplificar cálculos complexos de campos gravitacionais e
+                magnéticos que afetavam as naves espaciais.
+              </p>
+            </div>
+            <p>
+              Na ausência de computadores modernos, teoremas como o de Green
+              permitiam transformar problemas difíceis de integrais de linha em
+              cálculos mais tratáveis de integrais duplas.
+            </p>
+          </section>
+        </section>
+
+        <!-- 2. TEOREMA DE GREEN EM RETÂNGULOS -->
+        <section>
+          <section>
+            <h2>Teorema de Green em Retângulos</h2>
+            <p>
+              O caso mais simples e fundamental para compreender a aplicação do
+              teorema.
+            </p>
+            <div class="math-box">
+              <p>
+                Para um retângulo $R = [a,b] \times [c,d]$, o teorema assume a
+                forma:
+              </p>
+              <p>
+                $$\oint_{\partial R} (P\,dx + Q\,dy) = \int_a^b \int_c^d
+                \left(\frac{\partial Q}{\partial x} - \frac{\partial P}{\partial
+                y}\right)\,dy\,dx$$
+              </p>
+            </div>
+          </section>
+
+          <section>
+            <h2>Demonstração para Retângulos</h2>
+            <p>
+              Vamos decompor a integral de linha em quatro segmentos de reta:
+            </p>
+            <ol>
+              <li>
+                $C_1$: de $(a,c)$ a $(b,c)$ → $dy = 0$, então $\int_{C_1} (P\,dx
+                + Q\,dy) = \int_a^b P(x,c)\,dx$
+              </li>
+              <li>
+                $C_2$: de $(b,c)$ a $(b,d)$ → $dx = 0$, então $\int_{C_2} (P\,dx
+                + Q\,dy) = \int_c^d Q(b,y)\,dy$
+              </li>
+              <li>
+                $C_3$: de $(b,d)$ a $(a,d)$ → $dy = 0$, então $\int_{C_3} (P\,dx
+                + Q\,dy) = \int_b^a P(x,d)\,dx = -\int_a^b P(x,d)\,dx$
+              </li>
+              <li>
+                $C_4$: de $(a,d)$ a $(a,c)$ → $dx = 0$, então $\int_{C_4} (P\,dx
+                + Q\,dy) = \int_d^c Q(a,y)\,dy = -\int_c^d Q(a,y)\,dy$
+              </li>
+            </ol>
+          </section>
+
+          <section>
+            <h2>Demonstração (continuação)</h2>
+            <p>Somando as quatro integrais:</p>
+            <div class="math-box">
+              <p>
+                $$\begin{align} \oint_{\partial R} (P\,dx + Q\,dy) &= \int_a^b
+                P(x,c)\,dx + \int_c^d Q(b,y)\,dy - \int_a^b P(x,d)\,dx -
+                \int_c^d Q(a,y)\,dy\\ &= \int_a^b [P(x,c) - P(x,d)]\,dx +
+                \int_c^d [Q(b,y) - Q(a,y)]\,dy \end{align}$$
+              </p>
+            </div>
+            <p>
+              Usando o Teorema Fundamental do Cálculo e propriedades de
+              derivadas parciais, podemos mostrar que esta expressão é igual à
+              integral dupla de $\left(\frac{\partial Q}{\partial x} -
+              \frac{\partial P}{\partial y}\right)$ sobre o retângulo.
+            </p>
+          </section>
+
+          <section>
+            <h2>Aplicação: Controle de Satélites</h2>
+            <p>
+              O cálculo preciso do momento angular é crucial para manter a
+              orientação de satélites em órbita.
+            </p>
+            <div class="historical-note">
+              <p>
+                Em 1962, o satélite Telstar 1 utilizava um sistema de controle
+                magnético para manter sua orientação. Os engenheiros da Bell
+                Labs aplicaram o Teorema de Green para calcular o momento
+                angular induzido pelo campo magnético terrestre.
+              </p>
+            </div>
+            <p>
+              A transformação de integrais de linha em integrais de área reduzia
+              significativamente o tempo de cálculo necessário para determinar
+              ajustes nas manobras do satélite.
+            </p>
+          </section>
+
+          <section>
+            <h2>Exercício Prático: Manobra Orbital</h2>
+            <p>
+              Uma sonda espacial está mapeando um campo magnético retangular na
+              superfície lunar. Dado o campo:
+            </p>
+            <p>$$\vec{B}(x,y) = (y^2, x^3 - 2xy)$$</p>
+            <p>
+              Calcule o fluxo magnético total através da região retangular $R =
+              [1,4] \times [2,5]$ usando o Teorema de Green.
+            </p>
+            <div class="spacer"></div>
+            <p>
+              <em
+                >Dica: Calcule $\frac{\partial Q}{\partial x} - \frac{\partial
+                P}{\partial y}$ e aplique a integral dupla.</em
+              >
+            </p>
+          </section>
+        </section>
+
+        <!-- 3. TEOREMA DE GREEN PARA CONJUNTOS COM FRONTEIRA C¹ -->
+        <section>
+          <section>
+            <h2>Fronteiras C¹: Definição</h2>
+            <p>
+              Uma curva é classificada como <strong>C¹</strong> quando suas
+              derivadas são contínuas, garantindo suavidade sem "quinas" ou
+              descontinuidades.
+            </p>
+            <p>
+              Formalmente, uma curva parametrizada $\vec{r}(t) = (x(t), y(t))$
+              para $a \leq t \leq b$ é de classe C¹ se:
+            </p>
+            <div class="math-box">
+              <ol>
+                <li>$x(t)$ e $y(t)$ são funções contínuas em $[a,b]$</li>
+                <li>$x'(t)$ e $y'(t)$ existem e são contínuas em $[a,b]$</li>
+                <li>
+                  $x'(t)$ e $y'(t)$ não se anulam simultaneamente (garante que a
+                  curva não tenha "paradas")
+                </li>
+              </ol>
+            </div>
+            <p>
+              Esta condição é fundamental para a aplicabilidade do Teorema de
+              Green em regiões gerais.
+            </p>
+          </section>
+
+          <section>
+            <h2>Teorema de Green para Regiões Gerais</h2>
+            <p>
+              O teorema se generaliza para qualquer região simplesmente conexa
+              (sem "buracos") limitada por uma curva C¹:
+            </p>
+            <div class="math-box">
+              <p>
+                $$\oint_C (P\,dx + Q\,dy) = \iint_D \left(\frac{\partial
+                Q}{\partial x} - \frac{\partial P}{\partial y}\right)\,dA$$
+              </p>
+            </div>
+            <p>
+              A demonstração envolve particionar a região em retângulos pequenos
+              e aplicar o caso retangular já comprovado, com ajustes nos
+              limites.
+            </p>
+          </section>
+
+          <section>
+            <h2>Regiões Complexas e Aplicações</h2>
+            <p>
+              O verdadeiro poder do Teorema de Green se revela ao lidar com
+              regiões de geometria complexa:
+            </p>
+            <ul>
+              <li>Cálculo de áreas de regiões com fronteiras curvas</li>
+              <li>Determinação de centros de massa de placas não uniformes</li>
+              <li>Avaliação de fluxos em sistemas hidrodinâmicos</li>
+            </ul>
+            <p>
+              A flexibilidade para trabalhar com fronteiras curvilíneas é
+              essencial para modelar fenômenos físicos realistas.
+            </p>
+          </section>
+
+          <!-- Visualização em slide separado -->
+          <section>
+            <h2>Visualização: Fronteiras C¹</h2>
+            <p>
+              Experimente com diferentes tipos de fronteiras e observe suas
+              propriedades
+            </p>
+
+            <div class="visualization-container">
+              <canvas id="c1BoundaryCanvas" width="500" height="300"></canvas>
+            </div>
+
+            <div class="controls">
+              <div class="control-group">
+                <span class="control-label">Parâmetro a</span>
+                <div class="slider-container">
+                  <input
+                    type="range"
+                    id="aParamSlider"
+                    class="slider"
+                    min="1"
+                    max="6"
+                    step="0.1"
+                    value="4"
+                  />
+                  <span id="aParamValue" class="slider-value">4.0</span>
+                </div>
+              </div>
+
+              <div class="control-group">
+                <span class="control-label">Parâmetro b</span>
+                <div class="slider-container">
+                  <input
+                    type="range"
+                    id="bParamSlider"
+                    class="slider"
+                    min="1"
+                    max="6"
+                    step="0.1"
+                    value="3"
+                  />
+                  <span id="bParamValue" class="slider-value">3.0</span>
+                </div>
+              </div>
+
+              <div class="control-group">
+                <span class="control-label">Rotação</span>
+                <div class="slider-container">
+                  <input
+                    type="range"
+                    id="rotationSlider"
+                    class="slider"
+                    min="0"
+                    max="90"
+                    step="5"
+                    value="0"
+                  />
+                  <span id="rotationValue" class="slider-value">0°</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="horizontal-buttons">
+              <button id="ellipseBoundaryBtn">Curva Elíptica</button>
+              <button id="customBoundaryBtn">Curva Personalizada</button>
+            </div>
+
+            <div class="results-display">
+              <div class="results-title">Análise da Fronteira</div>
+              <div class="results-row">
+                <span class="results-label">Área:</span>
+                <span id="boundaryArea">0.0000</span>
+              </div>
+              <div class="results-row">
+                <span class="results-label">Fronteira Suave (C¹)?</span>
+                <span id="boundarySmooth">Sim (C∞)</span>
+              </div>
+              <div class="results-row">
+                <span class="results-label">Integral de Linha:</span>
+                <span id="boundaryLineIntegral">0.0000</span>
+              </div>
+            </div>
+          </section>
+
+          <section>
+            <h2>Contexto Histórico: Desafios Computacionais</h2>
+            <div class="historical-note">
+              <p>
+                Durante o Programa Apollo, engenheiros enfrentavam o desafio de
+                calcular trajetórias de reentrada que envolviam regiões
+                curvilíneas da atmosfera terrestre.
+              </p>
+              <p>
+                Os computadores de bordo do Apollo, com apenas 32KB de ROM, não
+                podiam armazenar tabelas extensas de integrais. O Teorema de
+                Green permitia simplificar cálculos de trajetória em algoritmos
+                mais compactos.
+              </p>
+            </div>
+            <p>
+              A diferença entre cálculos bem-sucedidos ou catastróficos durante
+              a reentrada podia ser determinada por aproximações precisas
+              baseadas nestes teoremas matemáticos.
+            </p>
+          </section>
+
+          <section>
+            <h2>Exercício: Acoplamento Soyuz-Apollo</h2>
+            <p>
+              Durante a missão Soyuz-Apollo de 1975, engenheiros soviéticos e
+              americanos precisavam calcular trajetórias de acoplamento em
+              condições variáveis. Considerando um campo de força:
+            </p>
+            <p>$$\vec{F}(x,y) = (e^y\sin x, e^y\cos x)$$</p>
+            <p>
+              Determine o trabalho realizado ao mover um objeto ao longo da
+              fronteira elíptica:
+            </p>
+            <p>$$\frac{x^2}{9} + \frac{y^2}{4} = 1$$</p>
+            <p>
+              <em
+                >Este problema ilustra a importância do Teorema de Green em
+                trajetórias curvilíneas.</em
+              >
+            </p>
+          </section>
+        </section>
+
+        <!-- 4. TEOREMA DE STOKES NO PLANO -->
+        <section>
+          <section>
+            <h2>Teorema de Stokes no Plano</h2>
+            <p>
+              O Teorema de Green pode ser visto como um caso especial do Teorema
+              de Stokes restrito ao plano bidimensional.
+            </p>
+            <div class="math-box">
+              <p>
+                Se redefinirmos o campo vetorial como $\vec{F} = (P, Q, 0)$ e
+                considerarmos o rotacional:
+              </p>
+              <p>
+                $$\text{rot}(\vec{F}) = \nabla \times \vec{F} = \left(0, 0,
+                \frac{\partial Q}{\partial x} - \frac{\partial P}{\partial
+                y}\right)$$
+              </p>
+              <p>Então o Teorema de Green pode ser reescrito como:</p>
+              <p>
+                $$\oint_C \vec{F} \cdot d\vec{r} = \iint_D (\nabla \times
+                \vec{F}) \cdot \vec{n} \, dA$$
+              </p>
+            </div>
+            <p>
+              Aqui, $\vec{n} = (0,0,1)$ é o vetor unitário perpendicular ao
+              plano $xy$.
+            </p>
+          </section>
+
+          <section>
+            <h2>Rotacional em 2D vs. 3D</h2>
+            <p>
+              A conexão entre os teoremas revela uma perspectiva importante:
+            </p>
+            <ul>
+              <li>
+                Em 2D: O rotacional é um <em>escalar</em> ($\frac{\partial
+                Q}{\partial x} - \frac{\partial P}{\partial y}$)
+              </li>
+              <li>
+                Em 3D: O rotacional é um <em>vetor</em> ($\nabla \times
+                \vec{F}$)
+              </li>
+            </ul>
+            <p>
+              Esta distinção é crucial para compreender como o Teorema de Green
+              se generaliza para o Teorema de Stokes no espaço tridimensional.
+            </p>
+          </section>
+
+          <section>
+            <h2>Campos Conservativos vs. Rotativos</h2>
+            <p>
+              O Teorema de Green ajuda a distinguir dois tipos fundamentais de
+              campos vetoriais:
+            </p>
+            <ul>
+              <li>
+                <strong>Campos Conservativos</strong>: $\nabla \times \vec{F} =
+                \vec{0}$ → A integral de linha é zero para qualquer caminho
+                fechado
+              </li>
+              <li>
+                <strong>Campos Rotativos</strong>: $\nabla \times \vec{F} \neq
+                \vec{0}$ → A integral de linha depende da região encerrada
+              </li>
+            </ul>
+            <p>
+              Esta distinção é fundamental na física: campos gravitacionais e
+              elétricos são conservativos, enquanto campos magnéticos são
+              rotativos.
+            </p>
+          </section>
+
+          <!-- Visualização em slide separado -->
+          <section>
+            <h2>Visualização: Campos Conservativos vs. Rotativos</h2>
+            <p>Compare o comportamento de campos conservativos e rotativos</p>
+
+            <div class="visualization-container">
+              <canvas id="vectorFieldCanvas" width="500" height="300"></canvas>
+            </div>
+
+            <div class="horizontal-buttons">
+              <button id="conservativeFieldBtn">Campo Conservativo</button>
+              <button id="rotationalFieldBtn">Campo Rotacional</button>
+              <button id="toggleParticlesBtn">Ocultar Partículas</button>
+              <button id="resetParticlesBtn">Reiniciar Partículas</button>
+            </div>
+
+            <div class="results-display">
+              <div class="results-title">Propriedades do Campo Vetorial</div>
+              <div class="results-row">
+                <span class="results-label">Tipo do Campo:</span>
+                <span id="fieldType">Rotacional</span>
+              </div>
+              <div class="results-row">
+                <span class="results-label">Rotacional:</span>
+                <span id="fieldCurl">2.00</span>
+              </div>
+              <div class="results-row">
+                <span class="results-label">Integral no Círculo:</span>
+                <span id="pathCircleIntegral">0.0000</span>
+              </div>
+              <div class="results-row">
+                <span class="results-label">Integral no Retângulo:</span>
+                <span id="pathRectIntegral">0.0000</span>
+              </div>
+            </div>
+          </section>
+
+          <section>
+            <h2>Aplicação: Turbulência em Motores</h2>
+            <div class="historical-note">
+              <p>
+                Nos anos 1960, engenheiros soviéticos do programa Vostok
+                desenvolveram modelos de turbulência em câmaras de combustão
+                usando o Teorema de Stokes no plano para analisar padrões de
+                fluxo bidimensionais.
+              </p>
+              <p>
+                Estes cálculos permitiram identificar regiões de alta
+                vorticidade que poderiam comprometer a estabilidade do motor.
+              </p>
+            </div>
+            <p>
+              A matemática do rotacional revelou-se essencial para compreender
+              fenômenos de mistura de combustíveis e oxidantes em ambientes de
+              microgravidade.
+            </p>
+          </section>
+
+          <section>
+            <h2>Exercício: Análise de Fluxo</h2>
+            <p>
+              Um engenheiro da NASA está analisando o fluxo de gases em torno de
+              uma secção transversal de foguete. O campo de velocidades é
+              modelado por:
+            </p>
+            <p>$$\vec{v}(x,y) = \left(2xy, x^2 - y^2\right)$$</p>
+            <p>
+              Determine a circulação do fluido ao redor da circunferência $x^2 +
+              y^2 = 4$ e interprete o resultado em termos de vorticidade.
+            </p>
+          </section>
+        </section>
+
+        <!-- 5. TEOREMA DA DIVERGÊNCIA NO PLANO -->
+        <section>
+          <section>
+            <h2>Teorema da Divergência no Plano</h2>
+            <div class="math-box">
+              <p>
+                Para um campo vetorial $\vec{F} = (P, Q)$ com derivadas parciais
+                contínuas em uma região plana $D$ com fronteira suave $C$:
+              </p>
+              <p>
+                $$\oint_C \vec{F} \cdot \vec{n} \, ds = \iint_D \nabla \cdot
+                \vec{F} \, dA$$
+              </p>
+              <p>
+                Onde $\vec{n}$ é o vetor normal unitário exterior a $C$ e
+                $\nabla \cdot \vec{F} = \frac{\partial P}{\partial x} +
+                \frac{\partial Q}{\partial y}$ é a divergência de $\vec{F}$.
+              </p>
+            </div>
+            <p>
+              Este teorema relaciona o fluxo através da fronteira com a
+              "expansão" do campo no interior da região.
+            </p>
+          </section>
+
+          <section>
+            <h2>Conexão com o Teorema de Green</h2>
+            <p>
+              O Teorema da Divergência no plano pode ser derivado do Teorema de
+              Green mediante uma transformação apropriada:
+            </p>
+            <div class="math-box">
+              <p>
+                Se definirmos $P = -Q$ e $Q = P$ no Teorema de Green, obtemos:
+              </p>
+              <p>
+                $$\oint_C (-Q\,dx + P\,dy) = \iint_D \left(\frac{\partial
+                P}{\partial x} + \frac{\partial Q}{\partial y}\right)\,dA$$
+              </p>
+              <p>
+                Reconhecendo que $(-Q\,dx + P\,dy) = \vec{F} \cdot \vec{n} \,
+                ds$ e $\left(\frac{\partial P}{\partial x} + \frac{\partial
+                Q}{\partial y}\right) = \nabla \cdot \vec{F}$, recuperamos o
+                Teorema da Divergência.
+              </p>
+            </div>
+            <p>
+              Esta dualidade revela a profunda conexão entre rotação
+              (rotacional) e expansão (divergência) em campos vetoriais.
+            </p>
+          </section>
+
+          <section>
+            <h2>Fontes e Sumidouros</h2>
+            <p>
+              A divergência quantifica o comportamento de um campo vetorial
+              como:
+            </p>
+            <ul>
+              <li>
+                <strong>Fonte</strong>: $\nabla \cdot \vec{F} > 0$ → O campo
+                "emana" do ponto
+              </li>
+              <li>
+                <strong>Sumidouro</strong>: $\nabla \cdot \vec{F} < 0$ → O campo
+                "converge" para o ponto
+              </li>
+              <li>
+                <strong>Incompressível</strong>: $\nabla \cdot \vec{F} = 0$ →
+                Nem emana nem converge
+              </li>
+            </ul>
+            <p>
+              Em física, campos gravitacionais têm fontes (massas), campos
+              elétricos têm fontes (cargas positivas) e sumidouros (cargas
+              negativas), enquanto campos magnéticos são sempre incompressíveis.
+            </p>
+          </section>
+
+          <!-- Visualização em slide separado -->
+          <section>
+            <h2>Visualização: Divergência e Fluxo</h2>
+            <p>
+              Observe o comportamento de fontes e sumidouros em um campo
+              vetorial
+            </p>
+
+            <div class="visualization-container">
+              <canvas id="divergenceCanvas" width="500" height="300"></canvas>
+            </div>
+
+            <div class="controls">
+              <div class="control-group">
+                <span class="control-label">Fonte</span>
+                <div class="slider-container">
+                  <input
+                    type="range"
+                    id="sourceSlider"
+                    class="slider"
+                    min="0"
+                    max="2"
+                    step="0.1"
+                    value="1"
+                  />
+                  <span id="sourceValue" class="slider-value">1.0</span>
+                </div>
+              </div>
+
+              <div class="control-group">
+                <span class="control-label">Sumidouro</span>
+                <div class="slider-container">
+                  <input
+                    type="range"
+                    id="sinkSlider"
+                    class="slider"
+                    min="0"
+                    max="2"
+                    step="0.1"
+                    value="1"
+                  />
+                  <span id="sinkValue" class="slider-value">1.0</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="horizontal-buttons">
+              <button id="toggleDivergenceBtn">Ocultar Mapa</button>
+              <button id="resetParticlesBtn2">Reiniciar Partículas</button>
+            </div>
+
+            <div class="results-display">
+              <div class="results-title">Análise da Divergência</div>
+              <div class="results-row">
+                <span class="results-label">Fonte:</span>
+                <span id="sourceStrengthValue">1.00</span>
+              </div>
+              <div class="results-row">
+                <span class="results-label">Sumidouro:</span>
+                <span id="sinkStrengthValue">1.00</span>
+              </div>
+              <div class="results-row">
+                <span class="results-label">Div. Fonte:</span>
+                <span id="sourceDivValue">6.2832</span>
+              </div>
+              <div class="results-row">
+                <span class="results-label">Div. Sumidouro:</span>
+                <span id="sinkDivValue">-6.2832</span>
+              </div>
+              <div class="results-row">
+                <span class="results-label">Fluxo Total:</span>
+                <span id="totalFluxValue">0.0000</span>
+              </div>
+            </div>
+          </section>
+
+          <section>
+            <h2>Contexto Histórico: Propelentes Espaciais</h2>
+            <div class="historical-note">
+              <p>
+                Durante a corrida espacial, a União Soviética e os EUA adotaram
+                abordagens distintas para sistemas de propulsão. Os soviéticos
+                preferiam propelentes hipergólicos (que se inflamam ao contato),
+                enquanto os americanos usavam hidrogênio/oxigênio líquidos.
+              </p>
+              <p>
+                Ambas as abordagens exigiam modelagem precisa de fluxo de
+                fluidos, com os engenheiros aplicando o Teorema da Divergência
+                para analisar taxas de injeção e mistura.
+              </p>
+            </div>
+            <p>
+              A eficiência dos motores dependia crucialmente da análise
+              matemática precisa de campos de fluxo.
+            </p>
+          </section>
+
+          <section>
+            <h2>Exercício Integrador</h2>
+            <p>
+              Um engenheiro está analisando um campo de fluxo térmico em um
+              painel de proteção térmica. O campo é dado por:
+            </p>
+            <p>$$\vec{F}(x,y) = (x^2 - y^2, 2xy)$$</p>
+            <p>Determine:</p>
+            <ol>
+              <li>A divergência do campo em cada ponto</li>
+              <li>
+                O fluxo total através de um círculo de raio 3 centrado na origem
+              </li>
+              <li>
+                Verifique se o resultado obtido pelo cálculo direto da integral
+                de linha corresponde ao obtido pelo Teorema da Divergência
+              </li>
+            </ol>
+          </section>
+        </section>
+
+        <!-- 6. SÍNTESE E APLICAÇÕES AVANÇADAS -->
+        <section>
+          <section>
+            <h2>Quadro Comparativo dos Teoremas</h2>
+            <table>
+              <thead>
+                <tr>
+                  <th>Teorema</th>
+                  <th>Fórmula</th>
+                  <th>Interpretação Física</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Green</td>
+                  <td>
+                    $\oint_C (P\,dx + Q\,dy) = \iint_D \left(\frac{\partial
+                    Q}{\partial x} - \frac{\partial P}{\partial y}\right)\,dA$
+                  </td>
+                  <td>
+                    Trabalho ao longo da fronteira = Rotação interna total
+                  </td>
+                </tr>
+                <tr>
+                  <td>Stokes (Plano)</td>
+                  <td>
+                    $\oint_C \vec{F} \cdot d\vec{r} = \iint_D (\nabla \times
+                    \vec{F}) \cdot \vec{n} \, dA$
+                  </td>
+                  <td>Circulação = Fluxo de rotacional</td>
+                </tr>
+                <tr>
+                  <td>Divergência (Plano)</td>
+                  <td>
+                    $\oint_C \vec{F} \cdot \vec{n} \, ds = \iint_D \nabla \cdot
+                    \vec{F} \, dA$
+                  </td>
+                  <td>Fluxo através da fronteira = Expansão interna total</td>
+                </tr>
+              </tbody>
+            </table>
+            <p>
+              Estes teoremas representam manifestações do
+              <em>Teorema Fundamental do Cálculo</em> em dimensões superiores.
+            </p>
+          </section>
+
+          <section>
+            <h2>Aplicações Modernas</h2>
+            <p>
+              A matemática desenvolvida durante a corrida espacial continua
+              relevante nas missões contemporâneas:
+            </p>
+            <ul>
+              <li>
+                <strong>Rovers Marcianos</strong>: Utilizam campos vetoriais
+                para navegação autônoma em terrenos complexos
+              </li>
+              <li>
+                <strong>Velas Solares</strong>: Dependem de cálculos precisos de
+                fluxo de radiação usando o Teorema da Divergência
+              </li>
+              <li>
+                <strong>Docking Automático</strong>: Emprega o Teorema de Green
+                para calcular trajetórias de aproximação eficientes
+              </li>
+            </ul>
+            <p>
+              A era das missões privadas ao espaço, lideradas por empresas como
+              SpaceX e Blue Origin, continua a apoiar-se nos mesmos princípios
+              matemáticos fundamentais.
+            </p>
+          </section>
+
+          <section>
+            <h2>Conexão com Tópicos Subsequentes</h2>
+            <p>
+              O Teorema de Green serve como base para conceitos mais avançados:
+            </p>
+            <ul>
+              <li>
+                <strong>Formas Diferenciais</strong>: Generalizam integrais de
+                linha e superfície
+              </li>
+              <li>
+                <strong>Teorema de Stokes Generalizado</strong>: Unifica Green,
+                Stokes e Divergência em um único resultado poderoso
+              </li>
+              <li>
+                <strong>Topologia Diferencial</strong>: Explora as propriedades
+                das variedades e suas fronteiras
+              </li>
+            </ul>
+            <p>
+              O estudo destes teoremas abre portas para áreas como relatividade
+              geral, teoria de campos quânticos e análise numérica avançada.
+            </p>
+          </section>
+
+          <section>
+            <h2>Legado da Matemática na Corrida Espacial</h2>
+            <div class="historical-note">
+              <p>
+                Quando Neil Armstrong pisou na Lua em 1969, seu caminho foi
+                traçado por equações nascidas dos trabalhos de Green, Stokes e
+                Gauss no século XIX.
+              </p>
+              <p>
+                A competição entre superpotências acelerou o desenvolvimento não
+                apenas de foguetes e computadores, mas também de métodos
+                matemáticos aplicados.
+              </p>
+            </div>
+            <p>
+              O que começou como teoria matemática abstrata transformou-se em
+              ferramentas práticas que levaram a humanidade além dos limites do
+              nosso planeta.
+            </p>
+          </section>
+
+          <section>
+            <h2>Considerações Finais</h2>
+            <p>
+              O Teorema de Green exemplifica uma verdade profunda sobre a
+              matemática: teoremas aparentemente abstratos frequentemente se
+              revelam ferramentas práticas poderosas.
+            </p>
+            <p>
+              Da mesma forma que as integrais de linha se conectam às integrais
+              de área, a matemática teórica se conecta às grandes conquistas
+              tecnológicas da humanidade.
+            </p>
+            <div class="historical-note">
+              <p>
+                "A matemática é a linguagem com a qual Deus escreveu o
+                universo." — Galileu Galilei
+              </p>
+            </div>
+            <p>
+              E foi através dessa linguagem que conseguimos alcançar as
+              estrelas.
+            </p>
+          </section>
         </section>
       </div>
     </div>
