@@ -1,0 +1,236 @@
+<html>
+  <head>
+    <title>Anéis de Saturno - Visualização 3D</title>
+    <style>
+      body {
+        margin: 0;
+      }
+      canvas {
+        display: block;
+      }
+      #controls {
+        position: fixed;
+        top: 10px;
+        left: 10px;
+        background: rgba(0, 0, 0, 0.7);
+        color: white;
+        padding: 10px;
+        border-radius: 5px;
+        z-index: 1000;
+      }
+      .slider-container {
+        margin: 10px 0;
+      }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  </head>
+  <body>
+    <div id="controls">
+      <h3>Controles</h3>
+      <div class="slider-container">
+        <label>Quantidade Total de Partículas:</label>
+        <input
+          type="range"
+          id="particleSlider"
+          min="1000"
+          max="20000"
+          value="5000"
+        />
+        <span id="particleCount">5000 partículas</span>
+      </div>
+    </div>
+
+    <script>
+      // Configuração básica
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(
+        75,
+        window.innerWidth / window.innerHeight,
+        0.1,
+        1000
+      );
+      const renderer = new THREE.WebGLRenderer({ antialias: true });
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      document.body.appendChild(renderer.domElement);
+
+      // Iluminação
+      const light = new THREE.PointLight(0xffffff, 1.5, 100);
+      light.position.set(10, 10, 10);
+      scene.add(light);
+      scene.add(new THREE.AmbientLight(0x404040));
+
+      // Saturno
+      const saturnGeometry = new THREE.SphereGeometry(5, 32, 32);
+      const saturnMaterial = new THREE.MeshPhongMaterial({
+        color: 0xf4a460,
+        specular: 0x333333,
+        shininess: 5,
+      });
+      const saturn = new THREE.Mesh(saturnGeometry, saturnMaterial);
+      scene.add(saturn);
+
+      // Definição dos anéis com gaps
+      const ringDefinitions = {
+        C: {
+          inner: 5.5,
+          outer: 5.95,
+          density: 15, // média de 10-20 kg/m²
+          color: 0xcccccc,
+        },
+        B: {
+          inner: 6.1,
+          outer: 6.9,
+          density: 200, // média de 100-300 kg/m²
+          color: 0xffffff,
+        },
+        A: {
+          inner: 7.1,
+          outer: 8.9,
+          density: 45, // média de 40-50 kg/m²
+          color: 0xdddddd,
+        },
+      };
+
+      function createParticleSystem(ringDef, baseCount) {
+        const particles = new THREE.BufferGeometry();
+        const positions = [];
+        const colors = [];
+
+        // Calcula o número de partículas baseado na densidade relativa
+        const particleCount = Math.floor(baseCount * (ringDef.density / 45));
+
+        for (let i = 0; i < particleCount; i++) {
+          const angle = Math.random() * Math.PI * 2;
+          const radius =
+            ringDef.inner + Math.random() * (ringDef.outer - ringDef.inner);
+
+          positions.push(
+            radius * Math.cos(angle),
+            (Math.random() - 0.5) * 0.1, // Pequena variação em Y para dar volume
+            radius * Math.sin(angle)
+          );
+
+          // Adiciona cor com pequena variação
+          const color = new THREE.Color(ringDef.color);
+          colors.push(color.r, color.g, color.b);
+        }
+
+        particles.setAttribute(
+          'position',
+          new THREE.Float32BufferAttribute(positions, 3)
+        );
+        particles.setAttribute(
+          'color',
+          new THREE.Float32BufferAttribute(colors, 3)
+        );
+
+        const material = new THREE.PointsMaterial({
+          size: 0.05,
+          vertexColors: true,
+          transparent: true,
+          opacity: 0.8,
+        });
+
+        return new THREE.Points(particles, material);
+      }
+
+      let particlesA, particlesB, particlesC;
+
+      function updateParticleSystems(baseCount) {
+        // Remove sistemas existentes
+        if (particlesA) scene.remove(particlesA);
+        if (particlesB) scene.remove(particlesB);
+        if (particlesC) scene.remove(particlesC);
+
+        // Cria novos sistemas com densidades corretas
+        particlesA = createParticleSystem(ringDefinitions.A, baseCount);
+        particlesB = createParticleSystem(ringDefinitions.B, baseCount);
+        particlesC = createParticleSystem(ringDefinitions.C, baseCount);
+
+        scene.add(particlesA);
+        scene.add(particlesB);
+        scene.add(particlesC);
+      }
+
+      // Visualização inicial
+      updateParticleSystems(5000);
+
+      // Controles
+      const particleSlider = document.getElementById('particleSlider');
+      const particleCountDisplay = document.getElementById('particleCount');
+
+      particleSlider.addEventListener('input', (e) => {
+        const count = parseInt(e.target.value);
+        updateParticleSystems(count);
+        particleCountDisplay.textContent = `${count} partículas`;
+      });
+
+      // Animação
+      // Posiciona a câmera em um ângulo de 45 graus
+      camera.position.y = 15;
+      camera.position.z = 15;
+      camera.lookAt(scene.position);
+
+      function animate() {
+        requestAnimationFrame(animate);
+
+        // Rotação suave
+        const rotationSpeed = 0.001;
+        saturn.rotation.y += rotationSpeed;
+
+        if (particlesA) particlesA.rotation.y += rotationSpeed;
+        if (particlesB) particlesB.rotation.y += rotationSpeed;
+        if (particlesC) particlesC.rotation.y += rotationSpeed;
+
+        renderer.render(scene, camera);
+      }
+
+      // Controles de câmera
+      let isDragging = false;
+      let previousMousePosition = {
+        x: 0,
+        y: 0,
+      };
+
+      document.addEventListener('mousedown', (e) => {
+        isDragging = true;
+      });
+
+      document.addEventListener('mousemove', (e) => {
+        if (isDragging) {
+          const deltaMove = {
+            x: e.offsetX - previousMousePosition.x,
+            y: e.offsetY - previousMousePosition.y,
+          };
+
+          camera.position.x += deltaMove.x * 0.01;
+          camera.position.y -= deltaMove.y * 0.01;
+          camera.lookAt(scene.position);
+        }
+
+        previousMousePosition = {
+          x: e.offsetX,
+          y: e.offsetY,
+        };
+      });
+
+      document.addEventListener('mouseup', (e) => {
+        isDragging = false;
+      });
+
+      document.addEventListener('wheel', (e) => {
+        camera.position.z += e.deltaY * 0.01;
+        camera.position.z = Math.max(10, Math.min(camera.position.z, 30));
+      });
+
+      // Responsividade
+      window.addEventListener('resize', () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+      });
+
+      animate();
+    </script>
+  </body>
+</html>

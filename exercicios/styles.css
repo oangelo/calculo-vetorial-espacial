@@ -1,0 +1,239 @@
+:root {
+  --primary: #b87333; /* Cobre base */
+  --primary-light: #cd7f32; /* Cobre claro */
+  --primary-dark: #8b4513; /* Cobre escuro/oxidado */
+  --accent: #ffd700; /* Dourado envelhecido */
+  --warning: #a52a2a; /* Vermelho oxidado */
+  --bg-dark: #2a1810; /* Marrom muito escuro */
+  --bg-darker: #1a0f0a; /* Quase preto com tom marrom */
+  --text: #d4af37; /* Dourado suave para texto */
+  --text-faded: #98816b; /* Texto secundário */
+  --rust: #8b4513; /* Ferrugem */
+  --metal: #707070; /* Metal envelhecido */
+}
+
+body {
+  font-family: 'Share Tech Mono', monospace;
+  background-color: var(--bg-dark);
+  color: var(--text);
+  line-height: 1.6;
+  margin: 0;
+  padding: 20px;
+  background-image:
+    radial-gradient(
+      circle at 50% 50%,
+      rgba(184, 115, 51, 0.1) 0%,
+      transparent 80%
+    ),
+    repeating-linear-gradient(
+      45deg,
+      rgba(139, 69, 19, 0.05) 0px,
+      rgba(139, 69, 19, 0.05) 1px,
+      transparent 1px,
+      transparent 2px
+    );
+}
+
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+  position: relative;
+}
+
+.document-header {
+  background-color: var(--bg-darker);
+  border: 2px solid var(--primary);
+  padding: 30px;
+  margin-bottom: 30px;
+  position: relative;
+  box-shadow:
+    0 0 15px rgba(184, 115, 51, 0.2),
+    inset 0 0 30px rgba(139, 69, 19, 0.3);
+}
+
+.document-stamp {
+  position: absolute;
+  top: -15px;
+  right: 30px;
+  background-color: var(--warning);
+  color: var(--text);
+  padding: 5px 15px;
+  transform: rotate(5deg);
+  border: 2px solid var(--primary-light);
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+  z-index: 2;
+  font-weight: bold;
+}
+
+.document-date {
+  font-size: 0.9em;
+  color: var(--text-faded);
+  margin-bottom: 20px;
+  border-bottom: 1px solid var(--primary);
+  padding-bottom: 10px;
+}
+
+.censored {
+  background-color: var(--primary-dark);
+  color: transparent;
+  padding: 0 5px;
+  margin: 0 2px;
+  user-select: none;
+}
+
+.document-intro {
+  font-size: 1.1em;
+  line-height: 1.6;
+  margin: 20px 0;
+  color: var(--text);
+}
+
+.warning-box {
+  border: 1px solid var(--warning);
+  padding: 15px;
+  margin: 20px 0;
+  background-color: rgba(165, 42, 42, 0.1);
+  position: relative;
+}
+
+.warning-box::before {
+  content: '⚠ ATENÇÃO';
+  position: absolute;
+  top: -10px;
+  left: 10px;
+  background-color: var(--bg-darker);
+  padding: 0 10px;
+  color: var(--warning);
+  font-weight: bold;
+}
+
+.metadata {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px dashed var(--primary);
+  font-size: 0.9em;
+  color: var(--text-faded);
+}
+
+.exercise-list {
+  list-style: none;
+  padding: 0;
+}
+
+.exercise-item {
+  background-color: var(--bg-darker);
+  border: 1px solid var(--primary);
+  padding: 20px;
+  margin-bottom: 20px;
+  position: relative;
+  box-shadow:
+    0 0 10px rgba(184, 115, 51, 0.1),
+    inset 0 0 20px rgba(139, 69, 19, 0.2);
+
+  .exercise-number {
+    color: var(--primary-light);
+    font-size: 1.4em;
+    font-weight: bold;
+    margin-bottom: 15px;
+    display: inline-block;
+    padding: 5px 10px;
+    border: 1px solid var(--primary);
+    background-color: rgba(184, 115, 51, 0.1);
+  }
+
+  .context {
+    color: var(--text-faded);
+    font-style: italic;
+    margin-bottom: 15px;
+    padding: 10px;
+    border-left: 3px solid var(--rust);
+    background-color: rgba(139, 69, 19, 0.1);
+  }
+
+  .hint {
+    background-color: rgba(212, 175, 55, 0.1);
+    border-left: 3px solid var(--accent);
+    padding: 10px;
+    margin: 15px 0;
+    color: var(--text-faded);
+  }
+
+  details {
+    margin-top: 20px;
+    border: 1px solid var(--primary);
+  }
+
+  summary {
+    padding: 10px;
+    background-color: rgba(184, 115, 51, 0.1);
+    cursor: pointer;
+    font-weight: bold;
+    color: var(--primary-light);
+  }
+
+  summary:hover {
+    background-color: rgba(184, 115, 51, 0.2);
+    color: var(--accent);
+  }
+
+  .solution {
+    background-color: rgba(26, 15, 10, 0.8);
+    padding: 20px;
+    border-top: 1px solid var(--primary);
+  }
+
+  @keyframes flicker {
+    0% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.95;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+
+  .document-header {
+    animation: flicker 2s infinite;
+  }
+
+  @keyframes metallic-shine {
+    0% {
+      box-shadow:
+        0 0 5px var(--primary),
+        inset 0 0 10px rgba(184, 115, 51, 0.3);
+    }
+    50% {
+      box-shadow:
+        0 0 15px var(--primary-light),
+        inset 0 0 20px rgba(184, 115, 51, 0.5);
+    }
+    100% {
+      box-shadow:
+        0 0 5px var(--primary),
+        inset 0 0 10px rgba(184, 115, 51, 0.3);
+    }
+  }
+
+  .exercise-item:hover {
+    animation: metallic-shine 3s infinite;
+  }
+
+  .page-number {
+    text-align: right;
+    color: var(--text-faded);
+    margin-top: 20px;
+    font-size: 0.9em;
+    border-top: 1px solid var(--primary);
+    padding-top: 10px;
+  }
+
+  /* Estilo para fórmulas matemáticas */
+  .mjx-chtml {
+    color: var(--text) !important;
+  }
+}

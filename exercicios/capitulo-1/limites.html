@@ -1,0 +1,287 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Documento Sigiloso - Cálculo Vetorial</title>
+    <link
+      href="https://fonts.cdnjs.com/css2?family=Share+Tech+Mono&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://oangelo.github.io/calculo-vetorial-espacial/exercicios/styles.css"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+  </head>
+  <body>
+    <div class="container">
+      <!-- 
+        ATENÇÃO: Este é um modelo de documento histórico da Guerra Fria.
+        O document-header deve conter uma narrativa histórica relacionada à corrida espacial.
+        
+        Sugestão de evento histórico para contextualização:
+        - Em 20 de fevereiro de 1962, John Glenn se tornou o primeiro astronauta norte-americano a orbitar a Terra, no âmbito do Projeto Mercury.
+        -->
+      <div class="document-header">
+        <div class="document-stamp">SIGILOSO</div>
+        <div class="document-date">
+          DATA: <span class="censored">20</span> DE FEVEREIRO DE
+          <span class="censored">1962</span>
+          <br />
+          LOCALIZAÇÃO:
+          <span class="censored">BASE AEROESPACIAL [REDACTED]</span>
+        </div>
+
+        <div class="document-intro">
+          RELATÓRIO DE PROGRESSO: PROJETO
+          <span class="censored">MERCURY-LIMITES</span> <br /><br />
+          Em resposta ao recente feito norte-americano, quando o astronauta
+          <span class="censored">John Glenn</span> completou uma órbita
+          bem-sucedida em torno da Terra, nossa equipe de especialistas
+          intensificou os estudos sobre funções vetoriais e análise de
+          continuidade. <br /><br />
+          Os exercícios a seguir foram compilados dos arquivos do Dr.
+          <span class="censored">████████</span>, destacando a importância de
+          limites e continuidade para a correta previsão de trajetórias orbitais
+          e estabilidade de voo.
+        </div>
+
+        <div class="warning-box">
+          Este documento contém informações matemáticas consideradas vitais para
+          a segurança nacional. A divulgação não autorizada deste material pode
+          resultar em <span class="censored">consequências graves</span>.
+        </div>
+
+        <div class="metadata">
+          <span>REF: LM-<span class="censored">202</span>-B</span>
+          <span>NÍVEL DE ACESSO: SIGMA-<span class="censored">3</span></span>
+          <span
+            >CÓPIAS EXISTENTES: <span class="censored">1</span> DE
+            <span class="censored">3</span></span
+          >
+        </div>
+      </div>
+
+      <main>
+        <ol class="exercise-list">
+          <!-- EXERCÍCIO 1 -->
+          <li class="exercise-item">
+            <div class="exercise-number">EXERCÍCIO LIMITES-1</div>
+            <div class="context">
+              ORIGEM: Análise de Funções Bidimensionais [Relatórios do Centro de
+              Pesquisa [REDACTED], 1962]
+            </div>
+            <p>
+              Verificar se o limite abaixo existe ao aproximar-se do ponto
+              \((0,0)\): \[ \lim_{(x,y)\to(0,0)} \frac{x^2 - y^2}{x^2 + y^2}. \]
+              Este tipo de análise é fundamental para prever comportamentos
+              críticos em funções que descrevem sistemas de controle de
+              trajetória.
+            </p>
+            <details>
+              <summary>RELATÓRIO DE CÁLCULO [SIGMA-4 REQUERIDO]</summary>
+              <div class="solution">
+                <p>ANÁLISE DO LIMITE:</p>
+                <p>
+                  Se aproximarmos \((x,y)\) ao longo de \(y = x\), obtemos: \[
+                  \frac{x^2 - x^2}{x^2 + x^2} = \frac{0}{2x^2} = 0. \]
+                </p>
+                <p>
+                  Se aproximarmos \((x,y)\) ao longo de \(y = 0\), obtemos: \[
+                  \frac{x^2 - 0}{x^2 + 0} = \frac{x^2}{x^2} = 1. \]
+                </p>
+                <p>
+                  Como os valores obtidos são diferentes dependendo do caminho,
+                  o limite não existe.
+                </p>
+                <p>
+                  CONCLUSÃO: Não há limite único em \((0,0)\). Função não é
+                  contínua nesse ponto.
+                </p>
+              </div>
+            </details>
+          </li>
+
+          <!-- EXERCÍCIO 2 -->
+          <li class="exercise-item">
+            <div class="exercise-number">EXERCÍCIO LIMITES-2</div>
+            <div class="context">
+              ORIGEM: Departamento de Dinâmica Orbital [Documentos interceptados
+              da Agência [REDACTED]]
+            </div>
+            <p>
+              Considere a função vetorial \(\vec{F}(x,y) = \begin{pmatrix}
+              e^{x-y} \\ \sqrt{x^2 + y^2} \end{pmatrix}\). Verifique a
+              continuidade de \(\vec{F}(x,y)\) no ponto \((0,0)\).
+            </p>
+            <details>
+              <summary>RELATÓRIO DE CÁLCULO [SIGMA-4 REQUERIDO]</summary>
+              <div class="solution">
+                <p>PASSO 1: Analisar cada componente.</p>
+                <ul>
+                  <li>
+                    Primeira componente: \(e^{x-y}\).
+                    <br />
+                    Em \((0,0)\), \(e^{0-0} = e^0 = 1\). A função exponencial é
+                    contínua para todos os valores reais.
+                  </li>
+                  <li>
+                    Segunda componente: \(\sqrt{x^2 + y^2}\).
+                    <br />
+                    Em \((0,0)\), \(\sqrt{0 + 0} = 0\). A raiz quadrada da soma
+                    de quadrados também é contínua onde está definida.
+                  </li>
+                </ul>
+                <p>
+                  Como ambas as componentes são contínuas em \((0,0)\), a função
+                  vetorial \(\vec{F}\) também é contínua nesse ponto.
+                </p>
+                <p>CONCLUSÃO: \(\vec{F}(x,y)\) é contínua em \((0,0)\).</p>
+              </div>
+            </details>
+          </li>
+
+          <!-- EXERCÍCIO 3 -->
+          <li class="exercise-item">
+            <div class="exercise-number">EXERCÍCIO LIMITES-3</div>
+            <div class="context">
+              ORIGEM: Dados Telemétricos do Projeto [REDACTED] [Baseados em
+              leituras de trajetória]
+            </div>
+            <p>
+              Uma sonda espacial está descrita pela função de trajetória no
+              tempo: \[ \vec{r}(t) = \begin{pmatrix} 3t \\ 2 + \sin(t)
+              \end{pmatrix}. \] Verifique se \(\vec{r}(t)\) é contínua em \(t =
+              \pi\).
+            </p>
+            <details>
+              <summary>RELATÓRIO DE CÁLCULO [SIGMA-4 REQUERIDO]</summary>
+              <div class="solution">
+                <p>PROCEDIMENTO:</p>
+                <p>
+                  Cada componente de \(\vec{r}(t)\) é dada por funções
+                  elementares (polinômio e seno). Tanto \(3t\) quanto \(2 +
+                  \sin(t)\) são contínuos para todo \(t \in \mathbb{R}\).
+                </p>
+                <p>
+                  Em \(t = \pi\): \[ \vec{r}(\pi) = \begin{pmatrix} 3\pi \\ 2 +
+                  \sin(\pi) \end{pmatrix} = \begin{pmatrix} 3\pi \\ 2
+                  \end{pmatrix}. \]
+                </p>
+                <p>
+                  Como não há saltos ou indefinições na soma de funções
+                  contínuas, concluímos que \(\vec{r}(t)\) é contínua em \(t =
+                  \pi\) (e em todo \(t \in \mathbb{R}\)).
+                </p>
+                <p>
+                  CONCLUSÃO: A trajetória não apresenta descontinuidades neste
+                  intervalo.
+                </p>
+              </div>
+            </details>
+          </li>
+
+          <!-- EXERCÍCIO 4 -->
+          <li class="exercise-item">
+            <div class="exercise-number">EXERCÍCIO LIMITES-4</div>
+            <div class="context">
+              ORIGEM: Seção de Revisão Matemática [Avaliação de Campos
+              Vetoriais]
+            </div>
+            <p>
+              Analise a continuidade do campo vetorial: \[ \vec{F}(x,y) =
+              \begin{pmatrix} \dfrac{xy}{\sqrt{x^2 + y^2}} \\[6pt] \dfrac{x -
+              y}{x + y} \end{pmatrix} \] no ponto \((1,-1)\).
+            </p>
+            <details>
+              <summary>RELATÓRIO DE CÁLCULO [SIGMA-4 REQUERIDO]</summary>
+              <div class="solution">
+                <p>
+                  Para a segunda componente, \(\dfrac{x - y}{x + y}\), se
+                  substituirmos \((x,y) = (1,-1)\), obtemos divisor zero: \[ x +
+                  y = 1 + (-1) = 0. \]
+                </p>
+                <p>
+                  Isso significa que a função não está definida nesse ponto,
+                  logo não pode ser contínua lá.
+                </p>
+                <p>
+                  Já a primeira componente, \(\dfrac{xy}{\sqrt{x^2 + y^2}}\),
+                  estaria bem definida para \((1,-1)\). Porém, para que
+                  \(\vec{F}(x,y)\) seja contínua, ambas as componentes precisam
+                  ser contínuas (e definidas) naquele ponto.
+                </p>
+                <p>
+                  CONCLUSÃO: \(\vec{F}\) não é contínua em \((1,-1)\) pois a
+                  segunda componente não está definida nesse par de coordenadas.
+                </p>
+              </div>
+            </details>
+          </li>
+
+          <!-- EXERCÍCIO 5 -->
+          <li class="exercise-item">
+            <div class="exercise-number">EXERCÍCIO LIMITES-5</div>
+            <div class="context">
+              ORIGEM: Laboratório de Sistemas Propulsivos [Registros de
+              Simulações Avançadas]
+            </div>
+            <p>
+              Seja a função de tempo de voo para uma sonda experimental: \[
+              \vec{r}(t) = \begin{pmatrix} \dfrac{1}{t} \\ \ln(t + 1)
+              \end{pmatrix}, \quad t > 0. \] Investigue a continuidade de
+              \(\vec{r}(t)\) para \(t > 0\) e discuta o limite quando \(t \to
+              0^+\).
+            </p>
+            <details>
+              <summary>RELATÓRIO DE CÁLCULO [SIGMA-4 REQUERIDO]</summary>
+              <div class="solution">
+                <p>PARTE 1: Continuidade para \(t > 0\).</p>
+                <p>
+                  Ambas as componentes, \(\frac{1}{t}\) e \(\ln(t + 1)\), são
+                  funções contínuas para \(t > 0\).
+                </p>
+
+                <p>PARTE 2: Limite quando \(t \to 0^+\).</p>
+                <ul>
+                  <li>\(\lim_{t \to 0^+} \frac{1}{t} = +\infty\).</li>
+                  <li>\(\lim_{t \to 0^+} \ln(t + 1) = \ln(1) = 0\).</li>
+                </ul>
+                <p>
+                  A primeira componente tende ao infinito, logo \(\vec{r}(t)\)
+                  não converge para um valor finito quando \(t \to 0^+\).
+                </p>
+                <p>
+                  CONCLUSÃO: \(\vec{r}(t)\) é contínua para todo \(t > 0\), mas
+                  apresenta comportamento não-limitado quando \(t\) se aproxima
+                  de \(0\) pela direita.
+                </p>
+              </div>
+            </details>
+          </li>
+        </ol>
+      </main>
+
+      <div class="page-number">
+        PÁGINA 1 DE <span class="censored">12</span> • DOCUMENTO LM-<span
+          class="censored"
+          >202</span
+        >-B
+      </div>
+    </div>
+
+    <script>
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [['\\(', '\\)']],
+          displayMath: [['\\[', '\\]']],
+          processEscapes: true,
+        },
+        'HTML-CSS': {
+          color: '#d4af37',
+        },
+      });
+    </script>
+  </body>
+</html>

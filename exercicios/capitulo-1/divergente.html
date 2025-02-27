@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documento Sigiloso - Cálculo Vetorial</title>
+    <link href="https://fonts.cdnjs.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://oangelo.github.io/calculo-vetorial-espacial/exercicios/styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+</head>
+<body>
+    <div class="container">
+        <!-- 
+        ATENÇÃO: Este é um modelo de documento histórico da Guerra Fria.
+        O document-header deve conter uma narrativa histórica relacionada à corrida espacial.
+        
+        Sugestões de eventos históricos para contextualização:
+        - Lançamento do Sputnik (1957)
+        - Projeto Mercury (1958-1963)
+        - Programa Vostok (1961-1963)
+        - Programa Gemini (1965-1966)
+        - Programa Apollo (1961-1972)
+        
+        O texto deve parecer um documento sigiloso da época, com partes censuradas
+        e referências a projetos secretos relacionados ao desenvolvimento de
+        tecnologia espacial durante a Guerra Fria.
+        -->
+        <div class="document-header">
+            <div class="document-stamp">SIGILOSO</div>
+            <div class="document-date">
+                DATA: <span class="censored">11</span> DE OUTUBRO DE <span class="censored">1962</span>
+                <br>
+                LOCALIZAÇÃO: <span class="censored">BASE DE LANÇAMENTOS [REDACTED]</span>
+            </div>
+            
+            <div class="document-intro">
+                RELATÓRIO DE PROGRESSO: PROJETO <span class="censored">DIVER-X</span>
+                <br><br>
+                Em meio à tensão crescente após o <span class="censored">bloqueio naval</span> e à troca de ameaças entre <span class="censored">[REDACTED]</span> e <span class="censored">[REDACTED]</span>, nossas equipes de engenharia espacial e análise vetorial têm avançado na aplicação do conceito de divergente em cálculos críticos de propulsão.
+                <br><br>
+                O desenvolvimento destes exercícios faz parte dos estudos secretos sobre a trajetória de novos veículos orbitais, com ênfase no <span class="censored">Programa Mercury</span>. Seu objetivo principal: avaliar a existência de pontos de fuga (fontes) ou colapsos (sumidouros) em campos de força associados ao voo espacial.
+            </div>
+
+            <div class="warning-box">
+                Este documento contém análises de campos vetoriais classificadas como VITAIS para a segurança nacional.
+                A reprodução não autorizada acarretará <span class="censored">sanções extremas</span>.
+            </div>
+
+            <div class="metadata">
+                <span>REF: DIV-<span class="censored">1408</span>-A</span>
+                <span>NÍVEL DE ACESSO: SIGMA-<span class="censored">3</span></span>
+                <span>CÓPIAS EXISTENTES: <span class="censored">1</span> DE <span class="censored">5</span></span>
+            </div>
+        </div>
+
+        <main>
+            <ol class="exercise-list">
+
+                <!-- Exercício Introdutório -->
+                <li class="exercise-item">
+                    <div class="exercise-number">EXERCÍCIO VECTOR-2A</div>
+                    <div class="context">
+                        ORIGEM: Equipe de Análise Vetorial - Projeto Mercury
+                        [TRANSMISSÃO INTERNA APROVADA EM 08/OUT/1962]
+                    </div>
+                    <p>
+                        Considere o campo vetorial 
+                        \[
+                            \vec{F}(x, y, z) 
+                            = \bigl( x^2 y,\; 2y z,\; 3z \bigr).
+                        \]
+                        Determine a divergência \(\nabla \cdot \vec{F}\) e avalie, com base no resultado, se este campo apresenta fontes ou sumidouros na origem.
+                    </p>
+                    <div class="hint">
+                        [NOTA TÉCNICA]: Lembrar que \(\nabla \cdot \vec{F} = \frac{\partial P}{\partial x} + \frac{\partial Q}{\partial y} + \frac{\partial R}{\partial z}\).
+                    </div>
+                    <details>
+                        <summary>RELATÓRIO DE CÁLCULO [SIGMA-3 REQUERIDO]</summary>
+                        <div class="solution">
+                            <p>PROTOCOLO DE CÁLCULO DA DIVERGÊNCIA:</p>
+                            <p>
+                                \[
+                                    \nabla \cdot \vec{F}
+                                    = \frac{\partial}{\partial x}(x^2 y)
+                                      + \frac{\partial}{\partial y}(2 y z)
+                                      + \frac{\partial}{\partial z}(3 z).
+                                \]
+                            </p>
+                            <p>
+                                Cálculos:
+                                \[
+                                    \frac{\partial}{\partial x}(x^2 y) = 2x y, 
+                                    \quad
+                                    \frac{\partial}{\partial y}(2 y z) = 2z, 
+                                    \quad
+                                    \frac{\partial}{\partial z}(3 z) = 3.
+                                \]
+                            </p>
+                            <p>
+                                Portanto:
+                                \[
+                                    \nabla \cdot \vec{F} = 2xy + 2z + 3.
+                                \]
+                            </p>
+                            <p>
+                                <strong>Análise na origem (\(x=0, y=0, z=0\)):</strong><br>
+                                \(\nabla \cdot \vec{F}(0,0,0) = 3\).<br>
+                                Divergência positiva indica <em>fonte</em> neste ponto.
+                            </p>
+                        </div>
+                    </details>
+                </li>
+
+                <!-- Exercício Avançado -->
+                <li class="exercise-item">
+                    <div class="exercise-number">EXERCÍCIO VECTOR-2B</div>
+                    <div class="context">
+                        ORIGEM: Departamento de Dinâmica de Voos
+                        [RELATÓRIO CONFIDENCIAL DO PROJETO [REDACTED]]
+                    </div>
+                    <p>
+                        Seja \(\vec{G}(x,y,z) = \bigl(\sin(xy),\; y^2 + z,\; xz - y \bigr)\).
+                        Determine se \(\vec{G}\) é <em>solenoidal</em>, isto é, se \(\nabla \cdot \vec{G} = 0\) em todo o espaço.
+                    </p>
+                    <p>
+                        <strong>Desafio adicional:</strong> Caso a divergência não seja zero, indique as regiões (se houver) onde ela se anula. 
+                        Aplique este resultado para discutir possíveis implicações em trajetórias orbitais sujeitas a forças variáveis em diferentes pontos do espaço.
+                    </p>
+                    <p>
+                        Observação: Este problema requer manipulação de derivadas parciais com produtos de funções trigonométricas e polinomiais.
+                        Utilize protocolos avançados de computação ou derive cuidadosamente cada componente.
+                    </p>
+                    <details>
+                        <summary>RELATÓRIO DE CÁLCULO [SIGMA-3 REQUERIDO]</summary>
+                        <div class="solution">
+                            <p><strong>Cálculo da divergência:</strong></p>
+                            <p>
+                                \[
+                                    \nabla \cdot \vec{G} = \frac{\partial}{\partial x}\bigl(\sin(xy)\bigr)
+                                    + \frac{\partial}{\partial y}\bigl(y^2 + z\bigr)
+                                    + \frac{\partial}{\partial z}\bigl(xz - y\bigr).
+                                \]
+                            </p>
+                            <p>
+                                <em>Primeiro termo:</em> \(\frac{\partial}{\partial x}[\sin(xy)] = y \cos(xy).\)
+                                <br>
+                                <em>Segundo termo:</em> \(\frac{\partial}{\partial y}[y^2 + z] = 2y.\)
+                                <br>
+                                <em>Terceiro termo:</em> \(\frac{\partial}{\partial z}[xz - y] = x.\)
+                            </p>
+                            <p>
+                                Logo,
+                                \[
+                                    \nabla \cdot \vec{G} = y\cos(xy) + 2y + x.
+                                \]
+                            </p>
+                            <p>
+                                <strong>Análise:</strong> Este valor não é, em geral, zero para todos \(x, y, z\). Logo, \(\vec{G}\) não é solenoidal em todo o espaço.
+                            </p>
+                            <p>
+                                Para encontrar as regiões onde a divergência se anula, resolvemos:
+                                \[
+                                    y\cos(xy) + 2y + x = 0.
+                                \]
+                                Dependendo dos valores de \(x\) e \(y\), pode haver soluções específicas. Por exemplo, se \(y=0\), então o termo \(x\) deve ser \(0\), implicando \(x=0\). Assim, a origem \((0,0,z)\) é uma região onde a divergência é nula.
+                            </p>
+                            <p>
+                                Fisicamente, em trajetórias orbitais, regiões onde \(\nabla \cdot \vec{G} = 0\) podem implicar balanço entre componentes do campo; entretanto, por não ser nulo globalmente, tais equilíbrios podem ser pontuais ou limitados.
+                            </p>
+                        </div>
+                    </details>
+                </li>
+
+                <!-- Exercício Intermediário 1 -->
+                <li class="exercise-item">
+                    <div class="exercise-number">EXERCÍCIO VECTOR-2C</div>
+                    <div class="context">
+                        ORIGEM: Laboratório de Propulsão Avançada – Programa Gemini
+                        [REGISTRO PARCIAL OBTIDO EM 12/OUT/1962]
+                    </div>
+                    <p>
+                        Dado o campo vetorial \(\vec{H}(x, y, z) = \bigl(e^{x}y,\; x y^2,\; z^3 - x\bigr)\), calcule a divergência \(\nabla \cdot \vec{H}\).
+                    </p>
+                    <p>
+                        <strong>Tarefa adicional:</strong> Verifique se existe algum ponto onde \(\nabla \cdot \vec{H} = 0\). Em caso afirmativo, discuta a relevância de tais pontos para o balanceamento de forças em um sistema de propulsão.
+                    </p>
+                    <details>
+                        <summary>RELATÓRIO DE CÁLCULO [SIGMA-3 REQUERIDO]</summary>
+                        <div class="solution">
+                            <p><strong>Cálculo da divergência:</strong></p>
+                            <p>
+                                \[
+                                    \nabla \cdot \vec{H} = \frac{\partial}{\partial x}\bigl(e^x y\bigr)
+                                    + \frac{\partial}{\partial y}\bigl(x y^2\bigr)
+                                    + \frac{\partial}{\partial z}\bigl(z^3 - x\bigr).
+                                \]
+                            </p>
+                            <p>
+                                <em>Primeiro termo:</em> \(\frac{\partial}{\partial x}[e^x y] = e^x y.\)
+                                <br>
+                                <em>Segundo termo:</em> \(\frac{\partial}{\partial y}[x y^2] = x (2y).\)
+                                <br>
+                                <em>Terceiro termo:</em> \(\frac{\partial}{\partial z}[z^3 - x] = 3 z^2.\)
+                            </p>
+                            <p>
+                                Portanto,
+                                \[
+                                    \nabla \cdot \vec{H} = e^x y + 2xy + 3z^2.
+                                \]
+                            </p>
+                            <p>
+                                Para investigar se \(\nabla \cdot \vec{H}\) pode ser igual a zero, resolvemos:
+                                \[
+                                    e^x y + 2xy + 3z^2 = 0.
+                                \]
+                                De modo geral, pode haver pontos específicos satisfazendo a equação; por exemplo, \(x=0, y=0, z=0\) resulta em \(0 + 0 + 0 = 0\). Assim, a origem é um ponto onde a divergência se anula.
+                            </p>
+                            <p>
+                                Em termos de propulsão, pontos onde \(\nabla \cdot \vec{H} = 0\) podem indicar regiões de equilíbrio de fluxo, relevantes para ajustes de trajetória.
+                            </p>
+                        </div>
+                    </details>
+                </li>
+
+                <!-- Exercício Intermediário 2 -->
+                <li class="exercise-item">
+                    <div class="exercise-number">EXERCÍCIO VECTOR-2D</div>
+                    <div class="context">
+                        ORIGEM: Seção de Análises Orbitais – Programa Apollo
+                        [DOCUMENTO PARCIALMENTE CENSURADO]
+                    </div>
+                    <p>
+                        Considere o campo \(\vec{M}(x,y,z) = (x^2 - y^2,\; xy,\; x + y + z)\). Determine \(\nabla \cdot \vec{M}\) e conclua se o campo pode ser classificado como “irrotacional” ou “solenoidal” somente com base no valor da divergência. Justifique sua resposta.
+                    </p>
+                    <p>
+                        <strong>Dica:</strong> Lembre-se de que a condição para um campo ser solenoidal é \(\nabla \cdot \vec{M} = 0\),
+                        mas a condição para ser irrotacional envolve o rotacional e não apenas o divergente.
+                    </p>
+                    <details>
+                        <summary>RELATÓRIO DE CÁLCULO [SIGMA-3 REQUERIDO]</summary>
+                        <div class="solution">
+                            <p><strong>Cálculo da divergência:</strong></p>
+                            <p>
+                                \[
+                                    \nabla \cdot \vec{M} = \frac{\partial}{\partial x}(x^2 - y^2)
+                                    + \frac{\partial}{\partial y}(xy)
+                                    + \frac{\partial}{\partial z}(x + y + z).
+                                \]
+                            </p>
+                            <p>
+                                <em>Primeiro termo:</em> \(\frac{\partial}{\partial x}[x^2 - y^2] = 2x.\)
+                                <br>
+                                <em>Segundo termo:</em> \(\frac{\partial}{\partial y}[xy] = x.\)
+                                <br>
+                                <em>Terceiro termo:</em> \(\frac{\partial}{\partial z}[x + y + z] = 1.\)
+                            </p>
+                            <p>
+                                Portanto,
+                                \[
+                                    \nabla \cdot \vec{M} = 2x + x + 1 = 3x + 1.
+                                \]
+                            </p>
+                            <p>
+                                <strong>Análise:</strong> O campo não é solenoidal em todo o espaço, pois \(\nabla \cdot \vec{M}\) não é identicamente zero. Ele se anula apenas em \(x = -\frac{1}{3}\).
+                            </p>
+                            <p>
+                                Com relação à irrotacionalidade, é preciso calcular o rotacional \(\nabla \times \vec{M}\). Logo, saber apenas o divergente não permite concluir se o campo é ou não irrotacional.
+                            </p>
+                        </div>
+                    </details>
+                </li>
+
+                <!-- Exercício Avançado Extra -->
+                <li class="exercise-item">
+                    <div class="exercise-number">EXERCÍCIO VECTOR-2E</div>
+                    <div class="context">
+                        ORIGEM: Equipe de Inteligência Científica [REDACTED]
+                        [ARQUIVO CLASSIFICADO]
+                    </div>
+                    <p>
+                        Suponha que \(\vec{K}(x,y,z) = (xyz,\; x^2 + z^2,\; \ln(1 + x^2 + y^2))\).
+                        Calcule \(\nabla \cdot \vec{K}\). Investigue se existem regiões no espaço nas quais esse divergente seja negativo, e interprete fisicamente o que isso implicaria para um campo de forças.
+                    </p>
+                    <p>
+                        <strong>Observação:</strong> A presença de funções logarítmicas pode exigir cuidado especial em pontos onde o argumento seja zero.
+                    </p>
+                    <details>
+                        <summary>RELATÓRIO DE CÁLCULO [SIGMA-3 REQUERIDO]</summary>
+                        <div class="solution">
+                            <p><strong>Cálculo da divergência:</strong></p>
+                            <p>
+                                \[
+                                    \nabla \cdot \vec{K} = \frac{\partial}{\partial x}(xyz)
+                                    + \frac{\partial}{\partial y}(x^2 + z^2)
+                                    + \frac{\partial}{\partial z}[\ln(1 + x^2 + y^2)].
+                                \]
+                            </p>
+                            <p>
+                                <em>Primeiro termo:</em> \(\frac{\partial}{\partial x}[xyz] = yz.\)
+                                <br>
+                                <em>Segundo termo:</em> \(\frac{\partial}{\partial y}[x^2 + z^2] = 0\), pois não depende de \(y\).
+                                <br>
+                                <em>Terceiro termo:</em> \(\frac{\partial}{\partial z}[\ln(1 + x^2 + y^2)] = 0\), pois não depende de \(z\).
+                            </p>
+                            <p>
+                                Portanto,
+                                \[
+                                    \nabla \cdot \vec{K} = yz.
+                                \]
+                            </p>
+                            <p>
+                                <strong>Análise de sinal:</strong> \(yz\) pode assumir valores positivos, negativos ou zero, dependendo dos sinais de \(y\) e \(z\). Se \(yz < 0\), o divergente é negativo, implicando um comportamento de sumidouro (ou colapso local) no campo de forças.
+                            </p>
+                            <p>
+                                Fisicamente, divergência negativa em regiões específicas pode indicar pontos onde o campo "entra" mais do que "sai" — relevante em cenários orbitais onde forças convergem.
+                            </p>
+                        </div>
+                    </details>
+                </li>
+
+            </ol>
+        </main>
+
+        <div class="page-number">
+            PÁGINA 1 DE <span class="censored">9</span> • DOCUMENTO DIV-<span class="censored">1408</span>-A
+        </div>
+    </div>
+
+    <script>
+        MathJax.Hub.Config({
+            tex2jax: {
+                inlineMath: [["\\(","\\)"]],
+                displayMath: [["\\[","\\]"]],
+                processEscapes: true
+            },
+            "HTML-CSS": {
+                color: "#d4af37"
+            }
+        });
+    </script>
+</body>
+</html>
+

@@ -1,0 +1,342 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Documento Sigiloso - Cálculo Vetorial</title>
+    <link
+      href="https://fonts.cdnjs.com/css2?family=Share+Tech+Mono&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://oangelo.github.io/calculo-vetorial-espacial/exercicios/styles.css"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+  </head>
+  <body>
+    <div class="container">
+      <!-- 
+        ATENÇÃO: Este é um modelo de documento histórico da Guerra Fria.
+        O document-header deve conter uma narrativa histórica relacionada à corrida espacial.
+
+        Sugestões de eventos históricos para contextualização:
+        - Lançamento do Sputnik (1957)
+        - Projeto Mercury (1958-1963)
+        - Programa Vostok (1961-1963)
+        - Programa Gemini (1965-1966)
+        - Programa Apollo (1961-1972)
+
+        O texto deve parecer um documento sigiloso da época, com partes censuradas
+        e referências a projetos secretos relacionados ao desenvolvimento de
+        tecnologia espacial durante a Guerra Fria.
+        -->
+      <div class="document-header">
+        <div class="document-stamp">SIGILOSO</div>
+        <div class="document-date">
+          DATA: <span class="censored">15</span> DE ABRIL DE
+          <span class="censored">1969</span>
+          <br />
+          LOCALIZAÇÃO:
+          <span class="censored">BASE AEROESPACIAL [REDACTED]</span>
+        </div>
+
+        <div class="document-intro">
+          RELATÓRIO DE PROGRESSO: PROJETO <span class="censored">DELTA-G</span>
+          <br /><br />
+          À luz do <span class="censored">sucesso parcial</span> da missão
+          <span class="censored">Apollo</span>, nossa equipe de pesquisadores
+          intensificou estudos sobre derivadas parciais aplicadas a campos
+          gravitacionais e vetoriais. Os exercícios a seguir foram retirados dos
+          registros do Dr. <span class="censored">██████</span>, que colaborou
+          secretamente em
+          <span class="censored">análises orbitais avançadas</span>
+          e forneceu subsídios matemáticos para futuras missões.
+        </div>
+
+        <div class="warning-box">
+          Este documento contém informações matemáticas classificadas. Qualquer
+          divulgação não autorizada pode resultar em
+          <span class="censored">sanções severas</span> e comprometimento das
+          pesquisas em curso.
+        </div>
+
+        <div class="metadata">
+          <span>REF: DG-<span class="censored">2029</span>-A</span>
+          <span>NÍVEL DE ACESSO: SIGMA-<span class="censored">4</span></span>
+          <span
+            >CÓPIAS EXISTENTES: <span class="censored">1</span> DE
+            <span class="censored">2</span></span
+          >
+        </div>
+      </div>
+
+      <main>
+        <ol class="exercise-list">
+          <!-- EXERCÍCIO 1 -->
+          <li class="exercise-item">
+            <div class="exercise-number">EXERCÍCIO DERIV-1A</div>
+            <div class="context">
+              ORIGEM: Análise Básica de Funções Escalares [DADOS INTERCEPTADOS
+              DE LABORATÓRIO [REDACTED]]
+            </div>
+            <p>
+              Considere a função: \[ f(x,y) = x^2 \, y + e^y \, x \] Determine:
+              \[ \frac{\partial f}{\partial x} \quad \text{e} \quad
+              \frac{\partial f}{\partial y}. \]
+            </p>
+            <details>
+              <summary>RELATÓRIO DE CÁLCULO [SIGMA-4 REQUERIDO]</summary>
+              <div class="solution">
+                <p>
+                  <strong
+                    >Cálculo da derivada parcial em relação a \(x\):</strong
+                  >
+                </p>
+                <p>
+                  \[ \frac{\partial f}{\partial x} = \frac{\partial}{\partial
+                  x}\bigl(x^2 y + e^y x\bigr) = 2xy + e^y. \]
+                </p>
+                <p>
+                  <strong
+                    >Cálculo da derivada parcial em relação a \(y\):</strong
+                  >
+                </p>
+                <p>
+                  \[ \frac{\partial f}{\partial y} = \frac{\partial}{\partial
+                  y}\bigl(x^2 y + e^y x\bigr) = x^2 + x e^y. \]
+                </p>
+                <p>
+                  Análise confirma consistência em aplicações de projeto
+                  <span class="censored">███████</span>.
+                </p>
+              </div>
+            </details>
+          </li>
+
+          <!-- EXERCÍCIO 2 -->
+          <li class="exercise-item">
+            <div class="exercise-number">EXERCÍCIO DERIV-1B</div>
+            <div class="context">
+              ORIGEM: Projeto <span class="censored">VECTOR-Z</span>
+              [RELACIONADO AO MÓDULO DE ATERRISSAGEM]
+            </div>
+            <p>
+              Temos a função de potencial gravitacional simplificada em 2D: \[
+              \phi(x,y) = -\frac{G M}{\sqrt{x^2 + y^2}}. \] Calcule: \[
+              \frac{\partial \phi}{\partial x} \quad \text{e} \quad
+              \frac{\partial \phi}{\partial y}. \] Faça a análise do sinal
+              físico de cada componente.
+            </p>
+            <details>
+              <summary>RELATÓRIO DE CÁLCULO [SIGMA-4 REQUERIDO]</summary>
+              <div class="solution">
+                <p>
+                  <strong>Passo 1:</strong> Identificar \(r = \sqrt{x^2 +
+                  y^2}\).
+                </p>
+                <p><strong>Passo 2:</strong> Derivar usando regra da cadeia.</p>
+                <p>
+                  \[ \frac{\partial \phi}{\partial x} = -GM \,
+                  \frac{\partial}{\partial x} \left(\frac{1}{r}\right) = -GM
+                  \left(-\frac{1}{r^2}\right) \frac{\partial r}{\partial x} =
+                  \frac{GM}{r^2} \cdot \frac{x}{\sqrt{x^2 + y^2}}. \]
+                  <br />
+                  \[ \frac{\partial \phi}{\partial x} = \frac{GM\, x}{(x^2 +
+                  y^2)^{3/2}}. \]
+                </p>
+                <p>
+                  \[ \frac{\partial \phi}{\partial y} = \frac{GM\, y}{(x^2 +
+                  y^2)^{3/2}}. \]
+                </p>
+                <p>
+                  <strong>Análise de sinal e direção da força:</strong> Note que
+                  \(\frac{\partial \phi}{\partial x}\) ou \(\frac{\partial
+                  \phi}{\partial y}\) podem ser positivos ou negativos conforme
+                  \(x\) ou \(y\) sejam positivos ou negativos, refletindo que o
+                  potencial \(\phi(x,y) = -\frac{GM}{\sqrt{x^2 + y^2}}\)
+                  torna-se menos negativo à medida que nos afastamos da origem
+                  em qualquer direção positiva. Entretanto, a
+                  <em>força</em> associada é dada por \[ \mathbf{F} = -\nabla
+                  \phi, \] ou seja, é o <em>negativo</em> dessas derivadas. Isso
+                  garante que o vetor força aponte sempre em direção à origem
+                  (atração gravitacional), mesmo quando as derivadas parciais do
+                  potencial em relação a \(x\) e \(y\) sejam positivas
+                  <strong>Análise de sinal e direção da força:</strong> Note que
+                  \(\frac{\partial \phi}{\partial x}\) ou \(\frac{\partial
+                  \phi}{\partial y}\) podem ser positivos ou negativos conforme
+                  \(x\) ou \(y\) sejam positivos ou negativos, refletindo que o
+                  potencial \(\phi(x,y) = -\frac{GM}{\sqrt{x^2 + y^2}}\)
+                  torna-se menos negativo à medida que nos afastamos da origem
+                  em qualquer direção positiva. Entretanto, a
+                  <em>força</em> associada é dada por \[ \mathbf{F} = -\nabla
+                  \phi, \] ou seja, é o <em>negativo</em> dessas derivadas. Isso
+                  garante que o vetor força aponte sempre em direção à origem
+                  (atração gravitacional), mesmo quando as derivadas parciais do
+                  potencial em relação a \(x\) e \(y\) sejam positivas para
+                  valores positivos de \(x\) ou \(y\). para valores positivos de
+                  \(x\) ou \(y\).
+                </p>
+              </div>
+            </details>
+          </li>
+
+          <!-- EXERCÍCIO 3 -->
+          <li class="exercise-item">
+            <div class="exercise-number">EXERCÍCIO DERIV-1C</div>
+            <div class="context">
+              ORIGEM: Pesquisa Avançada em Termodinâmica Orbital [FRUTO DA
+              PARCERIA COM [REDACTED]]
+            </div>
+            <p>
+              A função de energia total de um satélite em órbita (simplificada)
+              é dada por: \[ E(v, r) = \frac{1}{2} m v^2 - \frac{GM m}{r}. \]
+              Calcule: \[ \frac{\partial E}{\partial v} \quad \text{e} \quad
+              \frac{\partial E}{\partial r}. \] Interprete fisicamente cada
+              derivada.
+            </p>
+            <details>
+              <summary>RELATÓRIO DE CÁLCULO [SIGMA-4 REQUERIDO]</summary>
+              <div class="solution">
+                <p><strong>Derivada em relação a \(v\):</strong></p>
+                <p>
+                  \[ \frac{\partial E}{\partial v} = \frac{\partial}{\partial
+                  v}\left(\frac{1}{2} m v^2\right) - \frac{\partial}{\partial
+                  v}\left(\frac{GM m}{r}\right) = m v. \] (a segunda parcela é
+                  constante em \(v\)).
+                </p>
+                <p>
+                  <em>Interpretação:</em> Corresponde à variação de energia
+                  cinética com a velocidade (relacionada ao momento linear).
+                </p>
+                <p><strong>Derivada em relação a \(r\):</strong></p>
+                <p>
+                  \[ \frac{\partial E}{\partial r} = \frac{\partial}{\partial
+                  r}\left(\frac{1}{2} m v^2\right) - \frac{\partial}{\partial
+                  r}\left(\frac{GM m}{r}\right) = 0 + GM m \frac{1}{r^2}. \]
+                  Observe que o termo de energia cinética independe de \(r\),
+                  nessa forma simplificada.
+                </p>
+                <p>
+                  <em>Interpretação:</em> Indica a variação do potencial
+                  gravitacional com o raio, representando a força gravitacional
+                  em módulo (sem o sinal negativo, pois aqui estamos olhando
+                  para a energia).
+                </p>
+              </div>
+            </details>
+          </li>
+
+          <!-- EXERCÍCIO 4 -->
+          <li class="exercise-item">
+            <div class="exercise-number">EXERCÍCIO DERIV-1D</div>
+            <div class="context">
+              ORIGEM: Departamento de Dinâmica de Fluidos [COLABORAÇÃO COM
+              PROJETO [REDACTED]]
+            </div>
+            <p>
+              Considere o campo vetorial planar: \[ \vec{F}(x,y) = \bigl(x^3 +
+              2y\bigr)\hat{i} + \bigl(x\,y^2 - y\bigr)\hat{j}. \] Calcule as
+              derivadas parciais: \[ \frac{\partial \vec{F}}{\partial x} \quad
+              \text{e} \quad \frac{\partial \vec{F}}{\partial y}. \]
+            </p>
+            <details>
+              <summary>RELATÓRIO DE CÁLCULO [SIGMA-4 REQUERIDO]</summary>
+              <div class="solution">
+                <p><strong>Em notação de componentes:</strong></p>
+                <p>
+                  \(\vec{F}(x,y) = P(x,y)\hat{i} + Q(x,y)\hat{j}\), <br />
+                  onde \(P(x,y) = x^3 + 2y\) e \(Q(x,y) = x\,y^2 - y\).
+                </p>
+
+                <p><strong>Derivada parcial em relação a \(x\):</strong></p>
+                <p>
+                  \[ \frac{\partial \vec{F}}{\partial x} = \left(\frac{\partial
+                  P}{\partial x}\right)\hat{i} + \left(\frac{\partial
+                  Q}{\partial x}\right)\hat{j} = \bigl(3x^2\bigr)\hat{i} +
+                  \bigl(y^2\bigr)\hat{j}. \]
+                </p>
+
+                <p><strong>Derivada parcial em relação a \(y\):</strong></p>
+                <p>
+                  \[ \frac{\partial \vec{F}}{\partial y} = \left(\frac{\partial
+                  P}{\partial y}\right)\hat{i} + \left(\frac{\partial
+                  Q}{\partial y}\right)\hat{j} = \bigl(2\bigr)\hat{i} +
+                  \bigl(2xy - 1\bigr)\hat{j}. \]
+                </p>
+                <p>
+                  Análise confirma influências significativas da componente
+                  \(\hat{j}\) na estabilidade de trajetória.
+                </p>
+              </div>
+            </details>
+          </li>
+
+          <!-- EXERCÍCIO 5 -->
+          <li class="exercise-item">
+            <div class="exercise-number">EXERCÍCIO DERIV-1E</div>
+            <div class="context">
+              ORIGEM: Equipe de Controle e Navegação Orbital [RELATÓRIOS
+              CRIPTOGRAFADOS DE [REDACTED]]
+            </div>
+            <p>
+              Uma função para descrever o perfil de temperatura em um módulo
+              espacial é: \[ T(x,y,z) = A e^{-k(x^2 + y^2)} + Bz, \] onde \(A\),
+              \(B\) e \(k\) são constantes positivas, e \(z\) é a altura dentro
+              do módulo. Determine: \[ \frac{\partial T}{\partial x}, \quad
+              \frac{\partial T}{\partial y} \quad \text{e} \quad \frac{\partial
+              T}{\partial z}. \] Justifique por que a derivada em \(z\) é
+              linear.
+            </p>
+            <details>
+              <summary>RELATÓRIO DE CÁLCULO [SIGMA-4 REQUERIDO]</summary>
+              <div class="solution">
+                <p>
+                  \[ \frac{\partial T}{\partial x} = \frac{\partial}{\partial x}
+                  \left(A e^{-k(x^2 + y^2)} + Bz \right) = A
+                  \frac{\partial}{\partial x}\bigl(e^{-k(x^2 + y^2)}\bigr) = A
+                  \bigl(-k \cdot 2x \bigr) e^{-k(x^2 + y^2)} = -2Akx\, e^{-k(x^2
+                  + y^2)}. \]
+                </p>
+                <p>
+                  \[ \frac{\partial T}{\partial y} = -2Aky\, e^{-k(x^2 + y^2)}.
+                  \]
+                </p>
+                <p>
+                  \[ \frac{\partial T}{\partial z} = \frac{\partial}{\partial
+                  z}\left(Bz\right) = B. \]
+                </p>
+                <p>
+                  <strong>Justificativa:</strong> A contribuição de \(Bz\) é
+                  linear em \(z\), pois \(\frac{\partial}{\partial z}(Bz) = B\).
+                  Não há outro termo dependente de \(z\) na porção exponencial,
+                  que só depende de \(x\) e \(y\).
+                </p>
+              </div>
+            </details>
+          </li>
+        </ol>
+      </main>
+
+      <div class="page-number">
+        PÁGINA 1 DE <span class="censored">9</span> • DOCUMENTO DG-<span
+          class="censored"
+          >2029</span
+        >-A
+      </div>
+    </div>
+
+    <script>
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [['\\(', '\\)']],
+          displayMath: [['\\[', '\\]']],
+          processEscapes: true,
+        },
+        'HTML-CSS': {
+          color: '#d4af37',
+        },
+      });
+    </script>
+  </body>
+</html>

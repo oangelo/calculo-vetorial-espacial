@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Documento Sigiloso - Cálculo Vetorial</title>
+    <link
+      href="https://fonts.cdnjs.com/css2?family=Share+Tech+Mono&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../styles.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+  </head>
+  <body>
+    <div class="container">
+      <div class="document-header">
+        <div class="document-stamp">SIGILOSO</div>
+        <div class="document-date">
+          DATA: <span class="censored">20</span> DE JULHO DE
+          <span class="censored">1969</span>
+          <br />
+          LOCALIZAÇÃO:
+          <span class="censored">CENTRO DE CONTROLE DA MISSÃO</span>
+        </div>
+
+        <div class="document-intro">
+          RELATÓRIO DE ANÁLISE: PROJETO <span class="censored">APOLLO-11</span>
+          <br /><br />
+          Durante a alunissagem, nossa equipe de engenharia identificou padrões
+          inesperados nos campos aerodinâmicos, sugerindo efeitos não triviais
+          do rotacional do campo atmosférico residual na Lua. O presente
+          relatório detalha os cálculos necessários para avaliar o impacto
+          dessas forças.
+        </div>
+
+        <div class="warning-box">
+          Este documento contém informações matemáticas consideradas vitais para
+          a segurança nacional. A divulgação não autorizada deste material pode
+          resultar em <span class="censored">graves consequências</span>.
+        </div>
+      </div>
+
+      <main>
+        <ol class="exercise-list">
+          <li class="exercise-item">
+            <div class="exercise-number">EXERCÍCIO VECTOR-2A</div>
+            <div class="context">
+              ORIGEM: Simulação de Rotacional - Módulo Lunar Eagle
+            </div>
+            <p>
+              O campo vetorial \(\vec{F} = \begin{pmatrix} -y \\ x \\ 0
+              \end{pmatrix}\) representa um fluxo.
+            </p>
+            <p>
+              DETERMINAR: O rotacional de \(\vec{F}\) e interpretar seu
+              significado físico.
+            </p>
+            <details>
+              <summary>RELATÓRIO DE CÁLCULO [SIGMA-4 REQUERIDO]</summary>
+              <div class="solution">
+                \[ \nabla \times \vec{F} = \begin{pmatrix} 0 \\ 0 \\ 2
+                \end{pmatrix} \]
+                <p>O campo tem um vórtice girando ao redor do eixo \(z\).</p>
+              </div>
+            </details>
+          </li>
+
+          <li class="exercise-item">
+            <div class="exercise-number">EXERCÍCIO VECTOR-2B</div>
+            <div class="context">
+              ORIGEM: Análise de Campos Magnéticos - Sistema de Navegação da
+              Apollo
+            </div>
+            <p>
+              O campo vetorial magnético é dado por \(\vec{B} = \begin{pmatrix}
+              0 \\ -z \\ y \end{pmatrix}\).
+            </p>
+            <p>DETERMINAR: Se este campo é irrotacional.</p>
+            <details>
+              <summary>RELATÓRIO DE CÁLCULO [SIGMA-4 REQUERIDO]</summary>
+              <div class="solution">
+                \[ \nabla \times \vec{B} = \begin{pmatrix} 2 \\ 0 \\ 0
+                \end{pmatrix} \]
+                <p>O campo não é irrotacional.</p>
+              </div>
+            </details>
+          </li>
+
+          <li class="exercise-item">
+            <div class="exercise-number">EXERCÍCIO VECTOR-2C</div>
+            <div class="context">
+              ORIGEM: Fluxo de Plasma no Espaço Próximo à Lua
+            </div>
+            <p>
+              O campo vetorial \(\vec{E} = (yz, xz, xy)\) descreve um fluxo
+              elétrico variável.
+            </p>
+            <p>
+              DETERMINAR: O rotacional de \(\vec{E}\) e interpretar o resultado.
+            </p>
+            <details>
+              <summary>RELATÓRIO DE CÁLCULO [SIGMA-4 REQUERIDO]</summary>
+              <div class="solution">
+                \[ \nabla \times \vec{E} = \begin{pmatrix} 0 \\ 0 \\ 0
+                \end{pmatrix} \]
+                <p>O campo é irrotacional.</p>
+              </div>
+            </details>
+          </li>
+
+          <li class="exercise-item">
+            <div class="exercise-number">EXERCÍCIO VECTOR-2D</div>
+            <div class="context">
+              ORIGEM: Forças Aerodinâmicas em Retorno Orbital
+            </div>
+            <p>
+              O campo \(\vec{V} = (x^2, y^2, z^2)\) representa a distribuição de
+              velocidades de reentrada.
+            </p>
+            <p>
+              DETERMINAR: O rotacional de \(\vec{V}\) e seu impacto na
+              estabilidade do módulo.
+            </p>
+            <details>
+              <summary>RELATÓRIO DE CÁLCULO [SIGMA-4 REQUERIDO]</summary>
+              <div class="solution">
+                \[ \nabla \times \vec{V} = \begin{pmatrix} 0 \\ 0 \\ 0
+                \end{pmatrix} \]
+                <p>O campo não gera vórtices significativos.</p>
+              </div>
+            </details>
+          </li>
+        </ol>
+      </main>
+
+      <div class="page-number">
+        PÁGINA 1 DE <span class="censored">12</span> • DOCUMENTO APOLLO-<span
+          class="censored"
+          >11</span
+        >
+      </div>
+    </div>
+
+    <script>
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [['\\(', '\\)']],
+          displayMath: [['\\[', '\\]']],
+          processEscapes: true,
+        },
+        'HTML-CSS': {
+          color: '#d4af37',
+        },
+      });
+    </script>
+  </body>
+</html>

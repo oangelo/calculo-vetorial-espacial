@@ -1,0 +1,651 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Apresentação Matemática</title>
+    <link rel="stylesheet" href="reveal.js/dist/reveal.css" />
+    <link rel="stylesheet" href="space-theme.css" />
+    <script src="reveal.js/dist/reveal.js"></script>
+    <script src="reveal.js/plugin/math/math.js"></script>
+    <script>
+      window.onload = function () {
+        Reveal.initialize({
+          controls: true,
+          progress: true,
+          center: true,
+          hash: true,
+          plugins: [RevealMath.MathJax3],
+        });
+      };
+    </script>
+  </head>
+  <body>
+    <div class="reveal">
+      <!-- Elementos de fundo animados do tema espacial -->
+      <div class="asteroid"></div>
+      <div class="asteroid"></div>
+
+      <div class="slides">
+        <!-- Slide de Título -->
+        <section>
+          <h1>Integrais Triplas</h1>
+          <h3>A Matemática que Conquistou o Espaço</h3>
+          <p>Cálculo Vetorial no Contexto da Guerra Fria</p>
+          <!-- Comentário: Animação de fundo com estrelas cintilantes e equações matemáticas que se transformam em trajetórias de foguetes -->
+        </section>
+
+        <!-- BLOCO 1: DEFINIÇÃO E CONJUNTOS DE CONTEÚDO NULO -->
+        <section>
+          <section>
+            <h2>Integrais Triplas</h2>
+            <p>Somando infinitos infinitesimais no espaço tridimensional</p>
+            <!-- Comentário: Mostrar um modelo 3D simples de um módulo lunar ou satélite -->
+          </section>
+
+          <section>
+            <h3>Do Familiar ao Novo</h3>
+            <p>
+              Lembram das integrais simples? Elas somam "fatias" infinitesimais
+              em uma linha
+            </p>
+            <p>
+              Integrais duplas? Somam "células" infinitesimais em uma superfície
+            </p>
+            <p>
+              Integrais triplas? Somam "cubinhos" infinitesimais em um volume
+            </p>
+            <!-- Comentário: Animação mostrando a progressão de 1D para 3D -->
+          </section>
+
+          <section>
+            <h3>Definição Formal</h3>
+            <div class="math">
+              $$\iiint_V f(x,y,z) \, dV = \lim_{n \to \infty} \sum_{i=1}^{n}
+              f(x_i^*, y_i^*, z_i^*) \, \Delta V_i$$
+            </div>
+            <p>Como pensar nisso intuitivamente?</p>
+            <!-- Comentário: Animação mostrando um cubo sendo dividido em cubos menores -->
+          </section>
+
+          <section>
+            <h3>Interpretação Concreta</h3>
+            <p>Imagine um tanque de combustível com densidade variável</p>
+            <p>Dividimos em bilhões de gotículas microscópicas</p>
+            <p>Pesamos cada gotícula e somamos todas</p>
+            <p>A integral tripla é esse processo levado ao limite matemático</p>
+            <!-- Comentário: Visualização do conceito de acumulação volumétrica com um tanque de combustível -->
+          </section>
+
+          <section>
+            <h3>Paralelo Histórico</h3>
+            <p>
+              1957: O combustível do Sputnik precisava ser calculado com
+              precisão absoluta
+            </p>
+            <p>
+              Questão de vida ou morte: nem pouco demais (missão falha), nem
+              muito (peso excessivo)
+            </p>
+            <p>
+              Solução: Integrais triplas para mapear cada gota de combustível
+            </p>
+            <!-- Comentário: Imagem do Sputnik com equações sobrepostas -->
+          </section>
+
+          <section>
+            <h3>Conjuntos de Conteúdo Nulo</h3>
+            <div class="math">
+              $$\forall \varepsilon > 0, \exists \text{ cobertura de } E \text{
+              com volume} < \varepsilon$$
+            </div>
+            <p>Parece complicado? Vamos simplificar...</p>
+            <!-- Comentário: Visualização de um conjunto de medida nula (como a poeira de Cantor em 3D) -->
+          </section>
+
+          <section>
+            <h3>Conjuntos de Medida Nula: Intuição</h3>
+            <p>Pense em uma folha de papel no espaço 3D</p>
+            <p>Apesar de ter área, seu volume é zero</p>
+            <p>
+              Podemos envolvê-la com uma "caixa" de volume tão pequeno quanto
+              quisermos
+            </p>
+            <p>Isso é um conjunto de medida nula em ℝ³!</p>
+            <!-- Comentário: Animação de uma folha de papel sendo envolvida por caixas cada vez menores -->
+          </section>
+
+          <section>
+            <h3>Por que isso importa?</h3>
+            <p>
+              Em cálculos práticos, podemos ignorar conjuntos de medida nula
+            </p>
+            <p>
+              Como engenheiros da NASA ignoravam microrriscos nas superfícies de
+              metal
+            </p>
+            <p>
+              Matematicamente: "quase todos os pontos" significa "exceto em
+              conjuntos de medida nula"
+            </p>
+            <!-- Comentário: Imagem de superfície metálica com microrriscos destacados -->
+          </section>
+
+          <section>
+            <h3>Analogia Prática</h3>
+            <p>Imagine um astrônomo medindo radiação cósmica</p>
+            <p>Pequenos picos de estática são inevitáveis</p>
+            <p>
+              Se esses "ruídos" formam um conjunto de medida nula, podem ser
+              filtrados
+            </p>
+            <p>Essa distinção matemática salva vidas em missões espaciais</p>
+            <!-- Comentário: Gráfico de medição com ruídos sendo filtrados -->
+          </section>
+        </section>
+
+        <!-- BLOCO 2: CONDIÇÕES DE INTEGRABILIDADE -->
+        <section>
+          <section>
+            <h2>Condições de Integrabilidade</h2>
+            <p>Quando podemos confiar em nossos cálculos?</p>
+            <!-- Comentário: Imagem de engenheiros da NASA sobre pranchetas com cálculos -->
+          </section>
+
+          <section>
+            <h3>Intuitivamente: O que é Integrabilidade?</h3>
+            <p>
+              Uma função é integrável quando podemos "somá-la" de forma
+              confiável
+            </p>
+            <p>
+              Como um terreno que podemos mapear completamente, sem "abismos
+              infinitos"
+            </p>
+            <p>Ou como uma trajetória espacial sem "saltos" inexplicáveis</p>
+            <!-- Comentário: Visualização comparando função contínua com função descontínua -->
+          </section>
+
+          <section>
+            <h3>Da Integral Simples à Tripla</h3>
+            <p>Lembram das condições para integrais simples?</p>
+            <ul>
+              <li>Função limitada (não "explode" para infinito)</li>
+              <li>Descontinuidades apenas em pontos isolados</li>
+            </ul>
+            <p>Para integrais triplas, a ideia é similar, mas em 3D</p>
+            <!-- Comentário: Animação mostrando uma função em 1D e sua equivalente em 3D -->
+          </section>
+
+          <section>
+            <h3>Funções Integráveis: Definição Formal</h3>
+            <p>Uma função \(f\) é integrável em \(V\) se:</p>
+            <ul>
+              <li>É limitada em \(V\) (tem "teto" e "piso")</li>
+              <li>
+                É contínua em quase todos os pontos (descontinuidades são raras)
+              </li>
+              <li>
+                As descontinuidades formam conjunto de medida nula (como finas
+                rachaduras)
+              </li>
+            </ul>
+            <!-- Comentário: Gráfico 3D mostrando uma função com descontinuidade em uma curva -->
+          </section>
+
+          <section>
+            <h3>Teorema de Existência: Em Palavras</h3>
+            <div class="math">
+              $$f \text{ limitada e contínua em quase todo } V \Rightarrow f
+              \text{ integrável em } V$$
+            </div>
+            <p>
+              Traduzindo: Se uma função não tem "explosões" e é bem comportada
+              quase sempre, podemos integrá-la
+            </p>
+            <p>
+              É como dizer: um terreno sem abismos infinitos pode ser mapeado
+            </p>
+            <!-- Comentário: Terreno 3D sendo mapeado por satélite -->
+          </section>
+
+          <section>
+            <h3>Analogia Espacial</h3>
+            <p>Engenheiros da NASA precisavam de garantias matemáticas</p>
+            <p>
+              Funções não-integráveis = trajetórias imprevisíveis = missão
+              perdida
+            </p>
+            <p>
+              A matemática respondeu: "Se suas funções não têm 'explosões',
+              posso garantir a resposta"
+            </p>
+            <!-- Comentário: Imagem da trajetória da Apollo com equações -->
+          </section>
+
+          <section>
+            <h3>Linearidade: Além da Fórmula</h3>
+            <div class="math">
+              $$\iiint_V [af(x,y,z) + bg(x,y,z)] \, dV = a\iiint_V f(x,y,z) \,
+              dV + b\iiint_V g(x,y,z) \, dV$$
+            </div>
+            <p>
+              Em termos simples: calcular partes separadamente e depois combinar
+            </p>
+            <p>Como montar os componentes de uma nave e depois juntá-los</p>
+            <!-- Comentário: Animação mostrando a decomposição de um cálculo complexo -->
+          </section>
+
+          <section>
+            <h3>Aditividade: Intuição Prática</h3>
+            <div class="math">
+              $$\iiint_{V_1 \cup V_2} f(x,y,z) \, dV = \iiint_{V_1} f(x,y,z) \,
+              dV + \iiint_{V_2} f(x,y,z) \, dV$$
+            </div>
+            <p>Dividir para conquistar: volumes diferentes, mesma função</p>
+            <p>Como pesar um objeto cortando-o em partes e somando os pesos</p>
+            <!-- Comentário: Visualização de regiões se unindo com cores diferentes -->
+          </section>
+
+          <section>
+            <h3>Aplicação: Design Modular</h3>
+            <p>
+              Veículo Apollo: matemática e engenharia unidas pelo mesmo
+              princípio
+            </p>
+            <p>Módulos independentes → linearidade e aditividade</p>
+            <p>
+              A matemática que permite calcular em partes é a mesma que permite
+              construir em partes
+            </p>
+            <!-- Comentário: Imagem do veículo Apollo decomposto em seus módulos -->
+          </section>
+        </section>
+
+        <!-- BLOCO 3: REDUÇÃO A INTEGRAIS ITERADAS -->
+        <section>
+          <section>
+            <h2>Teorema de Fubini</h2>
+            <p>Transformando o impossível em possível, camada por camada</p>
+            <!-- Comentário: Imagem de um foguete em estágios, representando a decomposição -->
+          </section>
+
+          <section>
+            <h3>O Problema Real</h3>
+            <p>
+              1960s: Computadores não conseguiam calcular integrais triplas
+              diretamente
+            </p>
+            <p>Como resolver problemas do século XX com tecnologia limitada?</p>
+            <p>Resposta: Dividir problemas complexos em etapas mais simples</p>
+            <!-- Comentário: Imagem do IBM 7090 usado pela NASA -->
+          </section>
+
+          <section>
+            <h3>Fubini: A Ideia Fundamental</h3>
+            <p>Em vez de calcular um volume 3D de uma vez...</p>
+            <p>Calculamos fatias 2D (planos) um após o outro</p>
+            <p>E depois fatias 1D (linhas) uma após a outra</p>
+            <p>
+              Transformando um problema impossível em muitos problemas simples!
+            </p>
+            <!-- Comentário: Animação mostrando a decomposição em fatias -->
+          </section>
+
+          <section>
+            <h3>Analogia Prática</h3>
+            <p>Como você comeria um sanduíche multicamadas?</p>
+            <p>Impossível engolir inteiro!</p>
+            <p>Solução: camada por camada, mordida por mordida</p>
+            <p>
+              Teorema de Fubini = estratégia matemática para "morder" volumes
+              complexos
+            </p>
+            <!-- Comentário: Animação de sanduíche sendo comido em camadas -->
+          </section>
+
+          <section>
+            <h3>Matemática por Trás da Analogia</h3>
+            <div class="math">
+              $$\iiint_V f(x,y,z) \, dV = \int_a^b \int_{g_1(x)}^{g_2(x)}
+              \int_{h_1(x,y)}^{h_2(x,y)} f(x,y,z) \, dz \, dy \, dx$$
+            </div>
+            <p>Parece complexo, mas é apenas formalização do processo:</p>
+            <p>Integrar em \(z\), depois em \(y\), depois em \(x\)</p>
+            <!-- Comentário: Animação mostrando a decomposição em fatias matematicamente -->
+          </section>
+
+          <section>
+            <h3>Visualizando o Processo</h3>
+            <p>
+              1. Fixamos \(x\) e \(y\) → varredura vertical (como um elevador
+              subindo/descendo)
+            </p>
+            <p>
+              2. Fixamos \(x\) → varredura em um plano (como um cortador de
+              grama)
+            </p>
+            <p>
+              3. Finalmente variamos \(x\) → completamos o volume (como
+              percorrer um prédio)
+            </p>
+            <!-- Comentário: Animação interativa mostrando as "fatias" sendo integradas sequencialmente -->
+          </section>
+
+          <section>
+            <h3>Contexto Histórico: Limitações Reais</h3>
+            <p>Computador IBM 7090 (NASA, 1960): 100 mil operações/segundo</p>
+            <p>Smartphone moderno: bilhões de operações/segundo</p>
+            <p>Fubini permitiu que cálculos impossíveis se tornassem viáveis</p>
+            <p>
+              Mesma matemática que hoje permite simulações climáticas e médicas
+              complexas
+            </p>
+            <!-- Comentário: Comparação entre o IBM 7090 e um smartphone moderno -->
+          </section>
+
+          <section>
+            <h3>Diferentes Ordens de Integração</h3>
+            <p>Como você exploraria um prédio?</p>
+            <ul>
+              <li>Andar por andar, sala por sala? (\(dz\,dy\,dx\))</li>
+              <li>Seção por seção, piso por piso? (\(dy\,dz\,dx\))</li>
+              <li>Corredor por corredor, cima a baixo? (\(dx\,dy\,dz\))</li>
+            </ul>
+            <p>A escolha pode simplificar enormemente o trabalho!</p>
+            <!-- Comentário: Diagrama mostrando as diferentes estratégias de exploração de um edifício -->
+          </section>
+
+          <section>
+            <h3>Escolha Estratégica</h3>
+            <p>Qual ordem de integração é mais fácil?</p>
+            <p>Depende da região de integração e da função!</p>
+            <p>Regiões com simetria → ordens específicas são mais simples</p>
+            <p>
+              A escolha certa pode transformar um problema de dias em minutos
+            </p>
+            <!-- Comentário: Exemplos de regiões e as ordens mais adequadas para cada uma -->
+          </section>
+        </section>
+
+        <!-- BLOCO 4: MUDANÇA DE VARIÁVEIS -->
+        <section>
+          <section>
+            <h2>Mudança de Variáveis</h2>
+            <p>Olhando o mesmo problema com outros olhos</p>
+            <!-- Comentário: Imagem de um sistema de coordenadas se transformando em outro -->
+          </section>
+
+          <section>
+            <h3>Uma Analogia Terrestre</h3>
+            <p>Como você daria direções para sua casa?</p>
+            <ul>
+              <li>Para um taxista: nome de ruas e números</li>
+              <li>Para um piloto: latitude e longitude</li>
+              <li>Para um amigo: pontos de referência</li>
+            </ul>
+            <p>Mesmos lugares, sistemas de coordenadas diferentes!</p>
+            <!-- Comentário: Mapa mostrando o mesmo local em diferentes sistemas -->
+          </section>
+
+          <section>
+            <h3>Integrais Simples vs. Triplas</h3>
+            <p>Lembram da substituição em integrais simples?</p>
+            <div class="math">
+              $$\int_a^b f(x) \, dx = \int_c^d f(g(u)) \cdot |g'(u)| \, du$$
+            </div>
+            <p>O fator \(|g'(u)|\) corrige a "distorção" na medida</p>
+            <p>Em 3D, precisamos de uma correção mais sofisticada...</p>
+            <!-- Comentário: Visualização da substituição em integral simples -->
+          </section>
+
+          <section>
+            <h3>Navegação Multidimensional</h3>
+            <p>
+              Durante a missão Apollo, a nave navegava em múltiplos sistemas:
+            </p>
+            <ul>
+              <li>Sistema terrestre (onde estávamos)</li>
+              <li>Sistema lunar (onde queríamos chegar)</li>
+              <li>Sistema solar (para aproveitar a gravidade)</li>
+            </ul>
+            <p>Conversão constante entre sistemas era vital</p>
+            <!-- Comentário: Imagem do sistema de navegação da Apollo com diferentes referenciais -->
+          </section>
+
+          <section>
+            <h3>Transformação de Coordenadas</h3>
+            <p>
+              Matematicamente: um mapa que leva pontos \((u,v,w)\) a pontos
+              \((x,y,z)\)
+            </p>
+            <div class="math">
+              $$T(u,v,w) = (x(u,v,w), y(u,v,w), z(u,v,w))$$
+            </div>
+            <p>Como tradução entre idiomas, mas para posições no espaço</p>
+            <!-- Comentário: Animação mostrando a transformação de uma região -->
+          </section>
+
+          <section>
+            <h3>O Desafio do Volume</h3>
+            <p>Quando mudamos coordenadas, volumes se distorcem</p>
+            <p>
+              Um "cubinho" em coordenadas \((u,v,w)\) pode virar um
+              "paralelogramo distorcido" em \((x,y,z)\)
+            </p>
+            <p>Precisamos corrigir essa distorção!</p>
+            <!-- Comentário: Animação mostrando um cubo se transformando em um paralelepípedo distorcido -->
+          </section>
+
+          <section>
+            <h3>Jacobiano: O Fator de Correção</h3>
+            <div class="math">
+              $$J = \det \begin{pmatrix} \frac{\partial x}{\partial u} &
+              \frac{\partial x}{\partial v} & \frac{\partial x}{\partial w} \\
+              \frac{\partial y}{\partial u} & \frac{\partial y}{\partial v} &
+              \frac{\partial y}{\partial w} \\ \frac{\partial z}{\partial u} &
+              \frac{\partial z}{\partial v} & \frac{\partial z}{\partial w}
+              \end{pmatrix}$$
+            </div>
+            <p>Lembram do determinante como volume de paralelepípedo?</p>
+            <p>O Jacobiano captura exatamente a distorção do volume!</p>
+            <!-- Comentário: Visualização do determinante como volume -->
+          </section>
+
+          <section>
+            <h3>Teorema da Mudança de Variáveis: Intuição</h3>
+            <div class="math">
+              $$\iiint_V f(x,y,z) \, dV = \iiint_U f(T(u,v,w)) \left| J \right|
+              \, du \, dv \, dw$$
+            </div>
+            <p>
+              Em palavras: "Integre no novo sistema, mas corrija os volumes"
+            </p>
+            <p>
+              O fator \(|J|\) é como uma "taxa de câmbio" entre sistemas de
+              coordenadas
+            </p>
+            <!-- Comentário: Animação mostrando a transformação com o fator de correção -->
+          </section>
+
+          <section>
+            <h3>Exemplo Visual</h3>
+            <p>Imagine observando a Terra diminuir pela janela da nave</p>
+            <p>Seu tamanho aparente muda conforme se afasta</p>
+            <p>
+              Essa é uma intuição visual do que o Jacobiano captura
+              matematicamente
+            </p>
+            <p>É a "taxa de encolhimento ou expansão" do espaço</p>
+            <!-- Comentário: Sequência de imagens da Terra ficando menor vista de uma nave -->
+          </section>
+
+          <section>
+            <h3>Aplicação Histórica</h3>
+            <p>Crises dos Mísseis de Cuba (1962):</p>
+            <p>
+              Interceptação de mísseis exigia conversão constante entre
+              sistemas:
+            </p>
+            <ul>
+              <li>Coordenadas do radar → coordenadas de lançamento</li>
+              <li>Sistema de defesa → sistema de ataque</li>
+            </ul>
+            <p>A mesma matemática que evitou uma guerra nuclear!</p>
+            <!-- Comentário: Imagem histórica relacionada à crise dos mísseis -->
+          </section>
+        </section>
+
+        <!-- BLOCO 5: COORDENADAS ESPECIAIS -->
+        <section>
+          <section>
+            <h2>Coordenadas Especiais</h2>
+            <p>Escolhendo a linguagem natural do universo</p>
+            <!-- Comentário: Visualização de diferentes sistemas de coordenadas -->
+          </section>
+
+          <section>
+            <h3>Por Que Mudar de Coordenadas?</h3>
+            <p>Olhe para os objetos no universo:</p>
+            <ul>
+              <li>Quantos planetas cúbicos você conhece?</li>
+              <li>Quantas órbitas seguem linhas retas?</li>
+              <li>Quantos foguetes têm tanques retangulares?</li>
+            </ul>
+            <p>O universo raramente fala a "língua cartesiana"!</p>
+            <!-- Comentário: Colagem de objetos astronômicos e componentes de naves -->
+          </section>
+
+          <section>
+            <h3>Princípio da Correspondência</h3>
+            <p>
+              Use o sistema que melhor corresponde à simetria natural do
+              problema
+            </p>
+            <p>Problemas com simetria circular → coordenadas cilíndricas</p>
+            <p>Problemas com simetria esférica → coordenadas esféricas</p>
+            <p>A natureza nos dá dicas sobre qual sistema usar!</p>
+            <!-- Comentário: Exemplos visuais de objetos e seus sistemas naturais -->
+          </section>
+
+          <section>
+            <h3>Coordenadas Cilíndricas: Definição</h3>
+            <div class="math">
+              $$x = r\cos\theta, \quad y = r\sin\theta, \quad z = z$$
+            </div>
+            <p>
+              Em palavras: distância ao eixo \(z\) (\(r\)), ângulo no plano
+              \(xy\) (\(\theta\)), altura (\(z\))
+            </p>
+            <p>Como dar endereços em um prédio cilíndrico:</p>
+            <p>"5 metros do centro, na direção nordeste, 3º andar"</p>
+            <!-- Comentário: Visualização interativa de coordenadas cilíndricas -->
+          </section>
+
+          <section>
+            <h3>Elemento de Volume Cilíndrico: Intuição</h3>
+            <div class="math">$$dV = r \, dr \, d\theta \, dz$$</div>
+            <p>Por que o fator \(r\)?</p>
+            <p>Imagine fatias de pizza: mais largas longe do centro!</p>
+            <p>O volume cresce proporcionalmente à distância do eixo</p>
+            <!-- Comentário: Visualização de um elemento de volume em coordenadas cilíndricas como fatia de pizza -->
+          </section>
+
+          <section>
+            <h3>Exemplo Prático: Tanque de Combustível</h3>
+            <p>Tanque cilíndrico do Saturn V:</p>
+            <ul>
+              <li>Em coordenadas cartesianas: integral quase impossível</li>
+              <li>Em coordenadas cilíndricas: problema direto</li>
+            </ul>
+            <p>A escolha do sistema correto economizou meses de cálculos</p>
+            <!-- Comentário: Imagem técnica do Saturn V com destaque para os tanques -->
+          </section>
+
+          <section>
+            <h3>Coordenadas Esféricas: Definição Intuitiva</h3>
+            <div class="math">
+              $$x = \rho\sin\phi\cos\theta, \quad y = \rho\sin\phi\sin\theta,
+              \quad z = \rho\cos\phi$$
+            </div>
+            <p>Em palavras:</p>
+            <ul>
+              <li>\(\rho\) = distância à origem (raio)</li>
+              <li>\(\phi\) = ângulo com o eixo \(z\) (latitude)</li>
+              <li>\(\theta\) = ângulo no plano \(xy\) (longitude)</li>
+            </ul>
+            <!-- Comentário: Visualização interativa de coordenadas esféricas -->
+          </section>
+
+          <section>
+            <h3>Elemento de Volume Esférico: Por que tão complexo?</h3>
+            <div class="math">
+              $$dV = \rho^2 \sin\phi \, d\rho \, d\phi \, d\theta$$
+            </div>
+            <p>O fator \(\rho^2\): volume cresce com o quadrado da distância</p>
+            <p>O fator \(\sin\phi\): "fatias" são mais finas nos polos</p>
+            <p>Geometria da esfera impõe estas correções</p>
+            <!-- Comentário: Visualização do elemento de volume esférico em diferentes posições -->
+          </section>
+
+          <section>
+            <h3>Exemplo Concreto: Campo Gravitacional</h3>
+            <p>Lei da Gravitação de Newton:</p>
+            <div class="math">$$F = G \frac{m_1 m_2}{r^2}$$</div>
+            <p>Naturalmente expressa em coordenadas esféricas</p>
+            <p>Órbitas e trajetórias: cálculos simplificados por simetria</p>
+            <!-- Comentário: Visualização do campo gravitacional terrestre -->
+          </section>
+
+          <section>
+            <h3>Escolha do Sistema: Regras Práticas</h3>
+            <p>
+              <strong>Cartesianas:</strong> Objetos com faces planas,
+              retangulares
+            </p>
+            <p>
+              <strong>Cilíndricas:</strong> Objetos com simetria em torno de um
+              eixo
+            </p>
+            <p>
+              <strong>Esféricas:</strong> Objetos com simetria em torno de um
+              ponto
+            </p>
+            <p>A natureza do problema sugere o sistema ideal!</p>
+            <!-- Comentário: Exemplos visuais para cada tipo de sistema -->
+          </section>
+
+          <section>
+            <h3>Impacto Histórico</h3>
+            <p>Desenvolvimento de coordenadas especiais:</p>
+            <ul>
+              <li>
+                Navegação marítima → coordenadas esféricas (latitude/longitude)
+              </li>
+              <li>Revolução Industrial → coordenadas cilíndricas (máquinas)</li>
+              <li>Era Espacial → combinação sofisticada dos sistemas</li>
+            </ul>
+            <p>A matemática evoluiu com as necessidades da humanidade</p>
+            <!-- Comentário: Linha do tempo evolutiva dos sistemas de coordenadas -->
+          </section>
+        </section>
+
+        <!-- Slide de Encerramento da Primeira Parte -->
+        <section>
+          <h2>Próxima Aula</h2>
+          <p>Aplicações práticas de Integrais Triplas:</p>
+          <ul>
+            <li>Centro de massa: estabilidade de naves espaciais</li>
+            <li>Momento de inércia: rotação controlada de satélites</li>
+            <li>Exercícios práticos: missões de treinamento matemático</li>
+            <li>Da Guerra Fria às aplicações modernas</li>
+          </ul>
+          <p>
+            A matemática que levou a humanidade ao espaço continua a nos guiar!
+          </p>
+          <!-- Comentário: Imagem de despedida relacionada à exploração espacial -->
+        </section>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,27 @@
+#!/bin/bash
+# Pre-commit hook para verificar a formatação de arquivos HTML com Prettier
+
+# Obtém a lista de arquivos HTML modificados que estão sendo commitados
+FILES=$(git diff --cached --name-only --diff-filter=ACM | grep '\.html$')
+if [ -z "$FILES" ]; then
+  exit 0
+fi
+
+PASS=true
+
+for file in $FILES; do
+  echo "Verificando formatação de $file..."
+  # Usa o Prettier instalado localmente via npx
+  npx prettier --check "$file"
+  if [ $? -ne 0 ]; then
+    PASS=false
+  fi
+done
+
+if [ "$PASS" = false ]; then
+  echo "Prettier detectou formatação incorreta em algum arquivo HTML."
+  echo "Por favor, execute 'npx prettier --write' para formatá-los corretamente."
+  exit 1
+fi
+
+exit 0

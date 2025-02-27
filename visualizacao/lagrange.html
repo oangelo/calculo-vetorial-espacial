@@ -1,0 +1,328 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Pontos de Lagrange</title>
+    <style>
+      body {
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background: #0a0a2a;
+        color: white;
+        font-family: Arial, sans-serif;
+        min-height: 100vh;
+        padding: 20px;
+      }
+      .canvas-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      #canvas {
+        border: 1px solid #444;
+        background: black;
+        margin-bottom: 20px;
+      }
+      .controls-container {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        background: rgba(255, 255, 255, 0.1);
+        padding: 15px;
+        border-radius: 5px;
+      }
+      .controls-container label {
+        color: white;
+      }
+      button {
+        background: #4a4a8a;
+        color: white;
+        border: none;
+        padding: 5px 15px;
+        border-radius: 3px;
+        cursor: pointer;
+      }
+      button:hover {
+        background: #5a5a9a;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Pontos de Lagrange</h1>
+    <div class="canvas-container">
+      <canvas id="canvas" width="800" height="600"></canvas>
+      <div class="controls-container">
+        <div>
+          <label>Massa do planeta secundário:</label>
+          <input type="range" id="massRatio" min="1" max="100" value="30" />
+          <span id="massValue">30</span>
+        </div>
+        <button onclick="LagrangeVisualization.toggleAnimation()">
+          Iniciar/Parar Animação
+        </button>
+      </div>
+    </div>
+
+    <script>
+      // Namespace para a visualização dos pontos de Lagrange
+      const LagrangeVisualization = {
+        canvas: null,
+        ctx: null,
+        animating: false,
+        time: 0,
+
+        // Configurações do sistema
+        primaryMass: { x: 300, y: 300, mass: 100 },
+        secondaryMass: { x: 500, y: 300, mass: 30 },
+        G: 1000,
+        gridSpacing: 40,
+
+        init: function () {
+          this.canvas = document.getElementById('canvas');
+          this.ctx = this.canvas.getContext('2d');
+
+          document
+            .getElementById('massRatio')
+            .addEventListener('input', (e) => {
+              this.secondaryMass.mass = parseInt(e.target.value);
+              document.getElementById('massValue').textContent = e.target.value;
+              this.time = 0;
+              this.animating = false;
+              this.secondaryMass.x = this.primaryMass.x + 200;
+              this.secondaryMass.y = this.primaryMass.y;
+              this.draw();
+            });
+
+          this.draw();
+        },
+
+        calculateForce: function (x, y) {
+          const dx1 = this.primaryMass.x - x;
+          const dy1 = this.primaryMass.y - y;
+          const dx2 = this.secondaryMass.x - x;
+          const dy2 = this.secondaryMass.y - y;
+
+          const r1 = Math.sqrt(dx1 * dx1 + dy1 * dy1);
+          const r2 = Math.sqrt(dx2 * dx2 + dy2 * dy2);
+
+          if (r1 < 20) return { x: 0, y: 0 };
+          if (r2 < 10) return { x: 0, y: 0 };
+
+          const f1 = (this.G * this.primaryMass.mass) / Math.pow(r1, 1.5);
+          const f2 = (this.G * this.secondaryMass.mass) / Math.pow(r2, 1.5);
+
+          const fx1 = (f1 * dx1) / r1;
+          const fy1 = (f1 * dy1) / r1;
+          const fx2 = (f2 * dx2) / r2;
+          const fy2 = (f2 * dy2) / r2;
+
+          const fx = fx1 + fx2;
+          const fy = fy1 + fy2;
+
+          const magnitude = Math.sqrt(fx * fx + fy * fy);
+          const maxForce = 500;
+
+          if (magnitude > maxForce) {
+            const scale =
+              (maxForce * (1 + Math.log10(magnitude / maxForce))) / magnitude;
+            return {
+              x: fx * scale,
+              y: fy * scale,
+            };
+          }
+
+          return { x: fx, y: fy };
+        },
+
+        calculateMaxForce: function () {
+          let maxForce = 0;
+          for (let x = 0; x < this.canvas.width; x += this.gridSpacing) {
+            for (let y = 0; y < this.canvas.height; y += this.gridSpacing) {
+              const force = this.calculateForce(x, y);
+              const magnitude = Math.sqrt(
+                force.x * force.x + force.y * force.y
+              );
+              maxForce = Math.max(maxForce, magnitude);
+            }
+          }
+          return maxForce;
+        },
+
+        drawVector: function (x, y, maxForce) {
+          const force = this.calculateForce(x, y);
+          const magnitude = Math.sqrt(force.x * force.x + force.y * force.y);
+          if (magnitude < 0.1) return;
+
+          const normalizedMagnitude = Math.min(1, magnitude / maxForce);
+          const maxLength = 40;
+          const scale = maxLength * Math.pow(normalizedMagnitude, 0.5);
+          const dx = (force.x / magnitude) * scale;
+          const dy = (force.y / magnitude) * scale;
+
+          const opacity = Math.min(
+            1,
+            Math.pow(normalizedMagnitude, 0.5) * 2 + 0.6
+          );
+          this.ctx.strokeStyle = `hsla(200, 100%, 70%, ${opacity})`;
+
+          this.ctx.beginPath();
+          this.ctx.moveTo(x, y);
+          this.ctx.lineTo(x + dx, y + dy);
+
+          const arrowSize = 10 * Math.pow(normalizedMagnitude, 0.5);
+          const angle = Math.atan2(dy, dx);
+          this.ctx.lineTo(
+            x + dx - arrowSize * Math.cos(angle - Math.PI / 6),
+            y + dy - arrowSize * Math.sin(angle - Math.PI / 6)
+          );
+          this.ctx.moveTo(x + dx, y + dy);
+          this.ctx.lineTo(
+            x + dx - arrowSize * Math.cos(angle + Math.PI / 6),
+            y + dy - arrowSize * Math.sin(angle + Math.PI / 6)
+          );
+
+          this.ctx.stroke();
+        },
+
+        drawMasses: function () {
+          this.ctx.beginPath();
+          this.ctx.arc(
+            this.primaryMass.x,
+            this.primaryMass.y,
+            20,
+            0,
+            Math.PI * 2
+          );
+          this.ctx.fillStyle = '#FFD700';
+          this.ctx.fill();
+
+          this.ctx.beginPath();
+          this.ctx.arc(
+            this.secondaryMass.x,
+            this.secondaryMass.y,
+            10,
+            0,
+            Math.PI * 2
+          );
+          this.ctx.fillStyle = '#87CEEB';
+          this.ctx.fill();
+        },
+
+        drawLagrangePoints: function () {
+          const distance = Math.sqrt(
+            (this.secondaryMass.x - this.primaryMass.x) ** 2 +
+              (this.secondaryMass.y - this.primaryMass.y) ** 2
+          );
+
+          const massRatio =
+            this.secondaryMass.mass /
+            (this.primaryMass.mass + this.secondaryMass.mass);
+          const routhLimit = 0.0385;
+
+          const angle = Math.atan2(
+            this.secondaryMass.y - this.primaryMass.y,
+            this.secondaryMass.x - this.primaryMass.x
+          );
+
+          const l1Distance = distance * (1 - Math.pow(massRatio / 3, 1 / 3));
+          const l1x = this.primaryMass.x + l1Distance * Math.cos(angle);
+          const l1y = this.primaryMass.y + l1Distance * Math.sin(angle);
+
+          const l2Distance = distance * (1 + Math.pow(massRatio / 3, 1 / 3));
+          const l2x = this.primaryMass.x + l2Distance * Math.cos(angle);
+          const l2y = this.primaryMass.y + l2Distance * Math.sin(angle);
+
+          const l3Distance = -distance * (1 + (5 * massRatio) / 12);
+          const l3x = this.primaryMass.x + l3Distance * Math.cos(angle);
+          const l3y = this.primaryMass.y + l3Distance * Math.sin(angle);
+
+          const isStable = massRatio < routhLimit;
+
+          const points = [
+            { x: l1x, y: l1y, stable: false },
+            { x: l2x, y: l2y, stable: false },
+            { x: l3x, y: l3y, stable: false },
+            {
+              x: this.primaryMass.x + distance * Math.cos(angle + Math.PI / 3),
+              y: this.primaryMass.y + distance * Math.sin(angle + Math.PI / 3),
+              stable: isStable,
+            },
+            {
+              x: this.primaryMass.x + distance * Math.cos(angle - Math.PI / 3),
+              y: this.primaryMass.y + distance * Math.sin(angle - Math.PI / 3),
+              stable: isStable,
+            },
+          ];
+
+          points.forEach((point, index) => {
+            this.ctx.beginPath();
+            this.ctx.arc(point.x, point.y, 5, 0, Math.PI * 2);
+            this.ctx.fillStyle = point.stable ? '#44FF44' : '#FF4444';
+            this.ctx.fill();
+
+            this.ctx.fillStyle = 'white';
+            this.ctx.font = '14px Arial';
+            this.ctx.fillText(`L${index + 1}`, point.x + 10, point.y + 10);
+
+            if (index >= 3) {
+              this.ctx.fillStyle = point.stable ? '#44FF44' : '#FF4444';
+              this.ctx.font = '12px Arial';
+              this.ctx.fillText(
+                point.stable ? 'estável' : 'instável',
+                point.x + 10,
+                point.y + 25
+              );
+            }
+          });
+
+          this.ctx.fillStyle = 'white';
+          this.ctx.font = '14px Arial';
+          this.ctx.fillText(
+            `Razão de massa (μ): ${massRatio.toFixed(4)}`,
+            10,
+            30
+          );
+          this.ctx.fillText(`Limite de Routh: ${routhLimit}`, 10, 50);
+        },
+
+        draw: function () {
+          this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+          const maxForce = this.calculateMaxForce();
+          for (let x = 0; x < this.canvas.width; x += this.gridSpacing) {
+            for (let y = 0; y < this.canvas.height; y += this.gridSpacing) {
+              this.drawVector(x, y, maxForce);
+            }
+          }
+
+          if (this.animating) {
+            this.time += 0.002;
+            const radius = 200;
+            this.secondaryMass.x =
+              this.primaryMass.x + radius * Math.cos(this.time);
+            this.secondaryMass.y =
+              this.primaryMass.y + radius * Math.sin(this.time);
+          }
+
+          this.drawMasses();
+          this.drawLagrangePoints();
+
+          if (this.animating) {
+            requestAnimationFrame(() => this.draw());
+          }
+        },
+
+        toggleAnimation: function () {
+          this.animating = !this.animating;
+          if (this.animating) {
+            this.draw();
+          }
+        },
+      };
+
+      // Inicializa a visualização após carregar a página
+      window.addEventListener('load', () => LagrangeVisualization.init());
+    </script>
+  </body>
+</html>

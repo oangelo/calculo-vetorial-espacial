@@ -1,0 +1,1777 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cálculo Vetorial: teorema-de-green</title>
+    <link rel="stylesheet" href="reveal.js/dist/reveal.css" />
+    <link rel="stylesheet" href="space-theme.css" />
+    <script src="reveal.js/dist/reveal.js"></script>
+    <script src="reveal.js/plugin/math/math.js"></script>
+    <script>
+      window.onload = function () {
+        Reveal.initialize({
+          controls: true,
+          progress: true,
+          center: true,
+          hash: true,
+          plugins: [RevealMath.MathJax3],
+        });
+      };
+    </script>
+    <style>
+      /* Estilos adicionais específicos para estes slides */
+      .content-columns {
+        display: flex;
+        justify-content: space-between;
+      }
+
+      .column {
+        flex: 1;
+        padding: 0 2%;
+      }
+
+      .highlight {
+        color: var(--star-blue);
+        font-weight: bold;
+      }
+
+      .space-context {
+        background-color: rgba(73, 130, 180, 0.2);
+        border-left: 3px solid #4dabf5;
+        padding: 0.5em 1em;
+        margin: 1em 0;
+        font-style: italic;
+      }
+
+      .historical-note {
+        background-color: rgba(255, 152, 0, 0.2);
+        border-left: 3px solid var(--star-blue);
+        padding: 0.5em 1em;
+        margin: 1em 0;
+        font-style: italic;
+      }
+
+      .math-def {
+        background-color: rgba(33, 120, 68, 0.2);
+        border-left: 4px solid #217844;
+        padding: 10px;
+        margin: 15px 0;
+      }
+
+      .exercise {
+        background-color: rgba(188, 39, 50, 0.2);
+        border-left: 4px solid #bc2732;
+        padding: 0.5em 1em;
+        margin: 1em 0;
+      }
+
+      .canvas-container {
+        display: flex;
+        justify-content: center;
+        margin: 20px 0;
+      }
+
+      canvas {
+        border: 1px solid #555;
+        background-color: rgba(26, 35, 126, 0.3);
+      }
+
+      .interactive-note {
+        color: #ff9800;
+        font-size: 0.8em;
+        font-style: italic;
+        margin-top: 0.5em;
+        text-align: center;
+      }
+
+      .formula {
+        margin: 1em 0;
+        text-align: center;
+      }
+
+      .interactive-controls {
+        margin-top: 10px;
+        text-align: center;
+      }
+
+      .slider-container {
+        margin: 10px 0;
+      }
+
+      .slider-container label {
+        display: inline-block;
+        width: 60px;
+        text-align: right;
+        margin-right: 10px;
+      }
+
+      .slider-container input {
+        width: 250px;
+      }
+
+      .slider-value {
+        display: inline-block;
+        width: 50px;
+        text-align: left;
+        margin-left: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="reveal">
+      <!-- Elementos decorativos do tema espacial -->
+      <div class="asteroid"></div>
+      <div class="asteroid"></div>
+
+      <div class="slides">
+        <!-- Slide Principal -->
+        <section id="titulo-principal">
+          <h1>Mudança de Variáveis na Integral Dupla</h1>
+          <p>
+            A transformação matemática que revolucionou os cálculos da corrida
+            espacial
+          </p>
+          <div class="formula">
+            $$\iint_R f(x,y)\,dA = \iint_S f(x(u,v),
+            y(u,v))\left|\frac{\partial(x,y)}{\partial(u,v)}\right|\,du\,dv$$
+          </div>
+          <div class="historical-note">
+            <p>
+              1957-1969: Período que definiu não apenas a exploração espacial,
+              mas também o avanço da matemática aplicada.
+            </p>
+          </div>
+        </section>
+
+        <!-- Seção 1: Preliminares -->
+        <section>
+          <section id="preliminares">
+            <h2>Preliminares</h2>
+            <p>
+              Fundamentos essenciais para compreender a mudança de variáveis
+            </p>
+            <div class="space-context">
+              <p>
+                Imagine-se em 1962, trabalhando na NASA durante a corrida
+                espacial. Calcular órbitas e trajetórias requer transformações
+                de coordenadas precisas e eficientes.
+              </p>
+            </div>
+          </section>
+
+          <section id="motivacao-historica">
+            <h3>Motivação Histórica</h3>
+            <p>
+              Durante a Guerra Fria, tanto a NASA quanto o programa espacial
+              soviético enfrentaram desafios matemáticos sem precedentes:
+            </p>
+            <ul>
+              <li>
+                Cálculos precisos de
+                <span class="highlight">trajetórias orbitais</span>
+              </li>
+              <li>
+                Otimização de <span class="highlight">combustível</span> para
+                missões espaciais
+              </li>
+              <li>
+                Determinação exata de pontos de
+                <span class="highlight">reentrada atmosférica</span>
+              </li>
+            </ul>
+            <p>
+              A transformação de coordenadas tornou-se uma ferramenta
+              fundamental para resolver esses problemas complexos.
+            </p>
+          </section>
+
+          <section id="motivacao-historica-2">
+            <h3>Contexto Histórico</h3>
+            <div class="historical-note">
+              <p>
+                Em 1957, quando a URSS lançou o Sputnik 1, os cientistas
+                precisaram dominar transformações de coordenadas para rastrear o
+                satélite. A NASA, criada em 1958 como resposta americana,
+                aprimorou estes cálculos para as missões Mercury, Gemini e
+                Apollo.
+              </p>
+            </div>
+          </section>
+
+          <section id="sistemas-coordenadas-1">
+            <h3>Revisão de Sistemas de Coordenadas no Plano</h3>
+            <h4>Coordenadas Cartesianas $(x,y)$</h4>
+            <div class="math-def">
+              <p>Um sistema composto por um par ordenado $(x,y)$ onde:</p>
+              <ul>
+                <li>
+                  $x$ é a distância da origem até a projeção no eixo horizontal
+                </li>
+                <li>
+                  $y$ é a distância da origem até a projeção no eixo vertical
+                </li>
+              </ul>
+            </div>
+          </section>
+
+          <section id="sistemas-coordenadas-2">
+            <h3>Revisão de Sistemas de Coordenadas no Plano</h3>
+            <h4>Coordenadas Polares $(r,\theta)$</h4>
+            <div class="math-def">
+              <p>Um sistema composto por um par ordenado $(r,\theta)$ onde:</p>
+              <ul>
+                <li>$r \geq 0$ é a distância da origem até o ponto</li>
+                <li>$\theta$ é o ângulo formado com o eixo $x$ positivo</li>
+              </ul>
+              <p>Transformação:</p>
+              <p>$x = r\cos(\theta)$, $y = r\sin(\theta)$</p>
+              <p>$r = \sqrt{x^2 + y^2}$, $\theta = \arctan(y/x)$</p>
+            </div>
+          </section>
+
+          <section id="sistemas-coordenadas-contexto">
+            <h3>Relevância para Exploração Espacial</h3>
+            <div class="space-context">
+              <p>
+                De volta à nossa missão espacial: coordenadas polares são como
+                um <span class="highlight">radar</span> espacial, perfeito para
+                descrever <span class="highlight">órbitas</span> e trajetórias
+                circulares!
+              </p>
+            </div>
+            <div class="historical-note">
+              <p>
+                Os radares desenvolvidos durante a Guerra Fria utilizavam
+                coordenadas polares para rastrear aeronaves e satélites. O
+                programa espacial soviético Sputnik (1957) dependia criticamente
+                deste sistema para calcular órbitas.
+              </p>
+            </div>
+          </section>
+
+          <section id="coord-transform-visual" class="visualization-slide">
+            <h3>Visualização Interativa: Transformação de Coordenadas</h3>
+            <div class="canvas-container">
+              <canvas
+                id="coordTransformCanvas"
+                width="400"
+                height="300"
+              ></canvas>
+            </div>
+            <div class="interactive-controls">
+              <div class="slider-container">
+                <label for="r-slider">$r$:</label>
+                <input
+                  type="range"
+                  id="r-slider"
+                  min="0"
+                  max="100"
+                  value="50"
+                  class="slider"
+                />
+                <span id="r-value" class="slider-value">50</span>
+              </div>
+              <div class="slider-container">
+                <label for="theta-slider">$\theta$:</label>
+                <input
+                  type="range"
+                  id="theta-slider"
+                  min="0"
+                  max="360"
+                  value="45"
+                  class="slider"
+                />
+                <span id="theta-value" class="slider-value">45°</span>
+              </div>
+            </div>
+            <p>
+              Coordenadas Cartesianas:
+              <span id="cartesian-coords">(35.36, 35.36)</span>
+            </p>
+            <div class="interactive-note">
+              <p>
+                Use os controles para explorar a conversão entre coordenadas
+              </p>
+            </div>
+          </section>
+        </section>
+
+        <!-- Seção 2: Jacobiano como Distorção de Área -->
+        <section>
+          <section id="jacobiano-distorcao">
+            <h2>Jacobiano como Distorção de Área</h2>
+            <p>
+              Como quantificar a transformação do espaço durante a mudança de
+              variáveis
+            </p>
+            <div class="historical-note">
+              <p>
+                "A matemática é a linguagem com a qual Deus escreveu o
+                universo." — Galileu Galilei
+              </p>
+            </div>
+          </section>
+
+          <section id="determinante-area-1">
+            <h3>Determinante e Área no $\mathbb{R}^2$</h3>
+            <div class="math-def">
+              <p>
+                Consideremos dois vetores $\vec{v}_1 = (a,b)$ e $\vec{v}_2 =
+                (c,d)$ no plano. O determinante da matriz formada por esses
+                vetores representa a área do paralelogramo por eles definido:
+              </p>
+              <p>
+                $\text{Área} = \left| \det \begin{pmatrix} a & c \\ b & d
+                \end{pmatrix} \right| = |ad-bc|$
+              </p>
+            </div>
+            <div class="space-context">
+              <p>
+                Ao calcular trajetórias de naves espaciais, transformar entre
+                sistemas de coordenadas é essencial. O determinante nos diz como
+                as áreas são distorcidas nessas transformações.
+              </p>
+            </div>
+          </section>
+
+          <section id="determinante-area-visual" class="visualization-slide">
+            <h3>Visualização: Determinante como Área</h3>
+            <div class="canvas-container">
+              <canvas id="determinantCanvas" width="400" height="300"></canvas>
+            </div>
+            <div class="interactive-note">
+              <p>
+                Arraste os pontos coloridos para mover os vetores e ver como o
+                determinante afeta a área
+              </p>
+            </div>
+          </section>
+
+          <section id="elementos-infinitesimais-1">
+            <h3>Elementos Infinitesimais de Área</h3>
+            <p>
+              Em coordenadas cartesianas, um elemento infinitesimal de área é
+              representado por:
+            </p>
+            <div class="formula">$$dA = dx \cdot dy$$</div>
+            <p>
+              Ao mudarmos para outro sistema de coordenadas $(u,v)$, este
+              elemento sofre uma distorção que é quantificada pelo Jacobiano:
+            </p>
+            <div class="formula">
+              $$dA = \left|\frac{\partial(x,y)}{\partial(u,v)}\right| du \, dv$$
+            </div>
+          </section>
+
+          <section id="elementos-infinitesimais-2">
+            <h3>Importância dos Elementos Infinitesimais</h3>
+            <p>Esta transformação é crucial porque:</p>
+            <ul>
+              <li>Preserva relações físicas entre grandezas</li>
+              <li>Permite escolher coordenadas mais convenientes</li>
+              <li>Simplifica cálculos de integrais múltiplas</li>
+            </ul>
+            <div class="historical-note">
+              <p>
+                Em 1959, os engenheiros da NASA usaram integrais com mudança de
+                variáveis para calcular volumes de combustível em tanques de
+                formato não convencional para o Projeto Mercury.
+              </p>
+            </div>
+          </section>
+
+          <section id="distortion-visual" class="visualization-slide">
+            <h3>Visualização: Distorção de Elementos de Área</h3>
+            <div class="canvas-container">
+              <canvas id="distortionCanvas" width="400" height="300"></canvas>
+            </div>
+            <div class="interactive-note">
+              <p>
+                Arraste o mouse para ver como um elemento de área cartesiana se
+                distorce em coordenadas polares
+              </p>
+            </div>
+          </section>
+
+          <section id="definicao-jacobiano-1">
+            <h3>Definição Formal do Jacobiano</h3>
+            <div class="math-def">
+              <p>
+                O Jacobiano é o determinante da matriz de derivadas parciais
+                (matriz Jacobiana):
+              </p>
+              <p>
+                $$J = \left|\frac{\partial(x,y)}{\partial(u,v)}\right| = \left|
+                \det \begin{pmatrix} \frac{\partial x}{\partial u} &
+                \frac{\partial x}{\partial v} \\ \frac{\partial y}{\partial u} &
+                \frac{\partial y}{\partial v} \end{pmatrix} \right|$$
+              </p>
+            </div>
+          </section>
+
+          <section id="definicao-jacobiano-2">
+            <h3>Cálculo do Jacobiano em Coordenadas Polares</h3>
+            <p>
+              Para coordenadas polares $x(r,\theta) = r\cos\theta$ e
+              $y(r,\theta) = r\sin\theta$, calculamos:
+            </p>
+            <div class="formula">
+              \begin{align} J &= \left| \det \begin{pmatrix} \frac{\partial
+              x}{\partial r} & \frac{\partial x}{\partial \theta} \\
+              \frac{\partial y}{\partial r} & \frac{\partial y}{\partial \theta}
+              \end{pmatrix} \right|\\ \end{align}
+            </div>
+          </section>
+
+          <section id="definicao-jacobiano-3">
+            <h3>Cálculo do Jacobiano em Coordenadas Polares (cont.)</h3>
+            <div class="formula">
+              \begin{align} J &= \left| \det \begin{pmatrix} \cos\theta &
+              -r\sin\theta \\ \sin\theta & r\cos\theta \end{pmatrix} \right|\\
+              &= |r\cos^2\theta + r\sin^2\theta|\\ &= r \end{align}
+            </div>
+          </section>
+
+          <section id="definicao-jacobiano-4">
+            <h3>Interpretação do Jacobiano em Coordenadas Polares</h3>
+            <p>Isto explica por que em coordenadas polares:</p>
+            <div class="formula">$$dA = r \, dr \, d\theta$$</div>
+            <p class="highlight">
+              O Jacobiano $J = r$ representa o fator de escala pelo qual um
+              elemento de área é distorcido.
+            </p>
+            <div class="historical-note">
+              <p>
+                Quando os cientistas soviéticos calcularam a trajetória da
+                Sputnik 1 em 1957, eles usaram transformações de coordenadas
+                para compensar a rotação da Terra.
+              </p>
+            </div>
+          </section>
+
+          <section id="jacobiano-polar-visual" class="visualization-slide">
+            <h3>Visualização: Jacobiano em Coordenadas Polares</h3>
+            <div class="canvas-container">
+              <canvas
+                id="polarJacobianCanvas"
+                width="500"
+                height="400"
+              ></canvas>
+            </div>
+            <div class="interactive-note">
+              <p>
+                Clique na visualização para iniciar/parar a animação da
+                distorção de área
+              </p>
+            </div>
+          </section>
+
+          <section id="exemplo-visual-jacobiano-1">
+            <h3>Exemplo Visual: Jacobiano em Coordenadas Polares</h3>
+            <p>
+              Considere um elemento infinitesimal de área em coordenadas
+              polares:
+            </p>
+            <ul>
+              <li>
+                Em coordenadas cartesianas: elemento retangular $dx \times dy$
+              </li>
+              <li>
+                Em coordenadas polares: elemento "curvo" que se aproxima de um
+                setor circular
+              </li>
+              <li>Área do elemento polar: $dA = r \, dr \, d\theta$</li>
+            </ul>
+            <p>
+              O fator $r$ no Jacobiano explica por que elementos próximos à
+              origem são menores, enquanto elementos distantes são maiores.
+            </p>
+          </section>
+
+          <section id="exemplo-visual-jacobiano-2">
+            <h3>Aplicação na Engenharia Aeroespacial</h3>
+            <div class="space-context">
+              <p>
+                Nas missões Apollo, os engenheiros usavam coordenadas polares
+                para calcular trajetórias de retorno, onde a distorção de área
+                era essencial para estimar janelas de reentrada na atmosfera.
+              </p>
+            </div>
+          </section>
+        </section>
+
+        <!-- Seção 3: Mudança de Variáveis -->
+        <section>
+          <section id="mudanca-variaveis">
+            <h2>Mudança de Variáveis</h2>
+            <p>O teorema que revolucionou o cálculo de integrais complexas</p>
+          </section>
+
+          <section id="teorema-mudanca-1">
+            <h3>Teorema da Mudança de Variáveis</h3>
+            <div class="math-def">
+              <p>
+                <strong>Enunciado formal:</strong> Se $T: S \to R$ é uma
+                transformação bijetora e continuamente diferenciável com
+                Jacobiano não-nulo em $S$, então:
+              </p>
+              <p>
+                $$\iint_R f(x,y)\,dA = \iint_S f(x(u,v),
+                y(u,v))\left|\frac{\partial(x,y)}{\partial(u,v)}\right|\,du\,dv$$
+              </p>
+            </div>
+          </section>
+
+          <section id="teorema-mudanca-2">
+            <h3>Condições e Interpretação Geométrica</h3>
+            <p>
+              <strong>Interpretação geométrica:</strong> O Jacobiano ajusta a
+              medida da área durante a transformação, compensando distorções no
+              espaço.
+            </p>
+            <p><strong>Condições de validade:</strong></p>
+            <ul>
+              <li>A transformação deve ser bijetora</li>
+              <li>Continuamente diferenciável</li>
+              <li>Jacobiano não-nulo em $S$</li>
+            </ul>
+            <div class="space-context">
+              <p>
+                Durante as missões Gemini (1965-1966), os engenheiros precisavam
+                calcular trajetórias de acoplamento, exigindo coordenadas que
+                variavam do referencial terrestre ao orbital.
+              </p>
+            </div>
+          </section>
+
+          <section id="aplicacao-coordenadas-polares-1">
+            <h3>Aplicação: Coordenadas Polares</h3>
+            <p>
+              A transformação para coordenadas polares é particularmente útil
+              para regiões com simetria circular:
+            </p>
+            <div class="formula">
+              \begin{align} x &= r\cos\theta\\ y &= r\sin\theta\\ dA &= r \, dr
+              \, d\theta \end{align}
+            </div>
+            <p>
+              <strong>Exemplo:</strong> Cálculo do momento de inércia de um
+              propulsor circular com densidade variável.
+            </p>
+          </section>
+
+          <section id="aplicacao-coordenadas-polares-2">
+            <h3>Aplicação: Coordenadas Polares (cont.)</h3>
+            <p>
+              Em vez de calcular $\iint_R \rho(x,y)(x^2+y^2) \, dx \, dy$ em
+              cartesianas, podemos usar:
+            </p>
+            <div class="formula">
+              $$\iint_S \rho(r\cos\theta, r\sin\theta) \cdot r^2 \cdot r \, dr
+              \, d\theta = \iint_S \rho(r,\theta) \cdot r^3 \, dr \, d\theta$$
+            </div>
+            <div class="historical-note">
+              <p>
+                Esta simplificação foi crucial para os engenheiros que
+                projetavam componentes de foguetes durante a corrida espacial. O
+                Programa Vostok soviético (1960-1963) utilizava extensivamente
+                estas técnicas.
+              </p>
+            </div>
+          </section>
+
+          <section id="simplificacao-integrais-1">
+            <h3>Mudança de Variáveis e Simplificação de Integrais</h3>
+            <p>
+              <strong
+                >Estratégias para escolher a transformação adequada:</strong
+              >
+            </p>
+            <ul>
+              <li>Analise a simetria da região e da função integranda</li>
+              <li>
+                Identifique expressões recorrentes na forma $x^2 + y^2$ (sugerem
+                coordenadas polares)
+              </li>
+              <li>Considere os limites de integração na região original</li>
+            </ul>
+          </section>
+
+          <section id="simplificacao-integrais-2">
+            <h3>Exemplo de Simplificação Dramática</h3>
+            <p>
+              Calcular $\iint_R e^{-(x^2+y^2)} \, dx \, dy$ sobre o disco $x^2 +
+              y^2 \leq 1$.
+            </p>
+            <p>Em coordenadas polares:</p>
+            <div class="formula">
+              \begin{align} &\int_{0}^{2\pi} \int_{0}^{1} e^{-r^2} \cdot r \, dr
+              \, d\theta\\ &= 2\pi \int_{0}^{1} r e^{-r^2} \, dr\\ &= 2\pi
+              \left[ -\frac{1}{2}e^{-r^2} \right]_{0}^{1}\\ &= \pi(1-e^{-1})
+              \end{align}
+            </div>
+          </section>
+
+          <section id="simplificacao-integrais-3">
+            <h3>Aplicação na Exploração Espacial</h3>
+            <div class="space-context">
+              <p>
+                Este tipo de integral aparecia em cálculos de distribuição
+                térmica em componentes espaciais. Os cientistas soviéticos
+                usavam técnicas similares para calcular a dissipação de calor
+                durante a reentrada atmosférica das cápsulas Vostok.
+              </p>
+            </div>
+          </section>
+        </section>
+
+        <!-- Seção 4: Massa e Centro de Massa -->
+        <section>
+          <section id="massa-centro-massa">
+            <h2>Massa e Centro de Massa</h2>
+            <p>Aplicações cruciais para a engenharia aeroespacial</p>
+            <div class="historical-note">
+              <p>
+                A vitória na corrida espacial não dependeu apenas de foguetes
+                poderosos, mas também do domínio da matemática.
+              </p>
+            </div>
+          </section>
+
+          <section id="densidade-massa-1">
+            <h3>Densidade e Massa</h3>
+            <p>
+              Para uma placa plana com densidade $\rho(x,y)$, a massa total é
+              calculada por:
+            </p>
+            <div class="formula">$$m = \iint_R \rho(x,y) \, dA$$</div>
+            <p>Em coordenadas polares, esta integral se torna:</p>
+            <div class="formula">
+              $$m = \iint_S \rho(r\cos\theta, r\sin\theta) \cdot r \, dr \,
+              d\theta$$
+            </div>
+          </section>
+
+          <section id="densidade-massa-2">
+            <h3>Aplicação na Engenharia Aeroespacial</h3>
+            <p>
+              <strong>Aplicação crítica:</strong> Cálculo preciso da
+              distribuição de combustível em tanques de foguetes para determinar
+              o centro de massa durante o consumo de combustível.
+            </p>
+            <p>
+              Um erro de apenas 1% nestes cálculos poderia resultar em desvios
+              de centenas de quilômetros na trajetória final.
+            </p>
+            <div class="historical-note">
+              <p>
+                Nas missões Apollo, os engenheiros tinham que recalcular
+                continuamente o centro de massa à medida que o combustível era
+                consumido.
+              </p>
+            </div>
+          </section>
+
+          <section id="centro-massa-1">
+            <h3>Centro de Massa</h3>
+            <div class="math-def">
+              <p>
+                As coordenadas do centro de massa $(\bar{x}, \bar{y})$ são
+                calculadas por:
+              </p>
+              <p>$$\bar{x} = \frac{1}{m}\iint_R x \, \rho(x,y) \, dA$$</p>
+              <p>$$\bar{y} = \frac{1}{m}\iint_R y \, \rho(x,y) \, dA$$</p>
+            </div>
+          </section>
+
+          <section id="centro-massa-2">
+            <h3>Centro de Massa em Coordenadas Polares</h3>
+            <p>Em coordenadas polares:</p>
+            <div class="formula">
+              \begin{align} \bar{x} &= \frac{1}{m}\iint_S r\cos\theta \,
+              \rho(r\cos\theta, r\sin\theta) \cdot r \, dr \, d\theta\\ \bar{y}
+              &= \frac{1}{m}\iint_S r\sin\theta \, \rho(r\cos\theta,
+              r\sin\theta) \cdot r \, dr \, d\theta \end{align}
+            </div>
+          </section>
+
+          <section id="centro-massa-3">
+            <h3>Importância para Veículos Espaciais</h3>
+            <p>
+              <strong>Aplicação crítica:</strong> A estabilidade de um veículo
+              espacial depende diretamente da posição do centro de massa em
+              relação ao centro de empuxo dos motores.
+            </p>
+            <div class="space-context">
+              <p>
+                O acidente do foguete N1 soviético, onde problemas com o
+                controle do centro de massa contribuíram para falhas
+                catastróficas, ensinou lições valiosas sobre a importância
+                destes cálculos.
+              </p>
+            </div>
+          </section>
+
+          <section id="exemplo-integrador-1">
+            <h3>Exemplo Integrador</h3>
+            <div class="exercise">
+              <p>
+                <strong>Problema completo:</strong> Um disco de raio 4 metros
+                utilizado como tampa de um tanque de combustível possui
+                densidade que varia com a distância ao centro, dada por
+                $\rho(x,y) = 2 + \sqrt{x^2 + y^2}$ kg/m².
+              </p>
+              <p>
+                <strong>Calcule:</strong> a massa total e o centro de massa da
+                tampa.
+              </p>
+            </div>
+          </section>
+
+          <section id="exemplo-integrador-2">
+            <h3>Solução Parte 1</h3>
+            <p><strong>Solução:</strong> Utilizando coordenadas polares:</p>
+            <div class="formula">
+              \begin{align} \rho(x,y) &= 2 + \sqrt{x^2 + y^2} = 2 + r\\ m &=
+              \int_{0}^{2\pi} \int_{0}^{4} (2 + r) \cdot r \, dr \, d\theta\\ &=
+              2\pi \int_{0}^{4} (2r + r^2) \, dr\\ &= 2\pi \left[ r^2 +
+              \frac{r^3}{3} \right]_{0}^{4} \end{align}
+            </div>
+          </section>
+
+          <section id="exemplo-integrador-3">
+            <h3>Solução Parte 2</h3>
+            <div class="formula">
+              \begin{align} &= 2\pi \left(16 + \frac{64}{3}\right)\\ &= 2\pi
+              \cdot \frac{48 + 64}{3}\\ &= 2\pi \cdot \frac{112}{3}\\ &=
+              \frac{224\pi}{3} \approx 234.6 \text{ kg} \end{align}
+            </div>
+            <p>
+              Pela simetria do problema, o centro de massa está na origem:
+              $(\bar{x}, \bar{y}) = (0, 0)$
+            </p>
+            <div class="historical-note">
+              <p>
+                Este exemplo é baseado em cálculos reais feitos por engenheiros
+                da NASA para componentes do foguete Saturn V usado nas missões
+                Apollo.
+              </p>
+            </div>
+          </section>
+        </section>
+
+        <!-- Seção 5: Exercícios -->
+        <section>
+          <section id="exercicios">
+            <h2>Exercícios</h2>
+            <p>Consolidando o conhecimento através da prática</p>
+          </section>
+
+          <section id="exercicio-introdutorio-1">
+            <h3>Exercício Introdutório</h3>
+            <div class="exercise">
+              <p>
+                <strong>Problema:</strong> Um engenheiro da NASA em 1965 precisa
+                calcular a integral $\iint_R (x^2 + y^2) \, dA$, onde $R$ é o
+                disco $x^2 + y^2 \leq 9$.
+              </p>
+            </div>
+          </section>
+
+          <section id="exercicio-introdutorio-2">
+            <h3>Resolução do Exercício Introdutório</h3>
+            <p><strong>Resolução passo a passo:</strong></p>
+            <ol>
+              <li>
+                Identificamos que a região $R$ tem simetria circular, sugerindo
+                coordenadas polares.
+              </li>
+              <li>
+                A transformação para coordenadas polares nos dá:
+                <div class="formula">
+                  \begin{align} x &= r\cos\theta, \quad y = r\sin\theta\\ x^2 +
+                  y^2 &= r^2\\ dA &= r \, dr \, d\theta \end{align}
+                </div>
+              </li>
+              <li>
+                Os novos limites de integração são: $0 \leq r \leq 3$ e $0 \leq
+                \theta \leq 2\pi$
+              </li>
+            </ol>
+          </section>
+
+          <section id="exercicio-introdutorio-3">
+            <h3>Resolução do Exercício Introdutório (cont.)</h3>
+            <ol start="4">
+              <li>
+                A integral torna-se:
+                <div class="formula">
+                  \begin{align} \iint_R (x^2 + y^2) \, dA &= \int_{0}^{2\pi}
+                  \int_{0}^{3} r^2 \cdot r \, dr \, d\theta\\ &= \int_{0}^{2\pi}
+                  \int_{0}^{3} r^3 \, dr \, d\theta\\ &= \int_{0}^{2\pi} \left[
+                  \frac{r^4}{4} \right]_{0}^{3} d\theta\\ &= \int_{0}^{2\pi}
+                  \frac{81}{4} \, d\theta = \frac{81}{4} \cdot 2\pi =
+                  \frac{81\pi}{2} = 40.5\pi \end{align}
+                </div>
+              </li>
+            </ol>
+
+            <div class="historical-note">
+              <p>
+                Este tipo de integral era comumente utilizado para calcular
+                momentos de inércia em componentes de satélites, tanto por
+                cientistas americanos quanto soviéticos.
+              </p>
+            </div>
+          </section>
+
+          <section id="exercicio-avancado">
+            <h3>Exercício Avançado</h3>
+            <div class="exercise">
+              <p>
+                <strong>Problema:</strong> Um painel solar para um satélite tem
+                formato elíptico descrito pela região $\frac{x^2}{16} +
+                \frac{y^2}{9} \leq 1$. Se a eficiência do painel em cada ponto
+                $(x,y)$ é dada por $E(x,y) = 10 - 0.1(x^2 + y^2)$ unidades de
+                energia por metro quadrado, calcule a produção total de energia
+                do painel.
+              </p>
+            </div>
+          </section>
+
+          <section id="exercicio-avancado-2">
+            <h3>Dicas para o Exercício Avançado</h3>
+            <p><strong>Dicas:</strong></p>
+            <ul>
+              <li>
+                Considere a transformação para coordenadas elípticas: $x =
+                4r\cos\theta$, $y = 3r\sin\theta$
+              </li>
+              <li>Calcule o Jacobiano desta transformação</li>
+              <li>
+                Verifique que a região transformada se torna um disco unitário
+                em termos de $r$ e $\theta$
+              </li>
+            </ul>
+
+            <div class="space-context">
+              <p>
+                Este problema modela a eficiência de painéis solares em
+                satélites da era espacial, onde a otimização da captação de
+                energia era crítica para missões de longa duração.
+              </p>
+            </div>
+          </section>
+        </section>
+
+        <!-- Slide de Fechamento -->
+        <section id="fechamento">
+          <h2>Síntese: Mudança de Variáveis na Integral Dupla</h2>
+          <div class="content-columns">
+            <div class="column">
+              <h3>Principais Conceitos</h3>
+              <ul>
+                <li>O determinante representa a área de um paralelogramo</li>
+                <li>
+                  O Jacobiano é o determinante de uma matriz de derivadas
+                  parciais
+                </li>
+                <li>
+                  Geometricamente, representa o fator de distorção de área
+                </li>
+                <li>Em coordenadas polares, o Jacobiano é $|J| = r$</li>
+              </ul>
+            </div>
+            <div class="column">
+              <h3>Aplicações Práticas</h3>
+              <ul>
+                <li>
+                  Integrais múltiplas em diferentes sistemas de coordenadas
+                </li>
+                <li>Cálculo de trajetórias em exploração espacial</li>
+                <li>Análise de sistemas físicos com diferentes simetrias</li>
+                <li>Problemas de transformação em engenharia aeroespacial</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="space-context">
+            <p>
+              Tanto na NASA quanto na agência espacial soviética, o Jacobiano
+              como distorção de área foi uma ferramenta fundamental que permitiu
+              os avanços da corrida espacial durante a Guerra Fria. A matemática
+              transcende fronteiras políticas e conecta avanços científicos de
+              ambos os lados.
+            </p>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <!-- Inicialização do Reveal.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.min.js"></script>
+    <script>
+      // Inicialização do Reveal.js
+      Reveal.initialize({
+        controls: true,
+        progress: true,
+        center: false,
+        hash: true,
+        transition: 'slide',
+        // Mais configurações conforme necessário
+        dependencies: [
+          {
+            src: 'https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/plugin/math/math.min.js',
+            async: true,
+          },
+        ],
+      });
+    </script>
+
+    <!-- Scripts para as visualizações interativas -->
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        // Inicializa todas as visualizações interativas
+        initCoordTransformCanvas();
+        initDeterminantCanvas();
+        initDistortionCanvas();
+        initPolarJacobianCanvas();
+
+        // Ajustar o MathJax após carregamento
+        if (window.MathJax) {
+          MathJax.typesetPromise()
+            .then(() => {
+              if (Reveal) Reveal.layout();
+            })
+            .catch((err) => console.log('MathJax error:', err));
+        }
+      });
+
+      // 1. Visualização de transformação de coordenadas
+      function initCoordTransformCanvas() {
+        const canvas = document.getElementById('coordTransformCanvas');
+        if (!canvas) return;
+
+        const ctx = canvas.getContext('2d');
+        const width = canvas.width;
+        const height = canvas.height;
+        const centerX = width / 2;
+        const centerY = height / 2;
+
+        // Sliders para r e theta
+        const rSlider = document.getElementById('r-slider');
+        const thetaSlider = document.getElementById('theta-slider');
+        const rValue = document.getElementById('r-value');
+        const thetaValue = document.getElementById('theta-value');
+        const cartesianCoords = document.getElementById('cartesian-coords');
+
+        function drawCoordinateSystem() {
+          ctx.clearRect(0, 0, width, height);
+
+          // Background mais escuro para o tema espacial
+          ctx.fillStyle = 'rgba(10, 10, 15, 0.7)';
+          ctx.fillRect(0, 0, width, height);
+
+          // Desenha os eixos
+          ctx.strokeStyle = '#4fc3f7';
+          ctx.lineWidth = 1;
+
+          // Eixo X
+          ctx.beginPath();
+          ctx.moveTo(0, centerY);
+          ctx.lineTo(width, centerY);
+          ctx.stroke();
+
+          // Eixo Y
+          ctx.beginPath();
+          ctx.moveTo(centerX, 0);
+          ctx.lineTo(centerX, height);
+          ctx.stroke();
+
+          // Círculos concêntricos para coordenadas polares
+          ctx.strokeStyle = 'rgba(79, 195, 247, 0.3)';
+          for (let r = 20; r <= 100; r += 20) {
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, r, 0, 2 * Math.PI);
+            ctx.stroke();
+          }
+
+          // Linhas radiais para ângulos
+          for (let angle = 0; angle < 360; angle += 30) {
+            const rad = (angle * Math.PI) / 180;
+            const endX = centerX + 100 * Math.cos(rad);
+            const endY = centerY - 100 * Math.sin(rad); // Negativo porque o eixo Y do canvas é invertido
+
+            ctx.beginPath();
+            ctx.moveTo(centerX, centerY);
+            ctx.lineTo(endX, endY);
+            ctx.stroke();
+
+            // Adiciona etiquetas de ângulo
+            if (angle % 90 === 0) {
+              const labelX = centerX + 110 * Math.cos(rad);
+              const labelY = centerY - 110 * Math.sin(rad);
+              ctx.fillStyle = '#e0e0e0';
+              ctx.font = '12px Arial';
+              ctx.fillText(`${angle}°`, labelX - 10, labelY + 5);
+            }
+          }
+
+          // Adiciona etiquetas para os valores de r
+          ctx.fillStyle = '#e0e0e0';
+          ctx.font = '12px Arial';
+          for (let r = 20; r <= 100; r += 20) {
+            ctx.fillText(r.toString(), centerX + 5, centerY - r - 5);
+          }
+        }
+
+        // Função para converter graus para radianos
+        function toRadians(degrees) {
+          return (degrees * Math.PI) / 180;
+        }
+
+        // Função para desenhar o ponto com base nas coordenadas polares
+        function drawPoint(r, theta) {
+          const thetaRad = toRadians(theta);
+          const x = r * Math.cos(thetaRad);
+          const y = r * Math.sin(thetaRad);
+
+          // Coordenadas convertidas para o canvas
+          const canvasX = centerX + x;
+          const canvasY = centerY - y; // Negativo porque o eixo Y do canvas é invertido
+
+          // Desenha o ponto
+          ctx.fillStyle = '#FFD700';
+          ctx.beginPath();
+          ctx.arc(canvasX, canvasY, 5, 0, 2 * Math.PI);
+          ctx.fill();
+
+          // Desenha uma linha da origem até o ponto (raio vetor)
+          ctx.strokeStyle = '#FFD700';
+          ctx.lineWidth = 2;
+          ctx.beginPath();
+          ctx.moveTo(centerX, centerY);
+          ctx.lineTo(canvasX, canvasY);
+          ctx.stroke();
+
+          // Desenha linhas tracejadas para mostrar as projeções nos eixos
+          ctx.strokeStyle = 'rgba(255, 215, 0, 0.5)';
+          ctx.setLineDash([3, 3]);
+
+          // Linha vertical (projeção no eixo X)
+          ctx.beginPath();
+          ctx.moveTo(canvasX, canvasY);
+          ctx.lineTo(canvasX, centerY);
+          ctx.stroke();
+
+          // Linha horizontal (projeção no eixo Y)
+          ctx.beginPath();
+          ctx.moveTo(canvasX, canvasY);
+          ctx.lineTo(centerX, canvasY);
+          ctx.stroke();
+
+          // Resetar o estilo da linha
+          ctx.setLineDash([]);
+
+          // Adiciona etiquetas para as coordenadas
+          ctx.fillStyle = '#e0e0e0';
+          ctx.font = '12px Arial';
+          ctx.fillText(
+            `(${x.toFixed(0)}, ${y.toFixed(0)})`,
+            canvasX + 10,
+            canvasY - 10
+          );
+          ctx.fillText(`r = ${r}`, centerX + x / 2 - 10, centerY - y / 2);
+          ctx.fillText(
+            `θ = ${theta}°`,
+            centerX + x / 2 + 20,
+            centerY - y / 2 + 15
+          );
+
+          // Atualiza as coordenadas cartesianas exibidas
+          if (cartesianCoords) {
+            cartesianCoords.textContent = `(${x.toFixed(2)}, ${y.toFixed(2)})`;
+          }
+        }
+
+        // Função para atualizar a visualização
+        function updateVisualization() {
+          const r = parseInt(rSlider.value);
+          const theta = parseInt(thetaSlider.value);
+
+          drawCoordinateSystem();
+          drawPoint(r, theta);
+
+          // Atualiza os valores exibidos
+          if (rValue) rValue.textContent = r;
+          if (thetaValue) thetaValue.textContent = `${theta}°`;
+        }
+
+        // Event listeners para os sliders
+        if (rSlider) rSlider.addEventListener('input', updateVisualization);
+        if (thetaSlider)
+          thetaSlider.addEventListener('input', updateVisualization);
+
+        // Inicialização
+        updateVisualization();
+      }
+
+      // Visualização do determinante como área
+      function initDeterminantCanvas() {
+        const canvas = document.getElementById('determinantCanvas');
+        if (!canvas) return;
+
+        const ctx = canvas.getContext('2d');
+        const width = canvas.width;
+        const height = canvas.height;
+        const centerX = width / 2;
+        const centerY = height / 2;
+
+        // Vetores iniciais
+        let vector1 = { x: 80, y: 0 };
+        let vector2 = { x: 0, y: 60 };
+        let draggingVector = null;
+
+        function drawGrid() {
+          // Background mais escuro para o tema espacial
+          ctx.fillStyle = 'rgba(10, 10, 15, 0.7)';
+          ctx.fillRect(0, 0, width, height);
+
+          ctx.strokeStyle = 'rgba(79, 195, 247, 0.3)';
+          ctx.lineWidth = 0.5;
+
+          // Linhas horizontais
+          for (let y = 0; y <= height; y += 20) {
+            ctx.beginPath();
+            ctx.moveTo(0, y);
+            ctx.lineTo(width, y);
+            ctx.stroke();
+          }
+
+          // Linhas verticais
+          for (let x = 0; x <= width; x += 20) {
+            ctx.beginPath();
+            ctx.moveTo(x, 0);
+            ctx.lineTo(x, height);
+            ctx.stroke();
+          }
+
+          // Eixos principais
+          ctx.strokeStyle = '#4fc3f7';
+          ctx.lineWidth = 1;
+
+          // Eixo X
+          ctx.beginPath();
+          ctx.moveTo(0, centerY);
+          ctx.lineTo(width, centerY);
+          ctx.stroke();
+
+          // Eixo Y
+          ctx.beginPath();
+          ctx.moveTo(centerX, 0);
+          ctx.lineTo(centerX, height);
+          ctx.stroke();
+        }
+
+        function drawVectors() {
+          // Desenha o paralelogramo
+          ctx.fillStyle = 'rgba(79, 195, 247, 0.3)';
+          ctx.beginPath();
+          ctx.moveTo(centerX, centerY);
+          ctx.lineTo(centerX + vector1.x, centerY - vector1.y);
+          ctx.lineTo(
+            centerX + vector1.x + vector2.x,
+            centerY - vector1.y - vector2.y
+          );
+          ctx.lineTo(centerX + vector2.x, centerY - vector2.y);
+          ctx.closePath();
+          ctx.fill();
+
+          // Desenha o vetor 1
+          ctx.strokeStyle = '#ff5722';
+          ctx.lineWidth = 2;
+          ctx.beginPath();
+          ctx.moveTo(centerX, centerY);
+          ctx.lineTo(centerX + vector1.x, centerY - vector1.y);
+          ctx.stroke();
+
+          // Desenha o vetor 2
+          ctx.strokeStyle = '#4caf50';
+          ctx.lineWidth = 2;
+          ctx.beginPath();
+          ctx.moveTo(centerX, centerY);
+          ctx.lineTo(centerX + vector2.x, centerY - vector2.y);
+          ctx.stroke();
+
+          // Calcula e mostra o determinante
+          const det = vector1.x * vector2.y - vector1.y * vector2.x;
+          const area = Math.abs(det);
+
+          // Adiciona etiquetas aos vetores - ajustei as posições para evitar sobreposição
+          ctx.fillStyle = '#ff5722';
+          ctx.font = '14px Arial';
+          ctx.fillText(
+            `v₁ = (${vector1.x.toFixed(0)}, ${vector1.y.toFixed(0)})`,
+            centerX + vector1.x / 2 - 10,
+            centerY - vector1.y / 2 - 15
+          );
+
+          ctx.fillStyle = '#4caf50';
+          ctx.fillText(
+            `v₂ = (${vector2.x.toFixed(0)}, ${vector2.y.toFixed(0)})`,
+            centerX + vector2.x / 2 + 10,
+            centerY - vector2.y / 2 + 25
+          );
+
+          ctx.fillStyle = '#e0e0e0';
+          ctx.font = '14px Arial';
+          ctx.fillText(`Determinante: ${det.toFixed(2)}`, 20, 30);
+          ctx.fillText(`Área: ${area.toFixed(2)}`, 20, 50);
+
+          // Adiciona fórmula do determinante
+          const matrixText = `det |${vector1.x.toFixed(0)} ${vector2.x.toFixed(0)}|`;
+          const matrixText2 = `    |${vector1.y.toFixed(0)} ${vector2.y.toFixed(0)}|`;
+          ctx.fillText(matrixText, 20, height - 50);
+          ctx.fillText(matrixText2, 20, height - 30);
+
+          // Pontos para arrastar - aumentei o tamanho e adicionei efeito de destaque
+          const point1X = centerX + vector1.x;
+          const point1Y = centerY - vector1.y;
+          const point2X = centerX + vector2.x;
+          const point2Y = centerY - vector2.y;
+
+          // Círculo de destaque para o ponto 1 - ajuda a indicar que é arrastável
+          ctx.fillStyle = 'rgba(255, 87, 34, 0.3)';
+          ctx.beginPath();
+          ctx.arc(point1X, point1Y, 12, 0, Math.PI * 2);
+          ctx.fill();
+
+          // Ponto 1
+          ctx.fillStyle = '#ff5722';
+          ctx.beginPath();
+          ctx.arc(point1X, point1Y, 8, 0, Math.PI * 2);
+          ctx.fill();
+
+          // Círculo de destaque para o ponto 2
+          ctx.fillStyle = 'rgba(76, 175, 80, 0.3)';
+          ctx.beginPath();
+          ctx.arc(point2X, point2Y, 12, 0, Math.PI * 2);
+          ctx.fill();
+
+          // Ponto 2
+          ctx.fillStyle = '#4caf50';
+          ctx.beginPath();
+          ctx.arc(point2X, point2Y, 8, 0, Math.PI * 2);
+          ctx.fill();
+        }
+
+        function updateCanvas() {
+          ctx.clearRect(0, 0, width, height);
+          drawGrid();
+          drawVectors();
+        }
+
+        // Função de ajuda para obter coordenadas do mouse em relação ao canvas
+        function getMousePos(canvas, evt) {
+          const rect = canvas.getBoundingClientRect();
+          const scaleX = canvas.width / rect.width;
+          const scaleY = canvas.height / rect.height;
+
+          return {
+            x: (evt.clientX - rect.left) * scaleX,
+            y: (evt.clientY - rect.top) * scaleY,
+          };
+        }
+
+        // Implementação corrigida de arrastar dos vetores
+        canvas.addEventListener('mousedown', function (e) {
+          const pos = getMousePos(canvas, e);
+          const mouseX = pos.x;
+          const mouseY = pos.y;
+
+          const point1X = centerX + vector1.x;
+          const point1Y = centerY - vector1.y;
+          const point2X = centerX + vector2.x;
+          const point2Y = centerY - vector2.y;
+
+          // Aumentei o raio de detecção para 15 pixels
+          const dist1 = Math.sqrt(
+            Math.pow(mouseX - point1X, 2) + Math.pow(mouseY - point1Y, 2)
+          );
+          const dist2 = Math.sqrt(
+            Math.pow(mouseX - point2X, 2) + Math.pow(mouseY - point2Y, 2)
+          );
+
+          if (dist1 < 15) {
+            draggingVector = 1;
+            canvas.style.cursor = 'grabbing';
+          } else if (dist2 < 15) {
+            draggingVector = 2;
+            canvas.style.cursor = 'grabbing';
+          }
+        });
+
+        // Mova o mousemove para o canvas em vez da window para prevenir problemas de coordenadas
+        canvas.addEventListener('mousemove', function (e) {
+          const point1X = centerX + vector1.x;
+          const point1Y = centerY - vector1.y;
+          const point2X = centerX + vector2.x;
+          const point2Y = centerY - vector2.y;
+
+          const pos = getMousePos(canvas, e);
+          const mouseX = pos.x;
+          const mouseY = pos.y;
+
+          // Cursor de mão quando sobre os pontos arrastáveis
+          const dist1 = Math.sqrt(
+            Math.pow(mouseX - point1X, 2) + Math.pow(mouseY - point1Y, 2)
+          );
+          const dist2 = Math.sqrt(
+            Math.pow(mouseX - point2X, 2) + Math.pow(mouseY - point2Y, 2)
+          );
+
+          if (dist1 < 15 || dist2 < 15) {
+            canvas.style.cursor = 'grab';
+          } else {
+            canvas.style.cursor = 'default';
+          }
+
+          if (draggingVector) {
+            if (draggingVector === 1) {
+              vector1.x = mouseX - centerX;
+              vector1.y = -(mouseY - centerY);
+            } else if (draggingVector === 2) {
+              vector2.x = mouseX - centerX;
+              vector2.y = -(mouseY - centerY);
+            }
+
+            updateCanvas();
+          }
+        });
+
+        canvas.addEventListener('mouseup', function () {
+          draggingVector = null;
+          canvas.style.cursor = 'default';
+        });
+
+        canvas.addEventListener('mouseleave', function () {
+          // Não resetamos draggingVector para permitir arrastar para fora e voltar
+          canvas.style.cursor = 'default';
+        });
+
+        // Inicialização
+        updateCanvas();
+      }
+
+      // 3. Visualização da distorção de elementos infinitesimais
+      function initDistortionCanvas() {
+        const canvas = document.getElementById('distortionCanvas');
+        if (!canvas) return;
+
+        const ctx = canvas.getContext('2d');
+        const width = canvas.width;
+        const height = canvas.height;
+        const centerX = width / 2;
+        const centerY = height / 2;
+        let mouseX = 250;
+        let mouseY = 100;
+
+        function drawGrid() {
+          // Background mais escuro para o tema espacial
+          ctx.fillStyle = 'rgba(10, 10, 15, 0.7)';
+          ctx.fillRect(0, 0, width, height);
+
+          ctx.strokeStyle = 'rgba(79, 195, 247, 0.3)';
+          ctx.lineWidth = 0.5;
+
+          // Linhas horizontais
+          for (let y = 0; y <= height; y += 20) {
+            ctx.beginPath();
+            ctx.moveTo(0, y);
+            ctx.lineTo(width, y);
+            ctx.stroke();
+          }
+
+          // Linhas verticais
+          for (let x = 0; x <= width; x += 20) {
+            ctx.beginPath();
+            ctx.moveTo(x, 0);
+            ctx.lineTo(x, height);
+            ctx.stroke();
+          }
+
+          // Eixos principais
+          ctx.strokeStyle = '#4fc3f7';
+          ctx.lineWidth = 1;
+
+          // Eixo X
+          ctx.beginPath();
+          ctx.moveTo(0, centerY);
+          ctx.lineTo(width, centerY);
+          ctx.stroke();
+
+          // Eixo Y
+          ctx.beginPath();
+          ctx.moveTo(centerX, 0);
+          ctx.lineTo(centerX, height);
+          ctx.stroke();
+        }
+
+        function drawPolarGrid() {
+          ctx.strokeStyle = 'rgba(79, 195, 247, 0.2)';
+          ctx.lineWidth = 0.5;
+
+          // Círculos concêntricos
+          for (let r = 20; r <= 150; r += 20) {
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, r, 0, Math.PI * 2);
+            ctx.stroke();
+          }
+
+          // Linhas radiais
+          for (let theta = 0; theta < Math.PI * 2; theta += Math.PI / 12) {
+            ctx.beginPath();
+            ctx.moveTo(centerX, centerY);
+            ctx.lineTo(
+              centerX + 150 * Math.cos(theta),
+              centerY + 150 * Math.sin(theta)
+            );
+            ctx.stroke();
+          }
+        }
+
+        function drawDistortion() {
+          // Calcular coordenadas polares do mouse
+          const dx = mouseX - centerX;
+          const dy = mouseY - centerY;
+          const r = Math.sqrt(dx * dx + dy * dy);
+          const theta = Math.atan2(dy, dx);
+
+          // Tamanho base do elemento cartesiano
+          const dxy = 10;
+
+          // Desenhar elemento cartesiano
+          ctx.strokeStyle = '#4dabf5';
+          ctx.lineWidth = 2;
+          ctx.beginPath();
+          ctx.rect(mouseX - dxy / 2, mouseY - dxy / 2, dxy, dxy);
+          ctx.stroke();
+          ctx.fillStyle = 'rgba(77, 171, 245, 0.2)';
+          ctx.fill();
+
+          // Texto para elemento cartesiano
+          ctx.fillStyle = '#4dabf5';
+          ctx.font = '12px Arial';
+          ctx.fillText('dxdy', mouseX - dxy / 2 - 30, mouseY);
+
+          // Calcular dimensões proporcionais para o elemento polar
+          // Usamos uma abordagem balanceada que evita distorções extremas
+
+          // Base para tamanho do elemento
+          const baseSizeRadial = 8;
+          const baseAngular = 0.15;
+
+          // Tamanho radial - aumenta com r (mas não muito rapidamente)
+          const dr = baseSizeRadial * (0.5 + 0.5 * Math.min(1, r / 100));
+
+          // Tamanho angular - diminui com r (mas não muito rapidamente)
+          const dtheta = baseAngular * (0.2 + 0.8 * Math.min(1, 50 / r));
+
+          // Calcular a área do elemento para mostrar o efeito do Jacobiano
+          const areaElement = r * dr * dtheta;
+
+          // Vértices do elemento polar
+          const v1x = centerX + r * Math.cos(theta);
+          const v1y = centerY + r * Math.sin(theta);
+
+          const v2x = centerX + (r + dr) * Math.cos(theta);
+          const v2y = centerY + (r + dr) * Math.sin(theta);
+
+          const v3x = centerX + (r + dr) * Math.cos(theta + dtheta);
+          const v3y = centerY + (r + dr) * Math.sin(theta + dtheta);
+
+          const v4x = centerX + r * Math.cos(theta + dtheta);
+          const v4y = centerY + r * Math.sin(theta + dtheta);
+
+          ctx.beginPath();
+          ctx.moveTo(v1x, v1y);
+          ctx.lineTo(v2x, v2y);
+          ctx.lineTo(v3x, v3y);
+          ctx.lineTo(v4x, v4y);
+          ctx.closePath();
+          ctx.strokeStyle = '#ff9800';
+          ctx.lineWidth = 2;
+          ctx.stroke();
+          ctx.fillStyle = 'rgba(255, 152, 0, 0.2)';
+          ctx.fill();
+
+          // Texto para elemento polar
+          ctx.fillStyle = '#ff9800';
+          ctx.fillText('r·dr·dθ', v2x + 5, v2y - 5);
+
+          // Calcular Jacobiano
+          const jacobian = r;
+
+          // Mostrar informações
+          ctx.fillStyle = '#e0e0e0';
+          ctx.font = '14px Arial';
+          ctx.fillText(
+            `Coordenadas cartesianas: (${(mouseX - centerX).toFixed(0)}, ${(mouseY - centerY).toFixed(0)})`,
+            20,
+            30
+          );
+          ctx.fillText(
+            `Coordenadas polares: (r=${r.toFixed(1)}, θ=${((theta * 180) / Math.PI).toFixed(1)}°)`,
+            20,
+            50
+          );
+          ctx.fillText(`Jacobiano: |J| = ${jacobian.toFixed(1)}`, 20, 70);
+          ctx.fillText(
+            `Área do elemento: ${areaElement.toFixed(1)} (proporcional a r)`,
+            20,
+            90
+          );
+
+          // Desenhar linha ligando a origem ao ponto
+          ctx.strokeStyle = 'rgba(255, 255, 255, 0.4)';
+          ctx.setLineDash([3, 3]);
+          ctx.beginPath();
+          ctx.moveTo(centerX, centerY);
+          ctx.lineTo(mouseX, mouseY);
+          ctx.stroke();
+          ctx.setLineDash([]);
+        }
+
+        function updateCanvas() {
+          ctx.clearRect(0, 0, width, height);
+          drawGrid();
+          drawPolarGrid();
+          drawDistortion();
+        }
+
+        canvas.addEventListener('mousemove', function (e) {
+          const rect = canvas.getBoundingClientRect();
+          mouseX = e.clientX - rect.left;
+          mouseY = e.clientY - rect.top;
+
+          // Garantir que o mouse não vá muito perto da origem para evitar divisão por zero
+          const dx = mouseX - centerX;
+          const dy = mouseY - centerY;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < 15) {
+            const angle = Math.atan2(dy, dx);
+            mouseX = centerX + 15 * Math.cos(angle);
+            mouseY = centerY + 15 * Math.sin(angle);
+          }
+
+          updateCanvas();
+        });
+
+        // Inicialização
+        updateCanvas();
+      }
+
+      // 4. Visualização do Jacobiano em coordenadas polares
+      function initPolarJacobianCanvas() {
+        const canvas = document.getElementById('polarJacobianCanvas');
+        if (!canvas) return;
+
+        const ctx = canvas.getContext('2d');
+        const width = canvas.width;
+        const height = canvas.height;
+        const centerX = width / 2;
+        const centerY = height / 2;
+        let gridResolution = 10;
+        let animationFrame = 0;
+        let isAnimating = false;
+
+        function drawPolarGrid() {
+          ctx.strokeStyle = 'rgba(79, 195, 247, 0.3)';
+          ctx.lineWidth = 0.5;
+
+          // Círculos concêntricos
+          for (let r = 20; r <= 180; r += 20) {
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, r, 0, Math.PI * 2);
+            ctx.stroke();
+
+            // Adiciona rótulos de raio
+            ctx.fillStyle = '#e0e0e0';
+            ctx.font = '10px Arial';
+            ctx.fillText(`${r}`, centerX + 2, centerY - r - 2);
+          }
+
+          // Linhas radiais
+          for (let theta = 0; theta < Math.PI * 2; theta += Math.PI / 6) {
+            const endX = centerX + 180 * Math.cos(theta);
+            const endY = centerY + 180 * Math.sin(theta);
+
+            ctx.beginPath();
+            ctx.moveTo(centerX, centerY);
+            ctx.lineTo(endX, endY);
+            ctx.stroke();
+
+            // Adiciona rótulos de ângulo
+            const angle = Math.round((theta * 180) / Math.PI);
+            const labelX = centerX + 190 * Math.cos(theta);
+            const labelY = centerY + 190 * Math.sin(theta);
+
+            if (angle % 60 === 0) {
+              ctx.fillStyle = '#e0e0e0';
+              ctx.font = '10px Arial';
+              ctx.fillText(`${angle}°`, labelX - 10, labelY + 5);
+            }
+          }
+        }
+
+        function drawCartesianGrid() {
+          ctx.strokeStyle = 'rgba(79, 195, 247, 0.1)';
+          ctx.lineWidth = 0.5;
+
+          // Linhas horizontais
+          for (let y = centerY - 180; y <= centerY + 180; y += 20) {
+            ctx.beginPath();
+            ctx.moveTo(centerX - 180, y);
+            ctx.lineTo(centerX + 180, y);
+            ctx.stroke();
+          }
+
+          // Linhas verticais
+          for (let x = centerX - 180; x <= centerX + 180; x += 20) {
+            ctx.beginPath();
+            ctx.moveTo(x, centerY - 180);
+            ctx.lineTo(x, centerY + 180);
+            ctx.stroke();
+          }
+
+          // Eixos principais
+          ctx.strokeStyle = '#4fc3f7';
+          ctx.lineWidth = 1;
+
+          // Eixo X
+          ctx.beginPath();
+          ctx.moveTo(centerX - 180, centerY);
+          ctx.lineTo(centerX + 180, centerY);
+          ctx.stroke();
+
+          // Eixo Y
+          ctx.beginPath();
+          ctx.moveTo(centerX, centerY - 180);
+          ctx.lineTo(centerX, centerY + 180);
+          ctx.stroke();
+        }
+
+        function drawElements() {
+          const dr = 20;
+          const dtheta = Math.PI / 12;
+
+          for (let r = 20; r <= 160; r += dr) {
+            for (let theta = 0; theta < Math.PI * 2; theta += dtheta) {
+              const intensity = Math.min(255, r);
+
+              // Fator para animação de pulsação
+              const pulseFactor = isAnimating
+                ? 1 + 0.2 * Math.sin(animationFrame * 0.05 + r / 20)
+                : 1;
+
+              // Cores alternadas para melhor visualização
+              ctx.fillStyle =
+                (Math.floor(r / dr) + Math.floor(theta / dtheta)) % 2 === 0
+                  ? `rgba(79, 195, 247, ${(r / 200) * 0.7})`
+                  : `rgba(255, 152, 0, ${(r / 200) * 0.7})`;
+
+              // Vértices do elemento polar
+              const v1x = centerX + r * Math.cos(theta);
+              const v1y = centerY + r * Math.sin(theta);
+
+              const v2x = centerX + (r + dr * pulseFactor) * Math.cos(theta);
+              const v2y = centerY + (r + dr * pulseFactor) * Math.sin(theta);
+
+              const v3x =
+                centerX + (r + dr * pulseFactor) * Math.cos(theta + dtheta);
+              const v3y =
+                centerY + (r + dr * pulseFactor) * Math.sin(theta + dtheta);
+
+              const v4x = centerX + r * Math.cos(theta + dtheta);
+              const v4y = centerY + r * Math.sin(theta + dtheta);
+
+              // Desenhar elemento
+              ctx.beginPath();
+              ctx.moveTo(v1x, v1y);
+              ctx.lineTo(v2x, v2y);
+              ctx.lineTo(v3x, v3y);
+              ctx.lineTo(v4x, v4y);
+              ctx.closePath();
+              ctx.fill();
+
+              // Contorno
+              ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
+              ctx.lineWidth = 0.5;
+              ctx.stroke();
+            }
+          }
+        }
+
+        function drawInfo() {
+          ctx.fillStyle = '#e0e0e0';
+          ctx.font = '14px Arial';
+          ctx.fillText('Jacobiano em Coordenadas Polares: |J| = r', 20, 30);
+          ctx.fillText(
+            'Observe como os elementos de área crescem com a distância da origem',
+            20,
+            50
+          );
+
+          // Adicionar legenda de cores
+          ctx.fillStyle = 'rgba(79, 195, 247, 0.7)';
+          ctx.fillRect(20, 70, 20, 20);
+          ctx.fillStyle = 'rgba(255, 152, 0, 0.7)';
+          ctx.fillRect(20, 100, 20, 20);
+
+          ctx.fillStyle = '#e0e0e0';
+          ctx.fillText('Elemento de área (tipo 1)', 50, 85);
+          ctx.fillText('Elemento de área (tipo 2)', 50, 115);
+
+          // Mostrar controles
+          ctx.fillText(
+            'Clique no canvas para iniciar/parar a animação',
+            20,
+            380
+          );
+        }
+
+        function animate() {
+          if (isAnimating) {
+            animationFrame++;
+            updateCanvas();
+            requestAnimationFrame(animate);
+          }
+        }
+
+        function updateCanvas() {
+          ctx.clearRect(0, 0, width, height);
+
+          // Background mais escuro para o tema espacial
+          ctx.fillStyle = 'rgba(10, 10, 15, 0.7)';
+          ctx.fillRect(0, 0, width, height);
+
+          drawCartesianGrid();
+          drawPolarGrid();
+          drawElements();
+          drawInfo();
+        }
+
+        canvas.addEventListener('click', function () {
+          isAnimating = !isAnimating;
+          if (isAnimating) {
+            animate();
+          }
+        });
+
+        // Inicialização
+        updateCanvas();
+      }
+    </script>
+  </body>
+</html>
